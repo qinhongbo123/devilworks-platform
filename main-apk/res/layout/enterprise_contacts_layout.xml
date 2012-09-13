@@ -23,6 +23,7 @@
 	  android:layout_height="wrap_content"
 	  android:layout_alignParentLeft="true"
 	  android:completionThreshold="1"
+	  android:hint="@string/msg_search_text"
 	  android:layout_below="@id/department_list_id"
 	  />
 	  <ImageView
