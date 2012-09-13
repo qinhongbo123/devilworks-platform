@@ -44,7 +44,7 @@ android update project --name surf-platform -t 1 -p .
 
 #get client code version
 #CLIENT_VERSION=`svn info |grep Revision |awk '{print $2}'`
-CLIENT_VERSION=`date -%s`
+CLIENT_VERSION=`date +%s`
 
 #replace version in source code
 sed -i "s/BUILD_VERSION\ =\ \"68\"/BUILD_VERSION\ =\ \"${CLIENT_VERSION}\"/" src/com/surfing/setting/SettingActivity.java
