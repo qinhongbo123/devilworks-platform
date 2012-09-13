@@ -156,4 +156,5 @@
 	<string name="btn_lastpage">最后一页</string>
 	<string name="btn_load">正在加载...</string>
 	<string name="btn_vote_text">请选择您的投票</string>
+	<string name="msg_search_text">搜索</string>
 </resources>

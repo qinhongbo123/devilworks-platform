@@ -108,7 +108,7 @@ public class MenuTabActivity extends ActivityGroup{
 		for(int i = 0;i<mIndicateId.length;i++){
 			TabSpec tabSpec = mTabHost.newTabSpec(mtabSpec[i]);
 			tabSpec.setIndicator(getTabItemView(i));
-			tabSpec.setContent(getItemIntent(i));
+			tabSpec.setContent(getItemIntent(mIndicateId[i]));
 			mTabHost.addTab(tabSpec);
 			if(mCurrentContext != null){
 			    mTabHost.getTabWidget().getChildAt(i).setBackgroundDrawable(mCurrentContext.getResources().getDrawable(R.drawable.tab_bg));
@@ -333,21 +333,21 @@ public class MenuTabActivity extends ActivityGroup{
 	private Intent getItemIntent(int index){
 		Intent myInent = new Intent();
 		switch(index){
-		case 0:
+		case R.string.channel_title:
 			myInent.setClass(getApplicationContext(), ChannelTabActivity.class);
 			String response = getIntent().getStringExtra(ChannelTabActivity.COLUMN_INFO_TAG);
 			myInent.putExtra(ChannelTabActivity.COLUMN_INFO_TAG,response);
 		break;
-		case 1:
+		case R.string.discuss_title:
 			myInent.setClass(getApplicationContext(), DisscusActivity.class);
 		break;
-		case 2:
+		case R.string.contact_title:
 			myInent.setClass(getApplicationContext(),EnterpriseContactsActivity.class);
 		break;	
-		case 3:
+		case R.string.vote_title:
 			myInent.setClass(getApplicationContext(),VoteListActivity.class);
 		break;
-		case 4:
+		case R.string.setting_title:
 			myInent.setClass(getApplicationContext(), SettingActivity.class);
 		break;
 		default:
