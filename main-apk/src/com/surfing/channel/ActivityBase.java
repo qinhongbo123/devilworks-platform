@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ActivityBase extends Activity
-{
+{ 
 	private String LOG_TAG = "ActivityBase";
 	public static final int TITLE_TYPE_NO_TITLE = 0;
 	public static final int TITLE_TYPE_COMPANY = 1;

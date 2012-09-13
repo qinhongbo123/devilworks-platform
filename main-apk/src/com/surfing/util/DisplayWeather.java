@@ -53,6 +53,9 @@ public class DisplayWeather
 
     public static void updateWeatherDisplay(final Context context, final Activity activity)
     {
+        //don't display weather
+        return;
+       /*
         if ((activity == null) || (context == null))
         {
             return;
@@ -93,6 +96,7 @@ public class DisplayWeather
                context.startActivity(myIntent);
             }
         });
+        */
     }
     public static String getCurrentCity(Context context){
         String city = null;
