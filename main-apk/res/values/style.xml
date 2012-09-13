@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomWindowTitleBackground">
+        <item name="android:background">#0057ae</item>
+    </style>
+
+    <style name="activityTitlebar" parent="android:Theme">
+        <item name="android:windowTitleSize">40dp</item> <!-- 高度 -->
+        <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item> <!-- 背景色,需要调用前面的颜色设置 -->
+    </style>
+
+    <style name="window_manager" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+</resources>

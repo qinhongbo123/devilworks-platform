@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="40dp"
+    android:id="@+id/title_layout_id"
+    android:background="@drawable/title_bg">
+    
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_alignParentLeft="true"
+    android:id="@+id/logo_layout_id"
+    android:paddingLeft="5dp"
+    android:paddingRight="8dp">
+    <ImageView
+        android:id="@+id/titlebar_icon_id"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content" 
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/titlebar_text_id"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/titlebar_text_size"
+        android:textStyle="bold" />
+   </LinearLayout>
+   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@id/logo_layout_id"
+    android:layout_alignParentRight="true"
+    android:paddingRight="8dp"
+    android:layout_centerInParent="true">
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:layout_alignParentRight="true"
+    android:id="@+id/weather_display_id">
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingRight="5dp">
+    <TextView
+    android:id="@+id/city_text_id"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#ffffff"
+    android:textSize="@dimen/titlebar_city_size"
+    android:textStyle="bold"
+    />
+    <TextView
+    android:id="@+id/temp_current_id"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#ffffff"
+    android:textSize="@dimen/titlebar_city_size"
+    />
+    </LinearLayout>
+    <TextView
+    android:id="@+id/condition_current_id"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:textColor="#ffffff"
+    android:textSize="@dimen/titlebar_condition_size"
+    android:textStyle="bold"
+    android:gravity="center"
+    android:paddingRight="3dp"
+    />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <ImageView 
+    android:id="@+id/condition_icon_id"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    />
+    </LinearLayout>
+	</LinearLayout>
+	</RelativeLayout>
+</RelativeLayout>

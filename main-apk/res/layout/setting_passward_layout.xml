@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/content_bg"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="40dp"
+        android:paddingTop="40dp" >
+
+        <TextView
+            android:id="@+id/old_password_text"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:paddingRight="10dp"
+            android:text="@string/old_passward"
+            android:textSize="@dimen/login_lable_size" />
+
+        <EditText
+            android:id="@+id/set_oldpassword_id"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/old_password_text"
+            android:password="true" />
+
+        <TextView
+            android:id="@+id/new_password_text"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignRight="@id/old_password_text"
+            android:layout_below="@id/old_password_text"
+            android:gravity="center"
+            android:paddingRight="10dp"
+            android:text="@string/new_passward"
+            android:textSize="@dimen/login_lable_size" />
+
+        <EditText
+            android:id="@+id/set_newpassword_id"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/new_password_text"
+            android:layout_below="@id/set_oldpassword_id"
+            android:layout_toRightOf="@id/new_password_text"
+            android:password="true" />
+
+        <TextView
+            android:id="@+id/confirm_passward_text"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@id/new_password_text"
+            android:gravity="center"
+            android:paddingRight="10dp"
+            android:text="@string/confirm_passward"
+            android:textSize="@dimen/login_lable_size" />
+
+        <EditText
+            android:id="@+id/set_confirmpassword_id"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/confirm_passward_text"
+            android:layout_below="@id/set_newpassword_id"
+            android:layout_toRightOf="@id/confirm_passward_text"
+            android:password="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <Button
+            android:id="@+id/btn_setpassword_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ok" />
+
+        <Button
+            android:id="@+id/btn_cancelset_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_cancel" />
+    </LinearLayout>
+
+</RelativeLayout>

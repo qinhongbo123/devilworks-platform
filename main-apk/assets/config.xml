@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<serverinfo>
+    <!-- http://wadiff.cn/tty_leo/ -->
+    <!-- http://192.168.3.103:9000/tianyi-server/tianyi/ -->
+    <!--http://localhost:9000/tianyi-server/tianyi/index.php?controller=train&action=Search&search_type=1010&data="T8369"-->
+    <address>http://125.76.228.165/tianyi/</address>
+    
+</serverinfo>

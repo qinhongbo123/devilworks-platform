@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#f0f0f0">
+
+    <ListView
+        android:id="@+id/vote_list_id"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="#f0f0f0"
+        android:cacheColorHint="#ffffff" />
+	<Button
+        android:id="@+id/Vote_display_btn_id"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:text="@string/btn_display_next_text"
+        android:layout_below="@id/vote_list_id"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible" />
+    <!--ProgressBar
+        android:id="@+id/loading_progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/vote_list_id"
+        android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/barcolor"
+        android:visibility="gone" /-->
+
+</LinearLayout>

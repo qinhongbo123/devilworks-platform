@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="login_appname_size">15px</dimen>
+    <dimen name="login_lable_size">15px</dimen>
+    <dimen name="login_btn_size">15px</dimen>
+
+</resources>

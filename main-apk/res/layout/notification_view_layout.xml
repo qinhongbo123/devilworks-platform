@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/titlebar" />
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="#ffffff"
+        android:fadingEdge="vertical" >
+
+        <TextView
+            android:id="@+id/notification_text_id"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffffff"
+            android:paddingLeft="5dp"
+            android:paddingRight="8dp"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:textColor="#000000"
+            android:textSize="@dimen/notify_view_text" />
+    </ScrollView>
+
+</LinearLayout>

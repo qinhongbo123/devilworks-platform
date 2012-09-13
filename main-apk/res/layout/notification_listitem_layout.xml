@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/listitem_bg"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/notification_list_img_id"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <TextView
+        android:id="@+id/notification_list_text_id"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
+        android:textColor="#000000"
+        android:textSize="@dimen/notify_item_text"
+        android:lines="1"
+        android:scrollHorizontally="true" />
+
+</LinearLayout>

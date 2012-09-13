@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/channel_banner_id"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/channel_firstnews_img_id"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/ch_banner_height"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/channel_firstnews_title_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/channel_firstnews_img_id"
+        android:layout_alignLeft="@id/channel_firstnews_img_id"
+        android:background="#000000"
+        android:maxLines="1"
+        android:textSize="@dimen/ch_banner_text" />
+
+</RelativeLayout>

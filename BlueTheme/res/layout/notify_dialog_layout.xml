@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/notify_bg"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/notify_title_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="10dp"
+        android:text="@string/notify_dialog_title"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/notify_dialog_title"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/notify_content_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notify_title_id"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:textColor="#000000"
+        android:textSize="27px"
+        android:textStyle="bold" />
+    <!--
+  ImageButton
+   android:id="@+id/btn_close_id"
+   android:layout_width="40dp"
+   android:layout_height="wrap_content"
+   android:layout_alignTop="@id/notify_content_id"
+   android:layout_alignParentRight="true"
+   android:background="@drawable/btn_close"
+  /
+    -->
+
+</RelativeLayout>

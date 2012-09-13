@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, LoginActivity!</string>
+    <string name="app_name">PublicPlatform</string>
+    <string name="app_title">APP_PublicPlatform</string>
+    <string name="notify_state_display">New Message</string>
+    <string name="notify_state_list_text">New Message!</string>
+    <string name="btn_display_next_text">Display Next page</string>
+    <string name="download_activity_title">Downloading</string>
+    <string name="download_activity_cancel">Cancel Download</string>
+    <string name="download_activity_progress">Progress:</string>
+    <string name="download_activity_verifying">Verifying...</string>
+    <string name="download_activity_time_remaining">Time Remaining:</string>
+    <string name="download_activity_time_remaining_unknown">unknown</string>
+    <string name="download_activity_time_remaining_minutes">minutes</string>
+    <string name="download_activity_time_remaining_seconds">seconds</string>
+    <string name="download_activity_time_remaining_hours">hours</string>
+    <string name="download_activity_time_remaining_days">days</string>
+    <string name="download_activity_download_stopped">Download stopped</string>
+    <string name="download_activity_retry">Retry</string>
+    <string name="download_activity_quit">Quit</string>
+    <string name="disscus_new_text">New discuss</string>
+    <string name="disscus_add_new_text">Add new discuss</string>
+    <string name="ok">Ok</string>
+    <string name="refrash">Refresh</string>
+    <string name="replay">Replay</string>
+    <string name="synchronous">Synchronous Contacts</string>
+    <string name="setting_logout">Logout</string>
+    <string name="setting_update">Update</string>
+    <string name="message_ask_installapk">Do you want to install now?</string>
+    <string name="btn_install">Install</string>
+    <string name="message_confirm_quit">Quit?</string>
+    <string name="message_title_indicate">Prompt</string>
+    <string name="channel_public">Public</string>
+    <string name="channel_more">More</string>
+    <string name="channel_title">Channel</string>
+    <string name="discuss_title">Discuss</string>
+    <string name="contact_title">Contacts</string>
+    <string name="vote_title">Vote</string>
+    <string name="setting_title">Setting</string>
+    <string name="btn_view">View</string>
+    <string name="message_notify_start">You have </string>
+    <string name="message_notify_end"> messages</string>
+    <string name="inner_message">Notification</string>
+    <string name="weather_request">Weather condition</string>
+    <string name="train_request">Railway Tickets</string>
+    <string name="choose_play_method">Choose play method</string>
+    <string name="download">DownLoad</string>
+    <string name="play_current">Play online</string>
+    <string name="unsupport_type">Unsupport type</string>
+    <string name="loginning">Loginning...</string>
+    <string name="message_error">Error message</string>
+    <string name="message_error_text">Username or Passward is error</string>
+    <string name="old_passward">Old password: </string>
+    <string name="new_passward">New password: </string>
+    <string name="confirm_passward">Confirm password: </string>
+    <string name="settign_passward">Change password</string>
+    <string name="msg_nonetwork">Can not connect</string>
+    <string name="msg_user_password_null">Username and password can not be empty</string>
+    <string name="view_mode_text">View mode</string>
+    <string name="view_mode_list">Table mode</string>
+    <string name="view_mode_grid">Grid mode</string>
+    <string name="msg_oldpassward_not_null">Old Passward can not be empty.</string>
+    <string name="msg_newpassward_not_null">New Passward can not be empty.</string>
+    <string name="msg_passward_not_equel">New Passward and retypepassward is not same.</string>
+    <string name="msg_passward_equel">New Passward and old passward is same.</string>
+    <string name="msg_changed_pwd_success">Change passward success.</string>
+    <string name="msg_changed_pwd_failed">Change passward failed.</string>
+    <string name="btn_result_text">Result</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="msg_vote_success">Vote success</string>
+    <string name="msg_vote_failed">Vote failed</string>
+    <string name="version_info">Version</string>
+    <string name="title_bianming">People</string>
+    <string name="title_about">Product</string>
+    <string name="setting_theme">Theme Setting</string>
+    <string name="theme_blue">Blue Theme</string>
+    <string name="theme_Red">Red Theme</string>
+    <string name="degree_text">℃</string>
+    <string name="city_text">Xian</string>
+    <string name="notify_dialog_title">Notification</string>
+    <string name="week_one">Mon</string>
+    <string name="week_two">Tue</string>
+    <string name="week_three">Wed</string>
+    <string name="week_four">Thu</string>
+    <string name="week_five">Fri</string>
+    <string name="week_six">Sat</string>
+    <string name="week_seven">Sun</string>
+    <string name="month_text">Mon</string>
+    <string name="day_text">Day</string>
+    <string name="replace_city_text">Replace City</string>
+    <string-array name="city_name">
+    <item>BeiJing</item>
+    <item>ShangHai</item>
+    <item>GuangZhou</item>
+    <item>>ShenZhen</item>
+    <item>TianJin</item>
+    <item>WuHan</item>
+    <item>ShanYang</item>
+    <item>ChongQIng</item>
+    <item>HangZhou</item>
+    <item>NanNing</item>
+    <item>HaErBing</item>
+    <item>ChangChun</item>
+    <item>HuHeHaoTe</item>
+    <item>ShiJiaZhuang</item>
+    <item>YinChuan</item>
+    <item>WuLuMuQi</item>
+    <item>LaSa</item>
+    <item>XiNing</item>
+    <item>XiAn</item>
+    <item>NanZhou</item>
+    <item>TiaYuan</item>
+    <item>KunMing</item>
+    <item>NanNing</item>
+    <item>ChengDu</item>
+    <item>ChangSha</item>
+    <item>JiNan</item>
+    <item>NanChang</item>
+    <item>HeFei</item>
+    <item>ZhengZhou</item>
+    <item>FuZhou</item>
+    <item>GuiYang</item>
+    <item>HaiKou</item>
+    <item>QinHuangDao</item>
+    <item>GuiLin</item>
+    <item>SanYa</item>
+    <item>XiangGang</item>
+    <item>AoMen</item>
+    </string-array>
+    <string name="msg_connect_failed">Connection failed,please refash</string>
+    <string name="send_sms_muti">Send by group</string>
+    <string name="send_type_department">Send by department</string>
+    <string name="send_type_undefine">Undefined</string>
+    <string name="btn_markall">Mark All</string>
+    <string name="btn_unmarkall">UnMark</string>
+    <string name="menu_call">Call contact</string>
+    <string name="menu_sendSMS">Text contact</string>
+    <string name="all_department">All</string>
+    <string name="weather_setting">Weather</string>
+    <string name="menu_into_local">Local Contacts</string>
+    <string name="msg_contacts_syn">you do not have any contacts,please click the synchronize button or show the menu and synchronize.</string>
+	<string name="btn_syn">Synchronize</string>
+	<string name="send_to_friend">Send to friend</string>
+	<string name="network_error">Network Error</string>
+	<string name="msg_sdcard">Sd card not found, title icon of articles can not display correctly.</string>
+	<string name="msg_request_new_client_failed">Error occured while requsting new version</string>
+	<string name="msg_current_is_latest">No new client found, current version is latest</string>
+	<string name="setting_about">About</string>
+	<string name="run_back">Background</string>
+	<string name="item_train">Train search</string>
+	<string name="item_estore">E-Store</string>
+	<string name="item_imusic">IMusic</string>
+	<string name="item_igame">IGame</string>
+	<string name="item_189">189-Mail</string>
+	<string name="msg_getdate_failed">Get data failed</string>
+	<string name="msg_recommand">welcome to surf-platform enterprise message publish system. With this platform you can share information accross your company, access enterprise contacts directory,  discuss with your partener every seconds, everywhere;  one click apk</string>
+	<string name="login_user">User:</string>
+	<string name="login_pwd">Password:</string>
+	<string name="login_rember">Rember</string>
+	<string name="login_login">Login</string>
+	<string name="login_quit">Quit</string>
+	<string name="btn_lastpage">Last page</string>
+	<string name="btn_load">Load...</string>
+	<string name="btn_vote_text">Please choose</string>
+</resources>

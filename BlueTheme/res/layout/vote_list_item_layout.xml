@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/listitem_bg"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/vote_item_img_id"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/vote_item" />
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/vote_item_text_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:textColor="#000000"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="@dimen/vote_title_text" />
+
+        <TextView
+            android:id="@+id/vote_item_date_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_below="@id/disscus_item_text_id" />
+
+        <TextView
+            android:id="@+id/vote_item_user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vote_item_text_id"
+            android:layout_toLeftOf="@id/vote_item_date_id"
+            android:gravity="right"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingRight="8dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</LinearLayout>

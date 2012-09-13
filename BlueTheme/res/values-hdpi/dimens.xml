@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <dimen name="login_appname_size">30px</dimen>
+   <dimen name="login_lable_size">30px</dimen>
+   <dimen name="login_btn_size">30px</dimen>
+   <dimen name="titlebar_text_size">32px</dimen>
+   <dimen name="titlebar_city_size">20px</dimen>
+   <dimen name="titlebar_condition_size">25px</dimen>
+   <dimen name="menutab_text_size">25px</dimen>
+   <dimen name="ch_banner_height">200px</dimen>
+   <dimen name="ch_banner_text">25px</dimen>
+   <dimen name="ch_item_text_title">25px</dimen>
+   <dimen name="ch_item_text_desc">22px</dimen>
+   <dimen name="disscus_topic_title">30px</dimen>
+   <dimen name="disscus_text_title">25px</dimen>
+   <dimen name="vote_title_text">25px</dimen>
+   <dimen name="otherch_item_text">30px</dimen>
+   <dimen name="notify_item_text">25px</dimen>
+   <dimen name="notify_view_text">30px</dimen>
+   <dimen name="notify_dialog_title">30px</dimen>
+   <dimen name="notify_dialog_text">27px</dimen>
+   <dimen name="city_item_text">25px</dimen>
+   <dimen name="weather_temp">80px</dimen>
+   <dimen name="weather_temp_all">30px</dimen>
+   <dimen name="date_text">25px</dimen>
+   <dimen name="date_temp_width">105px</dimen>
+   <dimen name="date_temp_height">100px</dimen>
+   <dimen name="contact_text">30px</dimen>
+</resources>
