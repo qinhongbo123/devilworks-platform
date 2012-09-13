@@ -35,7 +35,8 @@ fi
 
 
 #clean current directory
-svn status |awk '{if($1=="?") {print $2}}' |xargs rm -fr
+# svn status |awk '{if($1=="?") {print $2}}' |xargs rm -fr
+git pull
 
 #generate build.xml
 android update project --name surf-platform -t 1 -p . 
