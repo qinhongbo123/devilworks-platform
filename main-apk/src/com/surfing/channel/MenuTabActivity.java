@@ -65,6 +65,7 @@ public class MenuTabActivity extends ActivityGroup{
 	private static String mtabSpec[]={"tab1","tab2","tab3","tab4","tab6"};
 	private static int mIndicateId[]={R.string.channel_title,
 									  /*R.string.discuss_title,*/
+									  R.string.inner_message,
 									  R.string.contact_title,
 									  /*R.string.vote_title,*/
 									  R.string.setting_title};
@@ -349,6 +350,9 @@ public class MenuTabActivity extends ActivityGroup{
 		break;
 		case R.string.setting_title:
 			myInent.setClass(getApplicationContext(), SettingActivity.class);
+		break;
+		case R.string.inner_message:
+			myInent.setClass(getApplicationContext(), NotificationListActivity.class);
 		break;
 		default:
 			break;

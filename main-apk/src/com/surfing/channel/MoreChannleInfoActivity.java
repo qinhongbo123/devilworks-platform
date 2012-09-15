@@ -115,14 +115,17 @@ public class MoreChannleInfoActivity extends ActivityBase implements OnItemClick
     }
 	private ArrayList<HashMap<String,Object>> getChannel(){
 		ArrayList<HashMap<String,Object>> channelArray = new ArrayList<HashMap<String,Object>>();
-		HashMap<String,Object> map = new HashMap<String,Object>();
-		map.put("title",getString(R.string.inner_message));
-		map.put("link","");
+		HashMap<String,Object> map = null;
+//		map = new HashMap<String,Object>();
+//		map.put("title",getString(R.string.inner_message));
+//		map.put("link","");
 		channelArray.add(map);
+		/* delete weather
 		map = new HashMap<String,Object>();
 		map.put("title",getString(R.string.weather_setting));
 		map.put("link","");
 		channelArray.add(map);
+		*/
 		String ColumnInfor = this.getIntent().getStringExtra(ChannelTabActivity.COLUMN_INFO_TAG);
 		if(ColumnInfor == null){
 			File file = new File(getApplicationContext().getFilesDir().getPath()+"/"+"channel.xml");

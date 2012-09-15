@@ -20,7 +20,7 @@
     <string name="btn_cancel">取消</string>
     <string name="message_confirm_quit">确定要退出？</string>
     <string name="message_title_indicate">提示</string>
-    <string name="channel_public">公共</string>
+    <string name="channel_public">公共信息</string>
     <string name="channel_more">更多</string>
     <string name="channel_title">栏目</string>
     <string name="discuss_title">讨论组</string>
