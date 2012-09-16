@@ -91,12 +91,14 @@ public class LoginActivity extends ActivityBase implements OnClickListener
     private int                 mTheme                 = 0;
     private AnimationDrawable   mLoadingAnimate        = null;
     private static final int    EVENT_LOADING          =1;
+    private static final int	EVENT_START			   =2;
     private boolean 			blRemberPwd			   = false;
     private static 	final int 	LOGIN_TYPE_PHONENUM    = 0;
     private static final  int 	LOGIN_TYPE_MEID		   = 1;
     private TelephonyManager    mTelephonyManager 	   = null;
     private static String 		mMeid 				   = null;
     private static int			mUserNmae_type 		   = LOGIN_TYPE_MEID;
+    private int					mAnimationStart 	   = 0;
     private Handler    myHandler = new Handler(){
 
         @Override
@@ -106,9 +108,15 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                 case EVENT_LOADING:{
                     if(mLoadingAnimate != null){
                         Log.i(TAG,"loading image start");
+                        mAnimationStart = (int) System.currentTimeMillis();
                         mLoadingImage.setVisibility(View.VISIBLE);
                         mLoadingAnimate.start();
                     }
+                }
+                break;
+                case EVENT_START:{
+                	String reponse = (String)msg.obj;
+                	StartMeau(reponse);
                 }
                 break;
                 default:
@@ -329,10 +337,10 @@ public class LoginActivity extends ActivityBase implements OnClickListener
             mLoadingImage = (ImageView)findViewById(R.id.loading_animate_id);
             mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
             mLoadingAnimate = (AnimationDrawable)mLoadingImage.getBackground();
-            myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),1000);
+            myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),0);
             HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
             String geturl = getLoginURL(mUserNmae_type,user_name,user_password,mMeid);;
-            
+           
             connect.asyncConnect(geturl, HttpMethod.GET,
                     new LoginHttpCallBack());
             
@@ -401,7 +409,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                         LOGIN_STATE, MODE_PRIVATE);
                 String loginstate = prefsate.getString(LOGIN_STATE,
                         LOGIN_STATE_LOGOUT);
-                if (!LOGIN_STATE_LOGINED.equals(loginstate))
+              //  if (!LOGIN_STATE_LOGINED.equals(loginstate))
                 {
                     SharedPreferences pref = LoginActivity.this
                             .getApplicationContext().getSharedPreferences(
@@ -426,37 +434,40 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                 changeLogState(LoginActivity.this.getApplicationContext(),
                         LOGIN_STATE_LOGINED,true); 
                 mResponse = response;
+                //int duration = (int) (System.currentTimeMillis() - mAnimationStart);
+                myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),10000);
                 
-                
-                 Intent myIntent = new Intent();
-                 SharedPreferences pref =
-                 mContext.getSharedPreferences("mode",MODE_PRIVATE);
-                 int mode = pref.getInt("mode",0);
-                 if(mode == 0){
-                 myIntent.setClass(getApplicationContext(),MenuTabActivity.class);
-                 }else{
-                 myIntent.setClass(getApplicationContext(),MenuGridActivity.class);
-                 }
-                 myIntent.putExtra(ChannelTabActivity.COLUMN_INFO_TAG,response);
-                 SaveRssFile savefile = new SaveRssFile(LoginActivity.this.getApplicationContext());
-                 
-                 try {
-                 savefile.SaveFile(response,"channel.xml");
-                 } catch (Exception e) {
-                 // TODO Auto-generated catch block
-                 e.printStackTrace();
-                 }
-                 
-                getWeatherFromWeb();
-                startActivity(myIntent);
-                if(mLoadingAnimate != null){
-                    mLoadingAnimate.stop();
-                }
-                LoginActivity.this.finish();
             }
         }
     }
-
+    private void StartMeau(String response){
+    	 Intent myIntent = new Intent();
+         SharedPreferences pref =
+         mContext.getSharedPreferences("mode",MODE_PRIVATE);
+         int mode = pref.getInt("mode",0);
+         if(mode == 0){
+         myIntent.setClass(getApplicationContext(),MenuTabActivity.class);
+         }else{
+         myIntent.setClass(getApplicationContext(),MenuGridActivity.class);
+         }
+         myIntent.putExtra(ChannelTabActivity.COLUMN_INFO_TAG,response);
+         SaveRssFile savefile = new SaveRssFile(LoginActivity.this.getApplicationContext());
+         
+         try {
+         savefile.SaveFile(response,"channel.xml");
+         } catch (Exception e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+         }
+         
+        //getWeatherFromWeb();
+        startActivity(myIntent);
+        if(mLoadingAnimate != null){
+            mLoadingAnimate.stop();
+            mLoadingAnimate = null;
+        }
+        LoginActivity.this.finish();
+    }
     private void getWeatherFromWeb()
     {
        Intent myIntent = new Intent();
