@@ -96,6 +96,7 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 	private static final int PAGE_MAX_COUNT = 10;
 	private Gallery mBannerGallery = null;
 	private static final String BTN_NEXT_FLG_TEXT = "surfing_btn_next";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -123,7 +124,7 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 		mListItemArray = new ArrayList<View>();
 		
 		setupData(mChannel_id);
-		//setupBannerData(mChannel_id);
+		setupBannerData(mChannel_id);
 		mListAdapter = new SimpleAdapterList(mContext,mListArrayList,R.layout.channel_listitem_layout,
 				new String[]{"icon","title","desc"},
 				new int[]{R.id.channel_listitem_img_id,R.id.channel_listitem_title_id,R.id.channel_listitem_desc_id});
@@ -243,7 +244,7 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 			@Override
 			public void execute(String response) {
 				
-				setupBannerData(mChannel_id);
+				//setupBannerData(mChannel_id);
 				mButton.setText(getString(R.string.btn_display_next_text));
 				mButton.setVisibility(View.VISIBLE);
 				if((response == null) 
@@ -274,7 +275,12 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 							map.put("icon",channlelist.get(i).getmIcon());
 							mListArrayList.add(map);
 						}
-						mListAdapter.notifyDataSetChanged();
+						if(channlelist.size() == 0){
+							mButton.setText(getString(R.string.btn_lastpage));
+						}else{
+							mListAdapter.notifyDataSetChanged();
+						}
+						
 					}
 					
 				}catch (Exception e) {
@@ -359,9 +365,13 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 			mListItemArray.clear();
 			mBannerAdapter.notifyDataSetChanged();
 			mListAdapter.notifyDataSetChanged();
-			HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
-			ConnectWeb(connect,mConnectUrl);
+			mpageIndex = 1;
+			//HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
+			//ConnectWeb(connect,mConnectUrl);
+			setupData(mChannel_id);
+			setupBannerData(mChannel_id);
 			mButton.setVisibility(View.INVISIBLE);
+			mButton.setText(getString(R.string.btn_display_next_text));
 			mRequestType = REQUEST_TYPE_REFRASH;
 		}
 		break;
@@ -373,22 +383,12 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 
 	@Override
 	public void onClick(View v) {
-		if(v == mButton){
+		if((v == mButton) && !(getString(R.string.btn_lastpage).equals(mButton.getText()))){
 			mpageIndex++;
 			setupData(mChannel_id); 
 			Log.i(TAG,"the page is : "+mpageIndex);
-			mButton.setText("正在加载...");
+			mButton.setText(getString(R.string.btn_load));
 			mRequestType = REQUEST_TYPE_NEXT;
-		}else{
-		    String link = v.getTag().toString();
-		    if(link != null){
-		        Log.i(TAG,"connect the news information");
-		        Intent myIntent = new Intent();
-	            myIntent.setClass(ChannelActivityOne.this,NewsInformationActivity.class);
-	            myIntent.putExtra("link",link);
-	            startActivity(myIntent);
-		    }
-		    
 		}
 	}
 	
