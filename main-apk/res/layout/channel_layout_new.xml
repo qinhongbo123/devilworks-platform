@@ -20,6 +20,7 @@
         android:layout_alignLeft="@id/channel_firstnews_img_id"
         android:background="#000000"
         android:maxLines="1"
+        android:textColor="#ffffff"
         android:textSize="@dimen/ch_banner_text" />
 
 </RelativeLayout>

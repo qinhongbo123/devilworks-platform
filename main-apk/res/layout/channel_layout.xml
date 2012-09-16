@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.surfing.channel.MyScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fadingEdge="vertical"
-        android:background="#f0f0f0"
-        android:scrollbarStyle="outsideOverlay"
-        android:id="@+id/channel_scroll_id"
-        android:focusable="false"
-        >
 <RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/channel_layout_id"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
@@ -19,30 +11,18 @@
         android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
         android:background="#f0f0f0"
-        android:cacheColorHint="#ffffff00"
+        android:cacheColorHint="#f0f0f0"
         android:orientation="vertical" >
 
-        <LinearLayout 
-            android:id="@+id/channel_banner_id"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ViewFlipper
-                android:id="@+id/channel_viewfilpper_id"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-            </ViewFlipper>
-        </LinearLayout>
-		<LinearLayout
+		<ListView
             android:id="@+id/channel_list_id"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="#f0f0f0"
+            android:divider="@null"
             android:orientation="vertical" >
-         </LinearLayout>
-        <Button
+         </ListView>
+        <!--  Button
             android:id="@+id/channel_display_btn_id"
             android:layout_width="fill_parent"
             android:layout_height="45dp"
@@ -50,7 +30,7 @@
             android:paddingRight="10dp"
             android:layout_weight="1"
             android:text="@string/btn_display_next_text"
-            android:visibility="gone" />
+            android:visibility="gone" /-->
     </LinearLayout>
 
     <ProgressBar
@@ -64,4 +44,3 @@
         android:indeterminateDrawable="@drawable/barcolor"
         android:visibility="gone" />
 </RelativeLayout>
-</com.surfing.channel.MyScrollView>

@@ -14,7 +14,7 @@
         android:orientation="vertical" >
 
         <ListView
-            android:id="@+id/channel_list_id"
+            android:id="@+id/other_channel_list_id"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"

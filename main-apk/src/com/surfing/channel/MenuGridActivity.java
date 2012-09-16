@@ -277,23 +277,23 @@ public class MenuGridActivity extends ActivityBase {
 	            	//myInent.putExtra(ChannelTabActivity.CHANNLE_LINK,"public");
 	    			//myInent.setClass(getApplicationContext(),VoteListActivity.class);
 	    		break;
+//	    		case 4:
+//	    			myIntent.setClass(getApplicationContext(), DisscusActivity.class);
+//	    			//myInent.setClass(getApplicationContext(), SettingActivity.class);
+//	    		break;
 	    		case 4:
-	    			myIntent.setClass(getApplicationContext(), DisscusActivity.class);
-	    			//myInent.setClass(getApplicationContext(), SettingActivity.class);
-	    		break;
-	    		case 5:
 	    			myIntent.setClass(getApplicationContext(),EnterpriseContactsActivity.class);
 	    			//myInent.setClass(getApplicationContext(), NotificationListActivity.class);
 	    		break;
-	    		case 6:
-	    			myIntent.setClass(getApplicationContext(),VoteListActivity.class);
-	    			//myInent.setClass(getApplicationContext(), UpdateVersionActivity.class); 
-	    		break;
-	    		case 7://bianmin
+//	    		case 5:
+//	    			myIntent.setClass(getApplicationContext(),VoteListActivity.class);
+//	    			//myInent.setClass(getApplicationContext(), UpdateVersionActivity.class); 
+//	    		break;
+	    		case 5://bianmin
 	    			myIntent.setClass(getApplicationContext(), SettingActivity.class);
 	    		    //myInent.setClass(getApplicationContext(),MoreModuleActivity.class);
 	    		break;
-	    		case 8://weather
+	    		case 6://weather
 	    			CommonOperate.sendMsg2Friend(MenuGridActivity.this.getApplicationContext());
 	    			return;
 	    		default:
@@ -310,8 +310,8 @@ public class MenuGridActivity extends ActivityBase {
 	    
 	    private String[] names = {null,null,
 	    						  getString(R.string.channel_public),getString(R.string.channel_more),
-	    						  getString(R.string.discuss_title),getString(R.string.contact_title),
-	    						  getString(R.string.vote_title),getString(R.string.setting_title),
+	    						  /*getString(R.string.discuss_title),*/getString(R.string.contact_title),
+	    						  /*getString(R.string.vote_title),*/getString(R.string.setting_title),
 	    						  getString(R.string.send_to_friend)};  
 //	    ,getString(R.string.title_bianming),
 //        getString(R.string.title_about)

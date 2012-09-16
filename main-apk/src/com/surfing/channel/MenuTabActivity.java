@@ -81,7 +81,7 @@ public class MenuTabActivity extends ActivityGroup{
                 case CommonUpdate.EVENT_UPDATE_WEATHER:{
                     DisplayWeather.updateWeatherDisplay(getApplicationContext(),MenuTabActivity.this);
                 }
-                break;
+                break; 
                 default:
                     break;
             }
@@ -128,7 +128,7 @@ public class MenuTabActivity extends ActivityGroup{
 		String user_name = userpref.getString("user_name", "");
 		String mConnectUrl = ReadConfigFile.getServerAddress(getApplicationContext())+"index.php?controller=enterprise&action=RequireEnterLogoEx&user_name="+user_name;
 		//getUnreadNotifiction();
-		Log.i(TAG,"the url is : "+mConnectUrl);
+		Log.i(TAG,"company url is : "+mConnectUrl);
 		HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
 		ConnectWeb(connect,mConnectUrl);
 		CloseReceiver.registerCloseActivity(this);
@@ -178,8 +178,12 @@ public class MenuTabActivity extends ActivityGroup{
 			        Log.i(TAG,"request failed");
 			        return;
 			    }
-				Log.i(TAG,"the string = "+response);
+				Log.i(TAG,"company  string = "+response);
+				
 				int nIndex = response.indexOf("\\r\\n");
+				if(nIndex < 0){
+					return;
+				}
 				String enterprise_name = response.substring(0,nIndex);
 				String subString = response.substring(nIndex+"\\r\\n".length());
 				nIndex = subString.indexOf("\\r\\n");

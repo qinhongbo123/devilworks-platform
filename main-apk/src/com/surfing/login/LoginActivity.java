@@ -46,6 +46,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -91,6 +92,11 @@ public class LoginActivity extends ActivityBase implements OnClickListener
     private AnimationDrawable   mLoadingAnimate        = null;
     private static final int    EVENT_LOADING          =1;
     private boolean 			blRemberPwd			   = false;
+    private static 	final int 	LOGIN_TYPE_PHONENUM    = 0;
+    private static final  int 	LOGIN_TYPE_MEID		   = 1;
+    private TelephonyManager    mTelephonyManager 	   = null;
+    private static String 		mMeid 				   = null;
+    private static int			mUserNmae_type 		   = LOGIN_TYPE_MEID;
     private Handler    myHandler = new Handler(){
 
         @Override
@@ -114,7 +120,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
     };
     @Override
     public void onCreate(Bundle savedInstanceState)
-    {
+    { 
         super.onCreate(savedInstanceState);
         Intent ServiceIntent = new Intent();
         mContext = this.getApplicationContext();
@@ -123,6 +129,16 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                 ServerListenerService.class);
         startService(ServiceIntent);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //get meid  
+        mTelephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        mMeid = mTelephonyManager.getSubscriberId();
+        //mMeid = "46003"+mMeid.substring(mMeid.length()-10);
+        //mMeid = "460030919293952"; 
+        Log.i(TAG,"Meid = "+mMeid);
+        Log.i(TAG,"mTelephonyManager.getDeviceId() = "+mTelephonyManager.getDeviceId());
+        Log.i(TAG,"mTelephonyManager.getSimSerialNumber() = "+mTelephonyManager.getSimSerialNumber());
+        Log.i(TAG,"mTelephonyManager.getSubscriberId() = "+mTelephonyManager.getSubscriberId());
+        Log.i(TAG,"mTelephonyManager.getSubscriberId() = "+mTelephonyManager.getSimOperator());
         HashMap<String,String> map = ReadConfigFile.getUserInfo(mContext);
         if(ReadConfigFile.mLoginType == ReadConfigFile.LOGIN_TYPE_NORMAL){
         	SharedPreferences pref = this.getSharedPreferences(LOGIN_STATE,
@@ -133,12 +149,13 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                     .getSharedPreferences("user", MODE_PRIVATE);
             user_name = userpref.getString("user_name", "");
             user_password = userpref.getString("user_passwad", "");
-            if ((user_name.length()== 0) || (user_password.length() == 0))
+            if (((user_name.length()== 0) || (user_password.length() == 0)) 
+            		&& (mUserNmae_type == LOGIN_TYPE_PHONENUM))
             {
 
                 setContentView(R.layout.loginlayout);
                 setupView();
-                Log.i("chenmei","loadTheme(mContext)");
+                Log.i("chenmei","loadTheme(mContext)"); 
                 loadTheme(mContext);
                 mLoginNameText.setText(user_name);
                 mLoginPasswadText.setText(user_password);
@@ -159,13 +176,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
             myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),500);
         	user_name = map.get("user_name");
         	user_password = map.get("user_passwad");
-        	String geturl = ReadConfigFile.getServerAddress(this
-                    .getApplicationContext())
-                    + "index.php"
-                    + "?"
-                    + "controller=user&action=PhoneLogin&username="
-                    + user_name
-                    + "&password=" + user_password;
+        	String geturl = getLoginURL(mUserNmae_type,null,null, mMeid);
             Log.i(TAG, ReadConfigFile.getServerAddress(this.getApplicationContext()));
             HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
             connect.asyncConnect(geturl, HttpMethod.GET,
@@ -200,6 +211,26 @@ public class LoginActivity extends ActivityBase implements OnClickListener
     	return super.onKeyDown(keyCode, event);
 	
 	}
+    private String getLoginURL(int LoginUserType,String UserName,String UserPwd,String meid){
+    	String geturl = null;
+    	if(LOGIN_TYPE_PHONENUM == LoginUserType){
+    		geturl = ReadConfigFile.getServerAddress(this
+                    .getApplicationContext())
+                    + "index.php"
+                    + "?"
+                    + "controller=user&action=PhoneLogin&username="
+                    + UserName
+                    + "&password=" + UserPwd;
+    	}else{//meid
+    		geturl = ReadConfigFile.getServerAddress(this
+                    .getApplicationContext())
+                    + "index.php"
+                    + "?"
+                    + "controller=user&action=PhoneMEIDLogin&meid="
+                    + meid;
+    	}
+    	return geturl;
+    }
     @Override
     public void onClick(View v)
     {
@@ -231,13 +262,9 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                         .setPositiveButton(R.string.ok, null).show();
                 return;
             }
-            String geturl = ReadConfigFile.getServerAddress(this
-                    .getApplicationContext())
-                    + "index.php"
-                    + "?"
-                    + "controller=user&action=PhoneLogin&username="
-                    + user_name
-                    + "&password=" + user_password;
+            
+            String geturl = getLoginURL(mUserNmae_type,null,null, mMeid);
+            
             Log.i(TAG, ReadConfigFile.getServerAddress(this.getApplicationContext()));
             HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
             connect.asyncConnect(geturl, HttpMethod.GET,
@@ -295,22 +322,17 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         user_password = pref.getString("user_passwad", "");
         Log.i(TAG, "the user name is = " + user_name + " the passwad is = "
                 + user_password);
-        if ((user_name.length() != 0) && (user_password.length() != 0))
+        if (((user_name.length() != 0) && (user_password.length() != 0))
+        	|| (mMeid != null))
         {
             setContentView(R.layout.relogin_layout);
             mLoadingImage = (ImageView)findViewById(R.id.loading_animate_id);
             mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
             mLoadingAnimate = (AnimationDrawable)mLoadingImage.getBackground();
-            myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),500);
+            myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),1000);
             HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
-            String geturl = ReadConfigFile.getServerAddress(this
-                    .getApplicationContext())
-                    + "index.php"
-                    + "?"
-                    + "controller=user&action=PhoneLogin&username="
-                    + user_name
-                    + "&password=" + user_password;
-            Log.i(TAG,"login url = "+geturl);
+            String geturl = getLoginURL(mUserNmae_type,user_name,user_password,mMeid);;
+            
             connect.asyncConnect(geturl, HttpMethod.GET,
                     new LoginHttpCallBack());
             
@@ -358,7 +380,12 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                                                 int arg1)
                                         {
                                             changeLogState(mContext, LOGIN_STATE_LOGOUT,true);
-                                            requestAgain();
+                                            if(mUserNmae_type == LOGIN_TYPE_PHONENUM){
+                                            	requestAgain();
+                                            }else{
+                                            	LoginActivity.this.finish();
+                                            }
+                                            
                                             // LoginActivity.this.finish();
                                         }
                                     }).show();
@@ -380,12 +407,18 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                             .getApplicationContext().getSharedPreferences(
                                     "user", MODE_PRIVATE);
                     Editor editor = pref.edit();
-                    editor.putString("user_name", user_name);
-                    if(blRemberPwd){
-                    	editor.putString("user_passwad", user_password);
-                    }else{
+                    if(mUserNmae_type == LOGIN_TYPE_MEID){
+                    	editor.putString("user_name",mMeid);
                     	editor.putString("user_passwad", "");
+                    }else{ 
+                    	 editor.putString("user_name", user_name);
+                         if(blRemberPwd){
+                         	editor.putString("user_passwad", user_password);
+                         }else{
+                         	editor.putString("user_passwad", "");
+                         }
                     }
+                   
                     
                     editor.commit();
                 }
@@ -439,8 +472,8 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         Editor editor = pref.edit();
         editor.putString(LOGIN_STATE, state);
         editor.commit();
-        RuntimeException r = new RuntimeException();
-        r.printStackTrace();
+        //RuntimeException r = new RuntimeException();
+        //r.printStackTrace();
         if(!blShow){
             return;
         }

@@ -119,7 +119,7 @@ public class MoreChannleInfoActivity extends ActivityBase implements OnItemClick
 //		map = new HashMap<String,Object>();
 //		map.put("title",getString(R.string.inner_message));
 //		map.put("link","");
-		channelArray.add(map);
+		//channelArray.add(map);
 		/* delete weather
 		map = new HashMap<String,Object>();
 		map.put("title",getString(R.string.weather_setting));

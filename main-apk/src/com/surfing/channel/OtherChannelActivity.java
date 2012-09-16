@@ -127,7 +127,7 @@ public class OtherChannelActivity extends ActivityBase implements OnItemClickLis
     }
 
     private void setupView(){
-		mchannelList = (ListView)findViewById(R.id.channel_list_id);
+		mchannelList = (ListView)findViewById(R.id.other_channel_list_id);
 		mButton = (Button)findViewById(R.id.channel_display_btn_id);
 		
 	}

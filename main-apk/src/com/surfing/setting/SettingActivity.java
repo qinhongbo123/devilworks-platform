@@ -151,23 +151,23 @@ public class SettingActivity extends ActivityBase implements OnItemClickListener
 		ArrayList<HashMap<String, Object>> listData = new ArrayList<HashMap<String, Object>>();
 		//logout
 		HashMap<String, Object> map;
-		if(ReadConfigFile.mLoginType == ReadConfigFile.LOGIN_TYPE_NORMAL){
-			map = new HashMap<String, Object>();
-			map.put("title",getString(R.string.setting_logout));
-			listData.add(map);
-		}
+//		if(ReadConfigFile.mLoginType == ReadConfigFile.LOGIN_TYPE_NORMAL){
+//			map = new HashMap<String, Object>();
+//			map.put("title",getString(R.string.setting_logout));
+//			listData.add(map);
+//		}
 		
 		//update
 		map = new HashMap<String, Object>();
 		map.put("title",getString(R.string.setting_update));
 		listData.add(map);
 		
-		if(ReadConfigFile.mLoginType == ReadConfigFile.LOGIN_TYPE_NORMAL){
-			//change password
-			map = new HashMap<String,Object>();
-			map.put("title", getString(R.string.settign_passward));
-			listData.add(map);
-		}
+//		if(ReadConfigFile.mLoginType == ReadConfigFile.LOGIN_TYPE_NORMAL){
+//			//change password
+//			map = new HashMap<String,Object>();
+//			map.put("title", getString(R.string.settign_passward));
+//			listData.add(map);
+//		}
 		
 		//mode
 		map = new HashMap<String,Object>();

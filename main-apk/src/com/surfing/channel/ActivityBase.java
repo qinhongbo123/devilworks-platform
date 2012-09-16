@@ -91,8 +91,8 @@ public class ActivityBase extends Activity
                          CloseReceiver.CloseAllActivity();
                          CloseReceiver.CloseAllService();
                          String state = LoginActivity.getLogState(getApplicationContext());
-                         LoginActivity.changeLogState(getApplicationContext(),state,true);
-                        
+                         LoginActivity.changeLogState(getApplicationContext(),state,false);
+                         
                     } 
                 }); 
         builder.setNegativeButton(R.string.run_back, 

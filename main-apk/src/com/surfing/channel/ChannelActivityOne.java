@@ -39,13 +39,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -59,10 +62,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-public class ChannelActivityOne extends ActivityBase implements OnClickListener,OnScrollListener , OnGestureListener,OnTouchListener{
+public class ChannelActivityOne extends ActivityBase implements OnClickListener,OnItemClickListener{
 	private final String TAG="ChannelActivityOne";
 	//private ListView mchannelList = null;
 	private SimpleAdapter mListAdapter = null;
+	private BaseAdapter mBannerAdapter = null;
 	private ArrayList<HashMap<String,Object>> mListArrayList;
 	private ArrayList<HashMap<String,Object>> mBannerDataList;;
 	private ProgressBar mwaittingBar = null;
@@ -75,7 +79,7 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 	private ViewFlipper mBannerFlipper = null;
 	private View mBannerView = null;
 	private View mListViewItem = null;
-	private LinearLayout mListView = null;
+	private ListView mListView = null;
 	private ArrayList<View> mBannerItemArray = null;
 	private ArrayList<View> mListItemArray = null;
 	private int mBannerIndex = 0;
@@ -90,6 +94,8 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 	private static final int REQUEST_TYPE_NEXT = 1;
 	private int mRequestType = REQUEST_TYPE_REFRASH;
 	private static final int PAGE_MAX_COUNT = 10;
+	private Gallery mBannerGallery = null;
+	private static final String BTN_NEXT_FLG_TEXT = "surfing_btn_next";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -107,18 +113,53 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 		setupView();
 		
 		mLayoutInflater  = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-		initFlipper();
-		detector = new GestureDetector(this);
-		mBannerFlipper.setOnTouchListener(this);
-		mScrollView.setGestureDetector(detector);
+		
+		//detector = new GestureDetector(this);
+		//mBannerFlipper.setOnTouchListener(this);
+		//mScrollView.setGestureDetector(detector);
 		mChannel_id = this.getIntent().getStringExtra(ChannelTabActivity.CHANNLE_LINK);
 		mListArrayList = new ArrayList<HashMap<String,Object>>();
 		mBannerDataList  = new ArrayList<HashMap<String,Object>>();
 		mListItemArray = new ArrayList<View>();
 		
 		setupData(mChannel_id);
-		setupBannerData(mChannel_id);
+		//setupBannerData(mChannel_id);
+		mListAdapter = new SimpleAdapterList(mContext,mListArrayList,R.layout.channel_listitem_layout,
+				new String[]{"icon","title","desc"},
+				new int[]{R.id.channel_listitem_img_id,R.id.channel_listitem_title_id,R.id.channel_listitem_desc_id});
+		
+		
+		mListView.addHeaderView(LayoutInflater.from(this).inflate(
+				R.layout.banner_gallery, null));
+		mBannerGallery = (Gallery)findViewById(R.id.gallery);
+		mBannerAdapter = new SimpleAdapterBanner();
+		mBannerGallery.setAdapter(mBannerAdapter);
+		mBannerGallery.setOnItemClickListener(new OnItemClickListener()
+		{
+
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long id)
+			{
+				 HashMap<String,Object> map = mBannerDataList.get(position);
+				 String link = (String)map.get("link");
+				    if(link != null){
+				        Log.i(TAG,"connect the news information");
+				        Intent myIntent = new Intent();
+			            myIntent.setClass(ChannelActivityOne.this,NewsInformationActivity.class);
+			            myIntent.putExtra("link",link);
+			            startActivity(myIntent);
+				    }
+			}
+		});
+		
+		//add foot view 
+		mListView.addFooterView(LayoutInflater.from(this).inflate(R.layout.list_next_button,null));
+		mButton = (Button)findViewById(R.id.channel_list_next_btn_id);
 		mButton.setOnClickListener(this);
+		mButton.setVisibility(View.INVISIBLE);
+		mListView.setAdapter(mListAdapter);
+		mListView.setOnItemClickListener(this);
+		//mButton.setOnClickListener(this);	
 		mpageIndex = 1;
 		CloseReceiver.registerCloseActivity(this);
 	}
@@ -141,40 +182,6 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
         super.onDestroy(); 
     }
 
-    private void initFlipper(){
-		mBannerItemArray = new ArrayList<View>();
-		TextView textview = null;
-		
-		View itemView = mLayoutInflater.inflate(R.layout.channel_layout_new,mBannerFlipper,false);
-		textview = (TextView)itemView.findViewById(R.id.channel_firstnews_title_id);
-		textview.getBackground().setAlpha(100);
-		mBannerFlipper.addView(itemView);
-		mBannerItemArray.add(itemView);
-		
-		itemView = mLayoutInflater.inflate(R.layout.channel_layout_new,mBannerFlipper,false);
-		textview = (TextView)itemView.findViewById(R.id.channel_firstnews_title_id);
-		textview.getBackground().setAlpha(100);
-		mBannerFlipper.addView(itemView);
-		mBannerItemArray.add(itemView);
-		
-		itemView = mLayoutInflater.inflate(R.layout.channel_layout_new,mBannerFlipper,false);
-		textview = (TextView)itemView.findViewById(R.id.channel_firstnews_title_id);
-		textview.getBackground().setAlpha(100);
-		mBannerFlipper.addView(itemView);
-		mBannerItemArray.add(itemView);
-		
-		itemView = mLayoutInflater.inflate(R.layout.channel_layout_new,mBannerFlipper,false);
-		textview = (TextView)itemView.findViewById(R.id.channel_firstnews_title_id);
-		textview.getBackground().setAlpha(100);
-		mBannerFlipper.addView(itemView);
-		mBannerItemArray.add(itemView);
-		
-		itemView = mLayoutInflater.inflate(R.layout.channel_layout_new,mBannerFlipper,false);
-		textview = (TextView)itemView.findViewById(R.id.channel_firstnews_title_id);
-		textview.getBackground().setAlpha(100);
-		mBannerFlipper.addView(itemView);
-		mBannerItemArray.add(itemView);
-	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
@@ -188,12 +195,12 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 		return super.onKeyDown(keyCode, event);
 	}
 	private void setupView(){
-		mButton = (Button)findViewById(R.id.channel_display_btn_id);
+		//mButton = (Button)findViewById(R.id.channel_display_btn_id);
 		mwaittingBar = (ProgressBar)findViewById(R.id.loading_progressBar);
-		mBannerFlipper = (ViewFlipper)findViewById(R.id.channel_viewfilpper_id);
-		mBannerView = (View)findViewById(R.id.channel_viewfilpper_id);
-		mListView = (LinearLayout)findViewById(R.id.channel_list_id);
-		mScrollView = (MyScrollView)findViewById(R.id.channel_scroll_id);
+		//mBannerFlipper = (ViewFlipper)findViewById(R.id.channel_viewfilpper_id);
+		//mBannerView = (View)findViewById(R.id.channel_viewfilpper_id);
+		mListView = (ListView)findViewById(R.id.channel_list_id);
+		//mScrollView = (MyScrollView)findViewById(R.id.channel_scroll_id);
 	}
 	private void setupData(String id){ 	
 		//setup list data
@@ -206,6 +213,7 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 		mwaittingBar.setVisibility(View.VISIBLE);
 		//String geturl = url;
 		Log.i(TAG,"the url is : "+mConnectUrl);
+		
 		HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
 		ConnectWeb(connect,mConnectUrl);
 		
@@ -223,7 +231,7 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 		
 		mwaittingBar.setVisibility(View.VISIBLE);
 		//String geturl = url;
-		Log.i(TAG,"the url is : "+bannerUril);
+		Log.i(TAG,"setupBannerData url is : "+bannerUril);
 		HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
 		ConnectWebBanner(connect, bannerUril);
 		
@@ -235,7 +243,9 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 			@Override
 			public void execute(String response) {
 				
-				//setupBannerData(mChannel_id);
+				setupBannerData(mChannel_id);
+				mButton.setText(getString(R.string.btn_display_next_text));
+				mButton.setVisibility(View.VISIBLE);
 				if((response == null) 
 				    || (response.length() == 0) 
 				    || response.equals(HttpConnectionUtil.CONNECT_FAILED)
@@ -263,29 +273,8 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 							map.put("link",channlelist.get(i).getmLink());
 							map.put("icon",channlelist.get(i).getmIcon());
 							mListArrayList.add(map);
-							addListItem(map);
 						}
-						if(channlelist.size() == 0){
-							if(mRequestType == REQUEST_TYPE_NEXT)
-							{
-								mpageIndex--;
-								mButton.setText(getString(R.string.btn_lastpage));
-								mButton.setVisibility(View.VISIBLE);
-								mButton.setOnClickListener(null);
-							}else{
-								mButton.setVisibility(View.GONE);
-							}
-						}
-						if(channlelist.size() < PAGE_MAX_COUNT){
-							mButton.setText(getString(R.string.btn_lastpage));
-							mButton.setVisibility(View.VISIBLE);
-							mButton.setOnClickListener(null);
-						}else{
-							mButton.setText(getString(R.string.btn_display_next_text));
-							mButton.setVisibility(View.VISIBLE);
-							mButton.setOnClickListener(ChannelActivityOne.this);
-						}
-												
+						mListAdapter.notifyDataSetChanged();
 					}
 					
 				}catch (Exception e) {
@@ -300,33 +289,7 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 			
 		});
 	}
-	public void addListItem(HashMap<String,Object> map){
-	    ImageView icon = null;
-	    TextView title = null;
-	    TextView subtitle = null;
-	    View itemView = mLayoutInflater.inflate(R.layout.channel_listitem_layout,mListView,false);
-	    icon = (ImageView)itemView.findViewById(R.id.channel_listitem_img_id);
-	    title = (TextView)itemView.findViewById(R.id.channel_listitem_title_id);
-	    subtitle = (TextView)itemView.findViewById(R.id.channel_listitem_desc_id);
-	    ImageDownloader imageDownloader = new ImageDownloader();
-	    if(map.get("icon").toString() != null){
-	        imageDownloader.download(map.get("icon").toString(),icon,R.drawable.firstnews,getApplicationContext());
-	    }else{
-	        imageDownloader.download(null,icon,R.drawable.firstnews,getApplicationContext());
-	    }
-	    if(map.get("title") != null){
-	        title.setText(map.get("title").toString());
-	    }
-        if(map.get("desc") != null){
-            subtitle.setText(map.get("desc").toString());
-        }
-        Log.i(TAG,"link = "+map.get("link"));
-        itemView.setTag(map.get("link"));
-        itemView.setOnClickListener(this);
-        mListView.addView(itemView);
-	    mListItemArray.add(itemView);
-	    
-	}
+	
 	public void ConnectWebBanner(HttpConnectionUtil connect,String geturl){
 		Log.i(TAG,"ConnectWebBanner the url is : "+geturl);
 		connect.asyncConnect(geturl, HttpMethod.POST, new HttpConnectionCallback(){
@@ -334,6 +297,7 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 			@Override
 			public void execute(String response) {
 				mwaittingBar.setVisibility(View.GONE);
+				
 				if((response == null) 
                         || (response.length() == 0) 
                         || response.equals(HttpConnectionUtil.CONNECT_FAILED)
@@ -356,35 +320,19 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 						//String ServerUrl = ReadConfigFile.getServerAddress(mContext);
 						for(int i = 0;i<channlelist.size();i++){
 							map = new HashMap<String,Object>();
-							Log.i(TAG,"the title is : "+channlelist.get(i).getmTitle());
-							Log.i(TAG,"the desc is : "+channlelist.get(i).getmDescription());
-							Log.i(TAG,"the link is : "+channlelist.get(i).getmLink());
-							Log.i(TAG,"the icon is : "+channlelist.get(i).getmIcon());
+							Log.i(TAG,"banner the title is : "+channlelist.get(i).getmTitle());
+							Log.i(TAG,"banner the desc is : "+channlelist.get(i).getmDescription());
+							Log.i(TAG,"banner the link is : "+channlelist.get(i).getmLink());
+							Log.i(TAG,"banner the icon is : "+channlelist.get(i).getmIcon());
 							map.put("title",channlelist.get(i).getmTitle());
 							map.put("desc",channlelist.get(i).getmDescription());
 							map.put("link",channlelist.get(i).getmLink());
 							map.put("icon",channlelist.get(i).getmIcon());
 							mBannerDataList.add(map); 
-						}
+						} 
 						mSumBanner = mBannerDataList.size();
-						//HashMap<String,Object> map = mBannerDataList.get(mBannerIndex);
-						for(int i = 0;i<mBannerDataList.size();i++){
-							View itemView = mBannerItemArray.get(i);
-							map = mBannerDataList.get(i);
-							TextView textview = (TextView)itemView.findViewById(R.id.channel_firstnews_title_id);
-							ImageView image = (ImageView)itemView.findViewById(R.id.channel_firstnews_img_id);
-							textview.setText(map.get("title").toString());
-							ImageDownloader imageDownloader = new ImageDownloader();
-							imageDownloader.download(map.get("icon").toString(),image,R.drawable.firstnews,getApplicationContext());
-						}
-						if(mBannerDataList.size() < 5){
-						    for(int i = 4;i>=mBannerDataList.size();i--){
-						        Log.i(TAG,"the remove i = "+i);
-						        View itemView = mBannerItemArray.get(i);
-						        mBannerFlipper.removeView(itemView);
-						        mBannerItemArray.remove(i);
-						    }
-						}
+						mBannerAdapter.notifyDataSetChanged();
+
 					}
 					
 				}catch (Exception e) {
@@ -409,10 +357,11 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 			mListArrayList.clear();
 			mBannerDataList.clear();
 			mListItemArray.clear();
-			mListView.removeAllViews();
+			mBannerAdapter.notifyDataSetChanged();
+			mListAdapter.notifyDataSetChanged();
 			HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
 			ConnectWeb(connect,mConnectUrl);
-			mButton.setVisibility(View.GONE);
+			mButton.setVisibility(View.INVISIBLE);
 			mRequestType = REQUEST_TYPE_REFRASH;
 		}
 		break;
@@ -426,9 +375,9 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 	public void onClick(View v) {
 		if(v == mButton){
 			mpageIndex++;
-			setupData(mChannel_id);
+			setupData(mChannel_id); 
 			Log.i(TAG,"the page is : "+mpageIndex);
-			mButton.setVisibility(View.GONE);
+			mButton.setText("正在加载...");
 			mRequestType = REQUEST_TYPE_NEXT;
 		}else{
 		    String link = v.getTag().toString();
@@ -442,116 +391,6 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 		    
 		}
 	}
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//		 if ((firstVisibleItem + visibleItemCount == totalItemCount)  
-//	                && (totalItemCount != 0)) {  
-//			 	if(mListArrayList.size()<5){
-//					mButton.setVisibility(View.GONE);
-//				}else{
-//					mButton.setVisibility(View.VISIBLE);
-//				}
-//	        }else{
-//	        	mButton.setVisibility(View.GONE);
-//	        }
-	}
-	@Override
-	public void onScrollStateChanged(AbsListView arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public boolean onDown(MotionEvent event) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-            float velocityY) {
-		 Log.i("chenmei","onFling length ===== "+(e1.getX() - e2.getX()));
-		 if (e1.getX() - e2.getX() > 120) { 
-	            this.mBannerFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_in));
-	            this.mBannerFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_out));
-	            this.mBannerFlipper.showNext();
-	            Log.i(TAG,"mBannerDataList.size() == "+mBannerDataList.size());
-	            if(mBannerIndex == (mBannerDataList.size()-1)){
-	            	mBannerIndex = 0;
-	            }else{
-	            	mBannerIndex++;
-	            }
-	            Log.i(TAG,"left mBannerIndex == "+mBannerIndex);
-	            return true;
-	        } else if (e1.getX() - e2.getX() < -120) {
-	            this.mBannerFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_in));
-	            this.mBannerFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_out));
-	            this.mBannerFlipper.showPrevious();
-	            if(mBannerIndex == 0){
-	            	mBannerIndex = mBannerDataList.size()-1;
-	            }else{
-	            	mBannerIndex--;
-	            }
-	            Log.i(TAG,"right mBannerIndex == "+mBannerIndex);
-	            return true;
-	        }
-	        
-	        return false;
-	}
-	public boolean onFlingEx(float x1, float x2) {
-         Log.i("chenmei","onFling length ===== "+(x1 - x2));
-         if (x1 - x2 > 120) { 
-                this.mBannerFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_in));
-                this.mBannerFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_left_out));
-                this.mBannerFlipper.showNext();
-                Log.i(TAG,"mBannerDataList.size() == "+mBannerDataList.size());
-                if(mBannerIndex == (mBannerDataList.size()-1)){
-                    mBannerIndex = 0;
-                }else{
-                    mBannerIndex++;
-                }
-                Log.i(TAG,"left mBannerIndex == "+mBannerIndex);
-                return true;
-            } else if (x1 - x2 < -120) {
-                this.mBannerFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_in));
-                this.mBannerFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.push_right_out));
-                this.mBannerFlipper.showPrevious();
-                if(mBannerIndex == 0){
-                    mBannerIndex = mBannerDataList.size()-1;
-                }else{
-                    mBannerIndex--;
-                }
-                Log.i(TAG,"right mBannerIndex == "+mBannerIndex);
-                return true;
-            }
-            
-            return false;
-    }
-	@Override
-	public void onLongPress(MotionEvent event) {
-	}
-	@Override
-	public boolean onScroll(MotionEvent arg0, MotionEvent event, float arg2,
-			float arg3) {
-		// TODO Auto-generated method stub
-		return false;
-	} 
-	@Override
-	public void onShowPress(MotionEvent event) {
-	    
-	}
-	@Override
-	public boolean onSingleTapUp(MotionEvent event) {
-		Log.i(TAG,"mBannerIndex == === onClick "+mBannerIndex);
-		if(mBannerDataList.size() > mBannerIndex){
-		    HashMap<String,Object> map = mBannerDataList.get(mBannerIndex);
-	        Intent myIntent = new Intent();
-	        myIntent.setClass(ChannelActivityOne.this,NewsInformationActivity.class);
-	        myIntent.putExtra("link",map.get("link").toString());
-	        
-	        startActivity(myIntent);
-		} 
-		return false;
-	}
-	
 	
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev)
@@ -566,13 +405,88 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 	
 	  return super.onTouchEvent(event);
 	}
-    @Override
-    public boolean onTouch(View  v, MotionEvent event)
-    {
-       if(mBannerView == v){
-           detector.onTouchEvent(event);
-       }
-        return true;
-    }
-	
+
+	@Override
+	public void onItemClick(AdapterView<?> adapter, View v, int poistion, long id)
+	{
+		 HashMap<String,Object> map = mListArrayList.get(poistion);
+		 String link = (String)map.get("link");
+		
+		    if(link != null){
+		        Log.i(TAG,"connect the news information");
+		        Intent myIntent = new Intent();
+	            myIntent.setClass(ChannelActivityOne.this,NewsInformationActivity.class);
+	            myIntent.putExtra("link",link);
+	            startActivity(myIntent);
+		    }
+		
+	}
+	class SimpleAdapterList extends SimpleAdapter{
+
+		public SimpleAdapterList(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to)
+		{
+			super(context, data, resource, from, to);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent)
+		{
+			View view  = null;
+			HashMap<String,Object> map = mListArrayList.get(position);
+			
+			view = (View)View.inflate(mContext,R.layout.channel_listitem_layout,null);
+			TextView title = (TextView)view.findViewById(R.id.channel_listitem_title_id);
+			title.setText((String)map.get("title"));
+			TextView desc = (TextView)view.findViewById(R.id.channel_listitem_desc_id);
+			desc.setText((String)map.get("desc"));
+			ImageView image = (ImageView)view.findViewById(R.id.channel_listitem_img_id);
+			ImageDownloader imageDownloader = new ImageDownloader();
+			imageDownloader.download(map.get("icon").toString(),image,R.drawable.firstnews,getApplicationContext());
+			
+			
+			return view;
+			//return super.getView(position, convertView, parent);
+		}
+		
+	}
+	class SimpleAdapterBanner extends BaseAdapter{
+
+		
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent)
+		{
+			Log.i(TAG,"-----------Banner gallery");
+			HashMap<String,Object> map = mBannerDataList.get(position);
+			View view = (View)View.inflate(mContext,R.layout.channel_layout_new,null);
+			TextView text = (TextView)view.findViewById(R.id.channel_firstnews_title_id);
+			text.setText((String)map.get("title"));
+			ImageView image = (ImageView)view.findViewById(R.id.channel_firstnews_img_id);
+			ImageDownloader imageDownloader = new ImageDownloader();
+			imageDownloader.download(map.get("icon").toString(),image,R.drawable.firstnews,getApplicationContext());
+			return view;
+		}
+
+		@Override
+		public int getCount()
+		{
+			Log.i(TAG,"--- mBannerDataList.size() = "+mBannerDataList.size());
+			return mBannerDataList.size();
+		}
+
+		@Override
+		public Object getItem(int position)
+		{
+			// TODO Auto-generated method stub
+			return mBannerDataList.get(position);
+		}
+
+		@Override
+		public long getItemId(int positon)
+		{
+			// TODO Auto-generated method stub
+			return positon;
+		}
+	}
 }
