@@ -409,6 +409,9 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View v, int poistion, long id)
 	{
+		if(mListArrayList.size() <= poistion)
+			return;
+		
 		 HashMap<String,Object> map = mListArrayList.get(poistion);
 		 String link = (String)map.get("link");
 		
@@ -442,7 +445,7 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 			desc.setText((String)map.get("desc"));
 			ImageView image = (ImageView)view.findViewById(R.id.channel_listitem_img_id);
 			ImageDownloader imageDownloader = new ImageDownloader();
-			imageDownloader.download(map.get("icon").toString(),image,R.drawable.firstnews,getApplicationContext());
+			imageDownloader.download(map.get("icon").toString(),image,R.drawable.firstnews,getApplicationContext(),true);
 			
 			
 			return view;
@@ -457,7 +460,6 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent)
 		{
-			Log.i(TAG,"-----------Banner gallery");
 			HashMap<String,Object> map = mBannerDataList.get(position);
 			View view = (View)View.inflate(mContext,R.layout.channel_layout_new,null);
 			TextView text = (TextView)view.findViewById(R.id.channel_firstnews_title_id);
