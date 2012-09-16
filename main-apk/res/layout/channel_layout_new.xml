@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/channel_firstnews_img_id"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/ch_banner_height"
+        android:layout_height="wrap_content" 
         android:layout_alignParentTop="true"
         android:background="@android:color/transparent"
         android:scaleType="fitXY" />
@@ -22,5 +22,5 @@
         android:maxLines="1"
         android:textColor="#ffffff"
         android:textSize="@dimen/ch_banner_text" />
-
+ <!--android:layout_height="@dimen/ch_banner_height"-->
 </RelativeLayout>
