@@ -407,12 +407,10 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> adapter, View v, int poistion, long id)
+	public void onItemClick(AdapterView<?> adapter, View v, int position, long id)
 	{
-		if(mListArrayList.size() <= poistion)
-			return;
-		
-		 HashMap<String,Object> map = mListArrayList.get(poistion);
+		 
+		 HashMap<String,Object> map = mListArrayList.get(position-1);
 		 String link = (String)map.get("link");
 		
 		    if(link != null){
