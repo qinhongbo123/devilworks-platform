@@ -296,6 +296,9 @@ public class MenuGridActivity extends ActivityBase {
 	    		case 6://weather
 	    			CommonOperate.sendMsg2Friend(MenuGridActivity.this.getApplicationContext());
 	    			return;
+	    		case 7:
+	    			myIntent.setClass(getApplicationContext(), NotificationListActivity.class);
+	    			break;
 	    		default:
 	    			blStart = false;
 	    			break;
@@ -312,10 +315,14 @@ public class MenuGridActivity extends ActivityBase {
 	    						  getString(R.string.channel_public),getString(R.string.channel_more),
 	    						  /*getString(R.string.discuss_title),*/getString(R.string.contact_title),
 	    						  /*getString(R.string.vote_title),*/getString(R.string.setting_title),
-	    						  getString(R.string.send_to_friend)};  
+	    						  getString(R.string.send_to_friend),getString(R.string.inner_message)};  
 //	    ,getString(R.string.title_bianming),
 //        getString(R.string.title_about)
-	    private int[] icons = {R.drawable.channel,R.drawable.channel,R.drawable.grid_public,R.drawable.grid_more,R.drawable.disscus,R.drawable.contacts,R.drawable.vote,R.drawable.settings,R.drawable.notification};  
+	    private int[] icons = {R.drawable.channel,R.drawable.channel,
+	    					   R.drawable.grid_public,R.drawable.grid_more,
+	    					   /*R.drawable.disscus,*/R.drawable.contacts,
+	    					   /*R.drawable.vote,*/R.drawable.settings,
+	    					   R.drawable.bianming,R.drawable.notification};  
 	    private Context context;  
 	    LayoutInflater infalter;
 	      

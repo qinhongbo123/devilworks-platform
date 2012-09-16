@@ -94,7 +94,14 @@ public class NotificationListActivity extends ActivityBase implements OnItemClic
 		mContext = getApplicationContext();
 		mMode = ReadConfigFile.getMode(mContext);
 		setupView();
-		//TitleBarDisplay.TitleBarInit(mTitleText, mTitleIcon,this,getApplicationContext()); 
+		TitleBarDisplay.TitleBarInit(mTitleText, mTitleIcon,this,getApplicationContext()); 
+		View view = findViewById(R.id.title_layout_id);
+		if(mMode == 1){
+			view.setVisibility(View.VISIBLE);
+		}else{
+			view.setVisibility(View.INVISIBLE);
+		}
+		
 		mHandler = new NotifyHandler(mContext.getContentResolver());
 		mNotificationlListAdapter = new NotificationCursorAdapter(mContext,null);
 		mList.setAdapter(mNotificationlListAdapter);
