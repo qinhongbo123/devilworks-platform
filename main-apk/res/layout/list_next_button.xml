@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="45dp"
+  android:paddingLeft="8dp"
+  android:paddingRight="8dp"
+  android:paddingTop="3dp"
+  android:paddingBottom="3dp">
+  <Button
+            android:id="@+id/channel_list_next_btn_id"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:text="@string/btn_display_next_text" />
+</LinearLayout>
