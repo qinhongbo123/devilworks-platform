@@ -51,7 +51,7 @@ sed -i "s/BUILD_VERSION\ =\ \"68\"/BUILD_VERSION\ =\ \"${CLIENT_VERSION}\"/" src
 
 if [ -n "$ENTERPRISE_NAME" ]; then
     sed -i "s/APP_PublicPlatform/$ENTERPRISE_NAME_Platform/g" res/values/strings.xml
-    sed -i "s/APP_PublicPlatform/$ENTERPRISE_NAME信息平台/g" res/values-zh-rCN/strings.xml
+    sed -i "s/APP_PublicPlatform/$ENTERPRISE_NAME/g" res/values-zh-rCN/strings.xml
 fi
 
 if [ $ENTERPRISE_ID -ne "41" ]; then
