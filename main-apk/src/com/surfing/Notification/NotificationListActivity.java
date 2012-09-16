@@ -40,6 +40,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,7 @@ public class NotificationListActivity extends ActivityBase implements OnItemClic
 	private static final int TOKEN_DELETE = 43;
 	private ImageView mTitleIcon = null;
 	private TextView mTitleText = null;
+	private int mMode = 0;
 	private Handler    myHandler = new Handler(){
 
         @Override
@@ -90,6 +92,7 @@ public class NotificationListActivity extends ActivityBase implements OnItemClic
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.notification_list_layout);
 		mContext = getApplicationContext();
+		mMode = ReadConfigFile.getMode(mContext);
 		setupView();
 		//TitleBarDisplay.TitleBarInit(mTitleText, mTitleIcon,this,getApplicationContext()); 
 		mHandler = new NotifyHandler(mContext.getContentResolver());
@@ -121,7 +124,18 @@ public class NotificationListActivity extends ActivityBase implements OnItemClic
 	   mHandler.startDelete(TOKEN_DELETE,null,UserTableMetaData.CONTENT_URI,NotificationProviderMetaData.NOTIFICATION_USER+" not in ('"+user_name+"')",null);
 	   DisplayWeather.updateWeatherDisplay(getApplicationContext(),this);
 	}
-
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+	    if(mMode == 0){
+	        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+	            super.dialog();
+	            return false;
+	        }
+	    }
+		
+		return super.onKeyDown(keyCode, event);
+	}
 	public void ConnectWeb(HttpConnectionUtil connect,String geturl){
 			Log.i(TAG,"the url is : "+ geturl);
 			connect.asyncConnect(geturl, HttpMethod.POST, new HttpConnectionCallback(){

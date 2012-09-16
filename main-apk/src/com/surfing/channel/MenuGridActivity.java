@@ -288,7 +288,7 @@ public class MenuGridActivity extends ActivityBase {
 //	    		case 5:
 //	    			myIntent.setClass(getApplicationContext(),VoteListActivity.class);
 //	    			//myInent.setClass(getApplicationContext(), UpdateVersionActivity.class); 
-//	    		break;
+//	    		break; 
 	    		case 5://bianmin
 	    			myIntent.setClass(getApplicationContext(), SettingActivity.class);
 	    		    //myInent.setClass(getApplicationContext(),MoreModuleActivity.class);
