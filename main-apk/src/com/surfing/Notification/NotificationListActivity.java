@@ -99,7 +99,7 @@ public class NotificationListActivity extends ActivityBase implements OnItemClic
 		if(mMode == 1){
 			view.setVisibility(View.VISIBLE);
 		}else{
-			view.setVisibility(View.INVISIBLE);
+			view.setVisibility(View.GONE);
 		}
 		
 		mHandler = new NotifyHandler(mContext.getContentResolver());

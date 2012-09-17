@@ -435,7 +435,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                         LOGIN_STATE_LOGINED,true); 
                 mResponse = response;
                 //int duration = (int) (System.currentTimeMillis() - mAnimationStart);
-                myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),10000);
+                myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),2000);
                 
             }
         }
