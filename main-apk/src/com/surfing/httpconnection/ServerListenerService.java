@@ -71,8 +71,8 @@ public class ServerListenerService extends Service {
     public void onDestroy()
     {
 	    this.unregisterReceiver(networkListener);
+	    networkListener = null;
 	    CloseReceiver.unRegisterService(this);
-	    
 	    thread.interrupt();
         super.onDestroy();
     }
