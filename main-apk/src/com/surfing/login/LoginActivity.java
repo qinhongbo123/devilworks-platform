@@ -46,6 +46,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
@@ -98,7 +99,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
     private TelephonyManager    mTelephonyManager 	   = null;
     private static String 		mMeid 				   = null;
     private static int			mUserNmae_type 		   = LOGIN_TYPE_MEID;
-    private int					mAnimationStart 	   = 0;
+    private long					mAnimationStart 	   = 0;
     private Handler    myHandler = new Handler(){
 
         @Override
@@ -108,7 +109,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                 case EVENT_LOADING:{
                     if(mLoadingAnimate != null){
                         Log.i(TAG,"loading image start");
-                        mAnimationStart = (int) System.currentTimeMillis();
+                        //mAnimationStart = (int) System.currentTimeMillis();
                         mLoadingImage.setVisibility(View.VISIBLE);
                         mLoadingAnimate.start();
                     }
@@ -141,60 +142,70 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         mTelephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
         mMeid = mTelephonyManager.getSubscriberId();
         //mMeid = "46003"+mMeid.substring(mMeid.length()-10);
-        //mMeid = "460030919293952"; 
+        mMeid = "460030919293952"; 
         Log.i(TAG,"Meid = "+mMeid);
         Log.i(TAG,"mTelephonyManager.getDeviceId() = "+mTelephonyManager.getDeviceId());
         Log.i(TAG,"mTelephonyManager.getSimSerialNumber() = "+mTelephonyManager.getSimSerialNumber());
         Log.i(TAG,"mTelephonyManager.getSubscriberId() = "+mTelephonyManager.getSubscriberId());
         Log.i(TAG,"mTelephonyManager.getSubscriberId() = "+mTelephonyManager.getSimOperator());
         HashMap<String,String> map = ReadConfigFile.getUserInfo(mContext);
-        if(ReadConfigFile.mLoginType == ReadConfigFile.LOGIN_TYPE_NORMAL){
-        	SharedPreferences pref = this.getSharedPreferences(LOGIN_STATE,
-                    MODE_PRIVATE);
-            String loginstate = pref.getString(LOGIN_STATE, LOGIN_STATE_LOGOUT);
-            Log.i(TAG, "Loggin state is onCreate: " + loginstate);
-            SharedPreferences userpref = this.getApplicationContext()
-                    .getSharedPreferences("user", MODE_PRIVATE);
-            user_name = userpref.getString("user_name", "");
-            user_password = userpref.getString("user_passwad", "");
-            if (((user_name.length()== 0) || (user_password.length() == 0)) 
-            		&& (mUserNmae_type == LOGIN_TYPE_PHONENUM))
-            {
-
-                setContentView(R.layout.loginlayout);
-                setupView();
-                Log.i("chenmei","loadTheme(mContext)"); 
-                loadTheme(mContext);
-                mLoginNameText.setText(user_name);
-                mLoginPasswadText.setText(user_password);
-                Log.i(TAG, "the user name is = " + user_name + " the passwad is = "
-                        + user_password);
-                changeLogState(LoginActivity.this.getApplicationContext(),
-                        LOGIN_STATE_LOGINNING,true);
-            }
-            else
-            {
-                requestAgain();
-            }
-        }else{
-        	setContentView(R.layout.relogin_layout);
-        	mLoadingImage = (ImageView)findViewById(R.id.loading_animate_id);
-            mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
-            mLoadingAnimate = (AnimationDrawable)mLoadingImage.getBackground();
-            myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),500);
-        	user_name = map.get("user_name");
-        	user_password = map.get("user_passwad");
-        	String geturl = getLoginURL(mUserNmae_type,null,null, mMeid);
-            Log.i(TAG, ReadConfigFile.getServerAddress(this.getApplicationContext()));
-            HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
-            connect.asyncConnect(geturl, HttpMethod.GET,
-                    new LoginHttpCallBack());
-            if(mLoadingAnimate != null){
-                mLoadingImage.setVisibility(View.VISIBLE);
-                mLoadingAnimate.start();
-            }
-
-        }
+        setContentView(R.layout.relogin_layout);
+        mLoadingImage = (ImageView)findViewById(R.id.loading_animate_id);
+        mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
+        mLoadingAnimate = (AnimationDrawable)mLoadingImage.getBackground();
+        myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),0);
+        HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
+        String geturl = getLoginURL(mUserNmae_type,user_name,user_password,mMeid);;
+        mAnimationStart = System.currentTimeMillis()/1000;
+        connect.asyncConnect(geturl, HttpMethod.GET,
+                new LoginHttpCallBack());
+//        if(ReadConfigFile.mLoginType == ReadConfigFile.LOGIN_TYPE_NORMAL){
+//        	SharedPreferences pref = this.getSharedPreferences(LOGIN_STATE,
+//                    MODE_PRIVATE);
+//            String loginstate = pref.getString(LOGIN_STATE, LOGIN_STATE_LOGOUT);
+//            Log.i(TAG, "Loggin state is onCreate: " + loginstate);
+//            SharedPreferences userpref = this.getApplicationContext()
+//                    .getSharedPreferences("user", MODE_PRIVATE);
+//            user_name = userpref.getString("user_name", "");
+//            user_password = userpref.getString("user_passwad", "");
+//            if (((user_name.length()== 0) || (user_password.length() == 0)) 
+//            		&& (mUserNmae_type == LOGIN_TYPE_PHONENUM))
+//            {
+//
+//                setContentView(R.layout.loginlayout);
+//                setupView();
+//                Log.i("chenmei","loadTheme(mContext)"); 
+//                loadTheme(mContext);
+//                mLoginNameText.setText(user_name);
+//                mLoginPasswadText.setText(user_password);
+//                Log.i(TAG, "the user name is = " + user_name + " the passwad is = "
+//                        + user_password);
+//                changeLogState(LoginActivity.this.getApplicationContext(),
+//                        LOGIN_STATE_LOGINNING,true);
+//            }
+//            else
+//            {
+//                requestAgain();
+//            }
+//        }else{
+//        	setContentView(R.layout.relogin_layout);
+//        	mLoadingImage = (ImageView)findViewById(R.id.loading_animate_id);
+//            mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
+//            mLoadingAnimate = (AnimationDrawable)mLoadingImage.getBackground();
+//            myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),500);
+//        	user_name = map.get("user_name");
+//        	user_password = map.get("user_passwad");
+//        	String geturl = getLoginURL(mUserNmae_type,null,null, mMeid);
+//            Log.i(TAG, ReadConfigFile.getServerAddress(this.getApplicationContext()));
+//            HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
+//            connect.asyncConnect(geturl, HttpMethod.GET,
+//                    new LoginHttpCallBack());
+//            if(mLoadingAnimate != null){
+//                mLoadingImage.setVisibility(View.VISIBLE);
+//                mLoadingAnimate.start();
+//            }
+//
+//        }
         
         CloseReceiver.registerCloseActivity(this);
     }
@@ -364,9 +375,6 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         public void execute(String response)
         {
             //mwaittingBar.dismiss();
-            if(mLoadingAnimate != null){
-                mLoadingAnimate.stop();
-            }
             Log.i(TAG, "return string : " + response);
             if((response == null) 
                     || (response.length() == 0) 
@@ -434,8 +442,14 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                 changeLogState(LoginActivity.this.getApplicationContext(),
                         LOGIN_STATE_LOGINED,true); 
                 mResponse = response;
-                //int duration = (int) (System.currentTimeMillis() - mAnimationStart);
-                myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),2000);
+                long duration = Math.abs(System.currentTimeMillis()/1000 - mAnimationStart);
+                
+                if(duration < 2){
+                	 myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),(2-duration)*1000);
+                }else{
+                	 myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),0);
+                }
+               
                 
             }
         }

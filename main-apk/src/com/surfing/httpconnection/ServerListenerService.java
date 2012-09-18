@@ -72,6 +72,8 @@ public class ServerListenerService extends Service {
     {
 	    this.unregisterReceiver(networkListener);
 	    CloseReceiver.unRegisterService(this);
+	    
+	    thread.interrupt();
         super.onDestroy();
     }
 
@@ -164,12 +166,12 @@ public class ServerListenerService extends Service {
 		@Override
 		public void run() {
 			while(true){
-				if(LoginActivity.getLogState(mContext).equals(LoginActivity.LOGIN_STATE_LOGINED)){
-					SharedPreferences userpref = mContext.getSharedPreferences("user",MODE_PRIVATE);
-					String user_name = userpref.getString("user_name", "");
-					String url = ReadConfigFile.getServerAddress(mContext)+"index.php?controller=Notification&action=PhoneReqNotificationList&user_name="+user_name;
-					mClientUtil.syncConnect(url,HttpMethod.GET,new ConnectCallback());
-				}
+				Log.i(TAG,"--------get the notification news");
+				SharedPreferences userpref = mContext.getSharedPreferences("user",MODE_PRIVATE);
+				String user_name = userpref.getString("user_name", "");
+				String url = ReadConfigFile.getServerAddress(mContext)+"index.php?controller=Notification&action=PhoneReqNotificationList&user_name="+user_name;
+				mClientUtil.syncConnect(url,HttpMethod.GET,new ConnectCallback());
+				
 				try {
 					Thread.sleep(60000);
 				} catch (InterruptedException e) {
