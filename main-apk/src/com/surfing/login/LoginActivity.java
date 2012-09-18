@@ -142,7 +142,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         mTelephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
         mMeid = mTelephonyManager.getSubscriberId();
         //mMeid = "46003"+mMeid.substring(mMeid.length()-10);
-        mMeid = "460030919293952"; 
+        //mMeid = "460030919293952"; 
         Log.i(TAG,"Meid = "+mMeid);
         Log.i(TAG,"mTelephonyManager.getDeviceId() = "+mTelephonyManager.getDeviceId());
         Log.i(TAG,"mTelephonyManager.getSimSerialNumber() = "+mTelephonyManager.getSimSerialNumber());
@@ -155,7 +155,15 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         mLoadingAnimate = (AnimationDrawable)mLoadingImage.getBackground();
         myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),0);
         HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
-        String geturl = getLoginURL(mUserNmae_type,user_name,user_password,mMeid);;
+        String geturl = getLoginURL(mUserNmae_type,user_name,user_password,mMeid);
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);      
+        NetworkInfo networkinfo = manager.getActiveNetworkInfo();      
+        if (networkinfo == null || !networkinfo.isAvailable()) {      
+        	Log.i(TAG,"no NetWork available");
+        	Toast.makeText(mContext,mContext.getString(R.string.network_error),Toast.LENGTH_SHORT).show();
+           this.finish();
+           return;
+        }  
         mAnimationStart = System.currentTimeMillis()/1000;
         connect.asyncConnect(geturl, HttpMethod.GET,
                 new LoginHttpCallBack());
