@@ -147,7 +147,7 @@
 	<string name="item_igame">爱游戏</string>
 	<string name="item_189">189邮箱</string>
 	<string name="msg_getdate_failed">请求数据失败</string>
-	<string name="msg_recommand">欢迎使用企业信息发布平台系统。您将随时随地读取企业信息、查询公司电话本、加入公司热门讨论话题。客户端下载地址：</string>
+	<string name="msg_recommand"> 欢迎使用信息发布平台，客户端下载的地址：</string>
 	<string name="login_user">用户名：</string>
 	<string name="login_pwd">密码：</string>
 	<string name="login_rember">记住密码</string>

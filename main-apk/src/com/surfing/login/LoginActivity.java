@@ -99,7 +99,8 @@ public class LoginActivity extends ActivityBase implements OnClickListener
     private TelephonyManager    mTelephonyManager 	   = null;
     private static String 		mMeid 				   = null;
     private static int			mUserNmae_type 		   = LOGIN_TYPE_MEID;
-    private long					mAnimationStart 	   = 0;
+    private long				mAnimationStart 	   = 0;
+    private boolean				mBlDeday			   = true;
     private Handler    myHandler = new Handler(){
 
         @Override
@@ -140,12 +141,16 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //get meid  
         mTelephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        Log.e(TAG,"onResume  == "+getIntent().getStringExtra("flag"));
+        if("background".equals(getIntent().getStringExtra("flag"))){
+        	mBlDeday = false;
+        }
         mMeid = mTelephonyManager.getSubscriberId();
         //mMeid = "46003"+mMeid.substring(mMeid.length()-10);
         //mMeid = "460030919293952"; 
         Log.i(TAG,"Meid = "+mMeid);
-        Log.i(TAG,"mTelephonyManager.getDeviceId() = "+mTelephonyManager.getDeviceId());
-        Log.i(TAG,"mTelephonyManager.getSimSerialNumber() = "+mTelephonyManager.getSimSerialNumber());
+       // Log.i(TAG,"mTelephonyManager.getDeviceId() = "+mTelephonyManager.getDeviceId());
+       // Log.i(TAG,"mTelephonyManager.getSimSerialNumber() = "+mTelephonyManager.getSimSerialNumber());
         Log.i(TAG,"mTelephonyManager.getSubscriberId() = "+mTelephonyManager.getSubscriberId());
         Log.i(TAG,"mTelephonyManager.getSubscriberId() = "+mTelephonyManager.getSimOperator());
         HashMap<String,String> map = ReadConfigFile.getUserInfo(mContext);
@@ -217,8 +222,8 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         
         CloseReceiver.registerCloseActivity(this);
     }
-    
-    @Override
+
+	@Override
     protected void onDestroy()
     {
         CloseReceiver.unRegisterActivity(this);
@@ -452,10 +457,12 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                 mResponse = response;
                 long duration = Math.abs(System.currentTimeMillis()/1000 - mAnimationStart);
                 
-                if(duration < 2){
+                if((duration < 2) && mBlDeday){
                 	 myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),(2-duration)*1000);
                 }else{
-                	 myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),0);
+                	Log.i(TAG,"222222222222222222222");
+                	 //myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),0);
+                	myHandler.sendMessage(myHandler.obtainMessage(EVENT_START,mResponse));
                 }
                
                 
@@ -528,6 +535,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                     System.currentTimeMillis());
         }
         Intent mIntent = new Intent(context, LoginActivity.class);
+        mIntent.putExtra("flag","background");
         mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent mContentIntent = PendingIntent.getActivity(context, 0,
                 mIntent, 0);

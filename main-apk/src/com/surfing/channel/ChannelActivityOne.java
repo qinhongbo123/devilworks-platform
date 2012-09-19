@@ -433,19 +433,20 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent)
 		{
-			View view  = null;
+			View view  = convertView;
 			HashMap<String,Object> map = mListArrayList.get(position);
-			
-			view = (View)View.inflate(mContext,R.layout.channel_listitem_layout,null);
+			if(view == null){
+				view = (View)View.inflate(mContext,R.layout.channel_listitem_layout,null);
+			}
 			TextView title = (TextView)view.findViewById(R.id.channel_listitem_title_id);
 			title.setText((String)map.get("title"));
 			TextView desc = (TextView)view.findViewById(R.id.channel_listitem_desc_id);
 			desc.setText((String)map.get("desc"));
+			
 			ImageView image = (ImageView)view.findViewById(R.id.channel_listitem_img_id);
+			
 			ImageDownloader imageDownloader = new ImageDownloader();
 			imageDownloader.download(map.get("icon").toString(),image,R.drawable.firstnews,getApplicationContext(),true);
-			
-			
 			return view;
 			//return super.getView(position, convertView, parent);
 		}
