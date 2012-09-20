@@ -56,7 +56,7 @@ public class HttpConnectionUtil {
 			}
 			break;
 			case EVENT_NETWORK_ERROR:{
-			    Toast.makeText(mContext,mContext.getString(R.string.network_error),Toast.LENGTH_SHORT).show();
+			    //Toast.makeText(mContext,mContext.getString(R.string.network_error),Toast.LENGTH_SHORT).show();
 			}
 			break;
 			default:

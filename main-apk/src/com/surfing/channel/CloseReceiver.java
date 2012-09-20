@@ -73,6 +73,6 @@ public class CloseReceiver {
         for(int i = 0;i<mServiceList.size();i++){
             mServiceList.get(i).stopSelf();
         }
-        
+        mServiceList.clear();
     }
 }
