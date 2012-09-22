@@ -18,9 +18,11 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/channel_firstnews_img_id"
         android:layout_alignLeft="@id/channel_firstnews_img_id"
-        android:background="#000000"
+        android:background="@drawable/top_text_background"
         android:maxLines="1"
         android:textColor="#ffffff"
-        android:textSize="@dimen/ch_banner_text" />
+        android:textSize="@dimen/ch_banner_text" 
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
  <!--android:layout_height="@dimen/ch_banner_height"-->
 </RelativeLayout>
