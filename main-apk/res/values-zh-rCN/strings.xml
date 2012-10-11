@@ -26,11 +26,11 @@
     <string name="discuss_title">讨论组</string>
     <string name="contact_title">通讯录</string>
     <string name="vote_title">投票</string>
-    <string name="setting_title">设置</string>
+    <string name="setting_title">系统设置</string>
     <string name="btn_view">查看</string>
     <string name="message_notify_start">您有 </string>
     <string name="message_notify_end"> 条未读通知</string>
-    <string name="inner_message">内部通知</string>
+    <string name="inner_message">通知公告</string>
     <string name="weather_request">天气查询</string>
     <string name="train_request">火车查询</string>
     <string name="choose_play_method">选择播放方式</string>
