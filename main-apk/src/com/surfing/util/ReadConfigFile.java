@@ -62,6 +62,7 @@ public class ReadConfigFile {
 	public static HashMap<String,String> getUserInfo(Context context){
 		HashMap<String,String> map = new HashMap<String, String>();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		mLoginType = LOGIN_TYPE_GUEST;
 		Document dom = null;
 		try{
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -78,7 +79,7 @@ public class ReadConfigFile {
 			map.put("user_passwad",(String)descNode.getFirstChild().getNodeValue());
 			
 		}catch(Exception e) { 
-			e.printStackTrace(); 
+			//e.printStackTrace(); 
 			return null;
 		}
 		
