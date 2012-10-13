@@ -65,6 +65,20 @@ public class MenuGridActivity extends ActivityBase {
 	private Context    mCurrentContext;
 	private int mTheme = 0;
 	ArrayList<ChannelItem> mChannlelist = null;
+	 public  String[] names = null;
+// 	{null,null,
+// 						  getString(R.string.channel_public),null,null,null,
+// 						  /*getString(R.string.discuss_title),*/getString(R.string.contact_title),
+// 						  /*getString(R.string.vote_title),*/getString(R.string.setting_title),
+// 						  getString(R.string.send_to_friend),getString(R.string.inner_message)};  
+// ,getString(R.string.title_bianming),
+// getString(R.string.title_about)
+ private int[] icons = null;
+// 	{R.drawable.channel,R.drawable.channel,
+// 					   R.drawable.grid_public,R.drawable.grid_more,
+// 					   /*R.drawable.disscus,*/R.drawable.contacts,
+// 					   /*R.drawable.vote,*/R.drawable.settings,
+// 					   R.drawable.bianming,R.drawable.notification};  
 	private Handler    myHandler = new Handler(){
 
         @Override
@@ -244,85 +258,48 @@ public class MenuGridActivity extends ActivityBase {
 	                long id) {  
 	        	Intent myIntent = new Intent();
 	        	Boolean blStart = true;
-	            switch (position) {  
-	            case 0:
-	            	if(mChannlelist.size() > 0){
-	            		myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
-		            	myIntent.putExtra(ChannelTabActivity.CHANNLE_LINK,mChannlelist.get(0).getmLink());
-		            	myIntent.putExtra(ChannelTabActivity.CHANNEL_TITLE,mChannlelist.get(0).getmTitle());
-		    			//myInent.setClass(getApplicationContext(), ChannelTabActivity.class);
-		    			//String response = getIntent().getStringExtra(ChannelTabActivity.COLUMN_INFO_TAG);
-		    			//myInent.putExtra(ChannelTabActivity.COLUMN_INFO_TAG,response);
-	            	}
-	            	
-	    		break;
-	    		case 1:
-	    			if(mChannlelist.size() > 1){
-	    				myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
-		    			myIntent.putExtra(ChannelTabActivity.CHANNLE_LINK,mChannlelist.get(1).getmLink());
-		    			myIntent.putExtra(ChannelTabActivity.CHANNEL_TITLE,mChannlelist.get(1).getmTitle());
-		    			//myInent.setClass(getApplicationContext(), DisscusActivity.class);
-	    			}
-	    			
-	    		break;
-	    		case 2:
-	    			myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
+	        	String Itemtext = names[position];
+	        	for(int i = 0;i<mChannlelist.size();i++){
+	        		if(Itemtext.equals(mChannlelist.get(i).getmTitle())){
+	        			myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
+		            	myIntent.putExtra(ChannelTabActivity.CHANNLE_LINK,mChannlelist.get(i).getmLink());
+		            	myIntent.putExtra(ChannelTabActivity.CHANNEL_TITLE,mChannlelist.get(i).getmTitle());
+		            	startActivity(myIntent);
+		            	return;
+	        		}
+	        	}
+	        	if(Itemtext.equals(getString(R.string.channel_public))){
+	        		myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
 	    			myIntent.putExtra(ChannelTabActivity.CHANNLE_LINK,"public");
 	    			myIntent.putExtra(ChannelTabActivity.CHANNEL_TITLE,getString(R.string.channel_public));
-	    			//myInent.setClass(getApplicationContext(),EnterpriseContactsActivity.class);
-	    		break;	
-	    		case 3:
-	    			myIntent.setClass(getApplicationContext(), MoreChannleInfoActivity.class);
-	    			myIntent.putExtra(ChannelTabActivity.CHANNEL_TITLE,getString(R.string.channel_more));
-	            	//myInent.putExtra(ChannelTabActivity.CHANNLE_LINK,"public");
-	    			//myInent.setClass(getApplicationContext(),VoteListActivity.class);
-	    		break;
-//	    		case 4:
-//	    			myIntent.setClass(getApplicationContext(), DisscusActivity.class);
-//	    			//myInent.setClass(getApplicationContext(), SettingActivity.class);
-//	    		break;
-	    		case 4:
-	    			myIntent.setClass(getApplicationContext(),EnterpriseContactsActivity.class);
-	    			//myInent.setClass(getApplicationContext(), NotificationListActivity.class);
-	    		break;
-//	    		case 5:
-//	    			myIntent.setClass(getApplicationContext(),VoteListActivity.class);
-//	    			//myInent.setClass(getApplicationContext(), UpdateVersionActivity.class); 
-//	    		break; 
-	    		case 5://bianmin
-	    			myIntent.setClass(getApplicationContext(), SettingActivity.class);
-	    		    //myInent.setClass(getApplicationContext(),MoreModuleActivity.class);
-	    		break;
-	    		case 6://weather
-	    			CommonOperate.sendMsg2Friend(MenuGridActivity.this.getApplicationContext());
-	    			return;
-	    		case 7:
-	    			myIntent.setClass(getApplicationContext(), NotificationListActivity.class);
-	    			break;
-	    		default:
-	    			blStart = false;
-	    			break;
-	            }  
-	            if(blStart){
-	            	startActivity(myIntent);
-	            }
+	    			startActivity(myIntent);
+	            	return;
+	        	}
+	        	if(Itemtext.equals(getString(R.string.contact_title))){
+	        		myIntent.setClass(getApplicationContext(),EnterpriseContactsActivity.class);
+	        		startActivity(myIntent);
+	            	return;
+	        	}
+	        	if(Itemtext.equals(getString(R.string.setting_title))){
+	        		myIntent.setClass(getApplicationContext(),SettingActivity.class);
+	        		startActivity(myIntent);
+	            	return;
+	        	}
+	        	if(Itemtext.equals(getString(R.string.inner_message))){
+	        		myIntent.setClass(getApplicationContext(),NotificationListActivity.class);
+	        		startActivity(myIntent);
+	            	return;
+	        	}
+	        	if(Itemtext.equals(getString(R.string.send_to_friend))){
+	        		CommonOperate.sendMsg2Friend(MenuGridActivity.this.getApplicationContext());
+	            	return;
+	        	}
+	           
 	        }  
 	 } 
 	private class MainGridViewAdapter extends BaseAdapter {  
 	    private static final String TAG = "MainGridViewAdapter";
 	    
-	    private String[] names = {null,null,
-	    						  getString(R.string.channel_public),getString(R.string.channel_more),
-	    						  /*getString(R.string.discuss_title),*/getString(R.string.contact_title),
-	    						  /*getString(R.string.vote_title),*/getString(R.string.setting_title),
-	    						  getString(R.string.send_to_friend),getString(R.string.inner_message)};  
-//	    ,getString(R.string.title_bianming),
-//        getString(R.string.title_about)
-	    private int[] icons = {R.drawable.channel,R.drawable.channel,
-	    					   R.drawable.grid_public,R.drawable.grid_more,
-	    					   /*R.drawable.disscus,*/R.drawable.contacts,
-	    					   /*R.drawable.vote,*/R.drawable.settings,
-	    					   R.drawable.bianming,R.drawable.notification};  
 	    private Context context;  
 	    LayoutInflater infalter;
 	      
@@ -331,12 +308,43 @@ public class MenuGridActivity extends ActivityBase {
 	    public MainGridViewAdapter(Context context) {  
 	        this.context = context;  
 	        infalter = LayoutInflater.from(context); 
+	        names = new String[mChannlelist.size()+5];
+	        icons = new int[mChannlelist.size()+5];
+	        int index = 0;
+	        
 	        if(mChannlelist.size()>0){
-	        	names[0] = mChannlelist.get(0).getmTitle();
+	        	names[index] = mChannlelist.get(0).getmTitle();
+	        	icons[index] = R.drawable.channel;
+	        	index++;
 	        }
 	        if(mChannlelist.size()>1){
-	        	names[1] = mChannlelist.get(1).getmTitle();
+	        	names[index] = mChannlelist.get(1).getmTitle();
+	        	icons[index] = R.drawable.channel;
+	        	index++;
 	        }
+	        names[index] = getString(R.string.channel_public);
+	        icons[index] = R.drawable.channel;
+	        index++;
+	        for(int i = 2;i<mChannlelist.size();i++){
+	        	names[index] = mChannlelist.get(i).getmTitle();
+	        	icons[index] = R.drawable.channel;
+	        	index++;
+	        }
+	        names[index] = getString(R.string.contact_title);
+        	icons[index] = R.drawable.contacts;
+        	index++;
+        	
+        	names[index] = getString(R.string.setting_title);
+         	icons[index] = R.drawable.settings;
+         	index++;
+         	
+         	names[index] = getString(R.string.send_to_friend);
+         	icons[index] = R.drawable.bianming;
+         	index++;
+         	
+         	names[index] = getString(R.string.inner_message);
+         	icons[index] = R.drawable.notification;
+         	index++;
 	    }  
 	    public int getCount() {  
 	        return names.length;  

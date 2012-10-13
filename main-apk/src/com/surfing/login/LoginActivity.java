@@ -460,7 +460,6 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                 if((duration < 2) && mBlDeday){
                 	 myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),(2-duration)*1000);
                 }else{
-                	Log.i(TAG,"222222222222222222222");
                 	 //myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),0);
                 	myHandler.sendMessage(myHandler.obtainMessage(EVENT_START,mResponse));
                 }
@@ -473,6 +472,10 @@ public class LoginActivity extends ActivityBase implements OnClickListener
     	 Intent myIntent = new Intent();
          SharedPreferences pref =
          mContext.getSharedPreferences("mode",MODE_PRIVATE);
+         //make the display style as grid
+		 Editor editor = pref.edit();
+		 editor.putInt("mode",1);
+		 editor.commit();
          int mode = pref.getInt("mode",0);
          if(mode == 0){
          myIntent.setClass(getApplicationContext(),MenuTabActivity.class);
@@ -539,8 +542,9 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent mContentIntent = PendingIntent.getActivity(context, 0,
                 mIntent, 0);
+        //modify the app_name to app_title
         mNotification.setLatestEventInfo(context,
-                context.getString(R.string.app_name), null, mContentIntent);
+                context.getString(R.string.app_title), null, mContentIntent);
         mNotificationManager = (NotificationManager) context
                 .getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.notify(NOTIFICATION_ID, mNotification);
