@@ -163,6 +163,8 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING), 0);
         HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
         String geturl = getLoginURL(mUserNmae_type, user_name, user_password, mMeid);
+        
+        //check network condition
         ConnectivityManager nm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkinfo = nm.getActiveNetworkInfo();
         if (networkinfo == null || !networkinfo.isAvailable())
