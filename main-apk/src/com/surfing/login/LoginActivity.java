@@ -91,8 +91,10 @@ public class LoginActivity extends ActivityBase implements OnClickListener
     private String mResponse = null;
     private int mTheme = 0;
     private AnimationDrawable mLoadingAnimate = null;
+    
     private static final int EVENT_LOADING = 1;
     private static final int EVENT_START = 2;
+    
     private boolean blRemberPwd = false;
     private static final int LOGIN_TYPE_PHONENUM = 0;
     private static final int LOGIN_TYPE_MEID = 1;
@@ -141,9 +143,13 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         Intent ServiceIntent = new Intent();
         mContext = this.getApplicationContext();
         mTheme = ReadConfigFile.getTheme(mContext);
+        
+        // start our background service
         ServiceIntent.setClass(getApplicationContext(), ServerListenerService.class);
         startService(ServiceIntent);
+        
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        
         // get meid
         mTelephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         Log.e(TAG, "onResume  == " + getIntent().getStringExtra("flag"));
@@ -151,19 +157,21 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         {
             mBlDeday = false;
         }
+        
         mMeid = mTelephonyManager.getSubscriberId();
-        // mMeid = "46003"+mMeid.substring(mMeid.length()-10);
-        mMeid = "460030919293952";
+        
+        //for debug purpose
+        //mMeid = "460030919293952";
+        
         Log.i(TAG, "Meid = " + mMeid);
         HashMap<String, String> map = ReadConfigFile.getUserInfo(mContext);
         setContentView(R.layout.relogin_layout);
         mLoadingImage = (ImageView) findViewById(R.id.loading_animate_id);
         mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
         mLoadingAnimate = (AnimationDrawable) mLoadingImage.getBackground();
-        myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING), 0);
-        HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
-        String geturl = getLoginURL(mUserNmae_type, user_name, user_password, mMeid);
         
+        myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING), 0);
+
         //check network condition
         ConnectivityManager nm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkinfo = nm.getActiveNetworkInfo();
@@ -175,6 +183,10 @@ public class LoginActivity extends ActivityBase implements OnClickListener
             return;
         }
         mAnimationStart = System.currentTimeMillis() / 1000;
+
+        //login
+        HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
+        String geturl = getLoginURL(mUserNmae_type, user_name, user_password, mMeid);
         connect.asyncConnect(geturl, HttpMethod.GET, new LoginHttpCallBack());
 
         CloseReceiver.registerCloseActivity(this);
@@ -266,14 +278,18 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         mLoginNameText = (EditText) findViewById(R.id.LoginNameEdit_id);
         mLoginPasswadText = (EditText) findViewById(R.id.LoginPaswdEdit_id);
         mRemberPwd = (CheckBox) findViewById(R.id.Rebm_Passwd_check_id);
+        
         mLoginInBtn = (Button) findViewById(R.id.LoginInBtn_id);
         mLoginOutBtn = (Button) findViewById(R.id.LoginOutBtn_id);
+        
         mLoginInBtn.setOnClickListener(this);
         mLoginOutBtn.setOnClickListener(this);
+        
         mLoginNameText.setInputType(InputType.TYPE_CLASS_NUMBER);
         mLoginView = (View) findViewById(R.id.login_layout_id);
         mLoadingImage = (ImageView) findViewById(R.id.loading_animate_id);
         mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
+        
         mLoadingAnimate = (AnimationDrawable) mLoadingImage.getBackground();
 
         mRemberPwd.setChecked(ReadConfigFile.getSharedPreferenceBool(mContext, "user", "user_rember"));
@@ -308,8 +324,6 @@ public class LoginActivity extends ActivityBase implements OnClickListener
             myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING), 0);
             HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
             String geturl = getLoginURL(mUserNmae_type, user_name, user_password, mMeid);
-            ;
-
             connect.asyncConnect(geturl, HttpMethod.GET, new LoginHttpCallBack());
 
         }
@@ -334,7 +348,6 @@ public class LoginActivity extends ActivityBase implements OnClickListener
             Log.i(TAG, "return string : " + response);
             if ((response == null) || (response.length() == 0) || response.equals(HttpConnectionUtil.CONNECT_FAILED) || HttpConnectionUtil.RETURN_FAILED.equalsIgnoreCase(response))
             {
-
                 // clear the passward
                 if (ReadConfigFile.mLoginType == ReadConfigFile.LOGIN_TYPE_NORMAL)
                 {
@@ -354,8 +367,6 @@ public class LoginActivity extends ActivityBase implements OnClickListener
                                     {
                                         LoginActivity.this.finish();
                                     }
-
-                                    // LoginActivity.this.finish();
                                 }
                             }).show();
                 }
