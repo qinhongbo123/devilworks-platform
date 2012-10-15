@@ -125,7 +125,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
             case EVENT_START:
             {
                 String reponse = (String) msg.obj;
-                StartMeau(reponse);
+                startMenu(reponse);
             }
                 break;
             default:
@@ -425,7 +425,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         }
     }
 
-    private void StartMeau(String response)
+    private void startMenu(String response)
     {
         Intent myIntent = new Intent();
         SharedPreferences pref = mContext.getSharedPreferences("mode", MODE_PRIVATE);
@@ -434,15 +434,12 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         editor.putInt("mode", 1);
         editor.commit();
         int mode = pref.getInt("mode", 0);
-        if (mode == 0)
-        {
-            myIntent.setClass(getApplicationContext(), MenuTabActivity.class);
-        }
-        else
-        {
-            myIntent.setClass(getApplicationContext(), MenuGridActivity.class);
-        }
+        
+        Class<?> menuClass = (mode == 0) ? (MenuTabActivity.class) : (MenuGridActivity.class);
+        
+        myIntent.setClass(getApplicationContext(), menuClass);
         myIntent.putExtra(ChannelTabActivity.COLUMN_INFO_TAG, response);
+        
         SaveRssFile savefile = new SaveRssFile(LoginActivity.this.getApplicationContext());
 
         try
