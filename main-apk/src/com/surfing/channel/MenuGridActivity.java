@@ -133,36 +133,45 @@ public class MenuGridActivity extends ActivityBase
                 }
                 catch (IOException e)
                 {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
             }
         }
+        
         Log.i(TAG, "channle string = " + response);
         InputStream stream = new ByteArrayInputStream(response.getBytes());
         ChannelInformation channelInfo = DomXMLReader.readXML(MenuGridActivity.this, stream);
         mChannlelist = (ArrayList<ChannelItem>) channelInfo.getmChannelItemList();
+        
         maingv.setAdapter(new MainGridViewAdapter(this));
-
         maingv.setOnItemClickListener(new MainItemClickListener());
-        SharedPreferences userpref = this.getApplicationContext().getSharedPreferences("user", MODE_PRIVATE);
-        String user_name = userpref.getString("user_name", "");
-        String mConnectUrl = ReadConfigFile.getServerAddress(getApplicationContext()) + "index.php?controller=enterprise&action=RequireEnterLogoEx&user_name=" + user_name;
+        
+        Context context = this.getApplicationContext();
+
         getUnreadNotifiction();
-        mTheme = ReadConfigFile.getTheme(getApplicationContext());
-        mCurrentContext = ReadConfigFile.getCurrentThemeContext(mTheme, getApplicationContext());
+        
+        mTheme = ReadConfigFile.getTheme(context);
+        mCurrentContext = ReadConfigFile.getCurrentThemeContext(mTheme, context);
         View view = findViewById(R.id.title_layout_id);
         ThemeUpdateUitl.updateTitlebarBg(view, mCurrentContext, R.drawable.title_bg);
         ThemeSet();
-        Log.i(TAG, "the url is : " + mConnectUrl);
-        HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
-        ConnectWeb(connect, mConnectUrl);
+
+        HttpConnectionUtil connect = new HttpConnectionUtil(context);
+        String url = this.getEntLogoUrl(context);
+        ConnectWeb(connect, url);
+        Log.i(TAG, "the url is : " + url);
         CloseReceiver.registerCloseActivity(this);
 
         // CommonUpdate.getInstance().registerForUpdateWeather(myHandler,
         // CommonUpdate.EVENT_UPDATE_WEATHER, null);
 
+    }
+    private String getEntLogoUrl(Context context)
+    {
+        String username = context.getSharedPreferences("user", MODE_PRIVATE).getString("user_name", "");
+        // http://125.76.228.165/tianyi/index.php?controller=enterprise&action=RequireEnterLogoEx&user_name=460030919293952
+        return ReadConfigFile.getServerAddress(context) + "index.php?controller=enterprise&action=RequireEnterLogoEx&user_name=" + username;
     }
 
     private void ThemeSet()
