@@ -87,13 +87,13 @@ public class MenuGridActivity extends ActivityBase
         {
             switch (msg.what)
             {
-            case CommonUpdate.EVENT_UPDATE_WEATHER:
-            {
-                DisplayWeather.updateWeatherDisplay(getApplicationContext(), MenuGridActivity.this);
-            }
-                break;
-            default:
-                break;
+                case CommonUpdate.EVENT_UPDATE_WEATHER:
+                {
+                    DisplayWeather.updateWeatherDisplay(getApplicationContext(), MenuGridActivity.this);
+                }
+                    break;
+                default:
+                    break;
             }
             super.handleMessage(msg);
         }
@@ -159,8 +159,9 @@ public class MenuGridActivity extends ActivityBase
         HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
         ConnectWeb(connect, mConnectUrl);
         CloseReceiver.registerCloseActivity(this);
-        
-        //CommonUpdate.getInstance().registerForUpdateWeather(myHandler, CommonUpdate.EVENT_UPDATE_WEATHER, null);
+
+        // CommonUpdate.getInstance().registerForUpdateWeather(myHandler,
+        // CommonUpdate.EVENT_UPDATE_WEATHER, null);
 
     }
 
@@ -191,7 +192,7 @@ public class MenuGridActivity extends ActivityBase
     @Override
     protected void onDestroy()
     {
-        //CommonUpdate.getInstance().unregisterForUpdateWeather(myHandler);
+        // CommonUpdate.getInstance().unregisterForUpdateWeather(myHandler);
         CloseReceiver.unRegisterActivity(this);
         super.onDestroy();
     }
