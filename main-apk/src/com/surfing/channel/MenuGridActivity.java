@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.surfing.R;
 import com.surfing.Notification.NotificationListActivity;
@@ -356,6 +357,19 @@ public class MenuGridActivity extends ActivityBase
             infalter = LayoutInflater.from(context);
             names = new String[mChannlelist.size() + 5];
             icons = new int[mChannlelist.size() + 5];
+            
+            
+            HashMap<String, Integer> iconMap = new HashMap<String, Integer>()
+            {
+                {
+                    put("应急资源", 1);
+                    put("环保新闻", 2);
+                    put("工作动态", 3);
+                    put("突发事件", 4);
+                    put("值班要情", 5);
+                }
+            };
+            
             int index = 0;
 
             if (mChannlelist.size() > 0)

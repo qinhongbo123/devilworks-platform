@@ -2,3 +2,4 @@ main-apk/bin/
 main-apk/gen/
 main-apk/project.properties
 .metadata/
+.settings/
