@@ -379,6 +379,7 @@ public class MenuGridActivity extends ActivityBase
                 icons[index] = R.drawable.channel;
                 index++;
             }
+            
             names[index] = getString(R.string.contact_title);
             icons[index] = R.drawable.contacts;
             index++;

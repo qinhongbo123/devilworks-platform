@@ -187,6 +187,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         //login
         HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
         String geturl = getLoginURL(mUserNmae_type, user_name, user_password, mMeid);
+        Log.e("LOGIN", geturl);
         connect.asyncConnect(geturl, HttpMethod.GET, new LoginHttpCallBack());
 
         CloseReceiver.registerCloseActivity(this);
