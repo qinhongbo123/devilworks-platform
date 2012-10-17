@@ -3,3 +3,4 @@ main-apk/gen/
 main-apk/project.properties
 .metadata/
 .settings/
+.DS_Store

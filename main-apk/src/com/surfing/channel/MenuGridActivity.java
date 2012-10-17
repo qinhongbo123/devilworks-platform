@@ -355,8 +355,8 @@ public class MenuGridActivity extends ActivityBase
         public MainGridViewAdapter(Context context)
         {
             infalter = LayoutInflater.from(context);
-            names = new String[mChannlelist.size() + 5];
-            icons = new int[mChannlelist.size() + 5];
+            names = new String[mChannlelist.size() + 4];
+            icons = new int[mChannlelist.size() + 4];
             
             
             HashMap<String, Integer> customColumn = new HashMap<String, Integer>()
@@ -388,11 +388,10 @@ public class MenuGridActivity extends ActivityBase
             HashMap<String, Integer> commonColumn = new HashMap<String, Integer>()
             {
                 {
-                    put(getString(R.string.send_to_friend), R.drawable.commoninfo);
+                    put(getString(R.string.channel_public), R.drawable.commoninfo);
                     put(getString(R.string.contact_title), R.drawable.contacts);
                     put(getString(R.string.setting_title), R.drawable.settings);
                     put(getString(R.string.inner_message), R.drawable.notification);
-
                 }
             };
             Iterator iter = commonColumn.entrySet().iterator();
