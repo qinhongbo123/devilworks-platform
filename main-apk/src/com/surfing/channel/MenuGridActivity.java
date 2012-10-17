@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import com.surfing.R;
 import com.surfing.Notification.NotificationListActivity;
@@ -348,67 +350,59 @@ public class MenuGridActivity extends ActivityBase
     {
         private static final String TAG = "MainGridViewAdapter";
 
-        private Context context;
         LayoutInflater infalter;
 
         public MainGridViewAdapter(Context context)
         {
-            this.context = context;
             infalter = LayoutInflater.from(context);
             names = new String[mChannlelist.size() + 5];
             icons = new int[mChannlelist.size() + 5];
             
             
-            HashMap<String, Integer> iconMap = new HashMap<String, Integer>()
+            HashMap<String, Integer> customColumn = new HashMap<String, Integer>()
             {
                 {
-                    put("应急资源", 1);
-                    put("环保新闻", 2);
-                    put("工作动态", 3);
-                    put("突发事件", 4);
-                    put("值班要情", 5);
+                    put("工作动态", R.drawable.workstatus);
+                    put("突发事件", R.drawable.urgentevent);
+                    put("值班要情", R.drawable.dutyinfo);
+                    put("应急资源", R.drawable.urgentres);
+                    put("环保新闻", R.drawable.environinfo);
                 }
             };
-            
-            int index = 0;
 
-            if (mChannlelist.size() > 0)
+            int i = 0;
+            for (ChannelItem channelItem : mChannlelist)
             {
-                names[index] = mChannlelist.get(0).getmTitle();
-                icons[index] = R.drawable.channel;
-                index++;
-            }
-            if (mChannlelist.size() > 1)
-            {
-                names[index] = mChannlelist.get(1).getmTitle();
-                icons[index] = R.drawable.channel;
-                index++;
-            }
-            names[index] = getString(R.string.channel_public);
-            icons[index] = R.drawable.channel;
-            index++;
-            for (int i = 2; i < mChannlelist.size(); i++)
-            {
-                names[index] = mChannlelist.get(i).getmTitle();
-                icons[index] = R.drawable.channel;
-                index++;
+                try
+                {
+                    names[i] = channelItem.getmTitle();
+                    icons[i] = customColumn.get(channelItem.getmTitle());
+                    ++i;
+                } catch (Exception e)
+                {
+                    // TODO: handle exception
+                    Log.e("MENUGRID", e.getMessage());
+                }
             }
             
-            names[index] = getString(R.string.contact_title);
-            icons[index] = R.drawable.contacts;
-            index++;
+            HashMap<String, Integer> commonColumn = new HashMap<String, Integer>()
+            {
+                {
+                    put(getString(R.string.send_to_friend), R.drawable.commoninfo);
+                    put(getString(R.string.contact_title), R.drawable.contacts);
+                    put(getString(R.string.setting_title), R.drawable.settings);
+                    put(getString(R.string.inner_message), R.drawable.notification);
 
-            names[index] = getString(R.string.setting_title);
-            icons[index] = R.drawable.settings;
-            index++;
-
-            names[index] = getString(R.string.send_to_friend);
-            icons[index] = R.drawable.bianming;
-            index++;
-
-            names[index] = getString(R.string.inner_message);
-            icons[index] = R.drawable.notification;
-            index++;
+                }
+            };
+            Iterator iter = commonColumn.entrySet().iterator();
+            while (iter.hasNext())
+            {
+                Map.Entry entry = (Map.Entry)iter.next();
+                names[i] = (String) entry.getKey();
+                icons[i] = (Integer) entry.getValue();
+                ++i;
+            }
         }
 
         public int getCount()

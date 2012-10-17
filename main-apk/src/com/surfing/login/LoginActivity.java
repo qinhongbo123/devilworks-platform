@@ -161,7 +161,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         mMeid = mTelephonyManager.getSubscriberId();
         
         //for debug purpose
-        mMeid = "460030919293952";
+        //mMeid = "460022029033810";
         
         Log.i(TAG, "Meid = " + mMeid);
         HashMap<String, String> map = ReadConfigFile.getUserInfo(mContext);
