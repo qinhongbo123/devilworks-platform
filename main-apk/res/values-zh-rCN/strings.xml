@@ -134,7 +134,7 @@
     <string name="menu_into_local">本地电话本</string>
     <string name="msg_contacts_syn">您当前没有可显示的联系人，请点击“同步联系人”按钮进行同步，或者在菜单中点击“同步联系人”进行同步。</string>
 	<string name="btn_syn">同步联系人</string>
-	<string name="send_to_friend">推荐给好友</string>
+	<string name="send_to_friend">软件共享</string>
 	<string name="network_error">网络连接错误</string>
 	<string name="msg_sdcard">无SD卡，文章标题图片将无法正常显示.</string>
 	<string name="msg_request_new_client_failed">获取新版本出错</string>

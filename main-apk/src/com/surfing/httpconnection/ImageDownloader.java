@@ -58,8 +58,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * This helper class download images from the Internet and binds those with the
+ /*** This helper class download images from the Internet and binds those with the
  * provided ImageView.
  * 
  * <p>
@@ -78,6 +77,7 @@ public class ImageDownloader
 	private int mHeight = 0;
 	private Context mConext = null;
 	private boolean mBlArticle_title = false;
+
 
 	/**
 	 * Download the specified image from the Internet and binds it to the
@@ -100,10 +100,7 @@ public class ImageDownloader
 			imageView.setImageResource(default_res_id);
 			return;
 		}
-//	     Display display=manage.getDefaultDisplay();
-//	     screenHeight=display.getHeight();
-//	     screenWidth=display.getWidth();
-		// Bitmap bitmap = getBitmapFromCache(url);
+
 		Bitmap bitmap = null;
 		ContentResolver Resolver = mConext.getContentResolver();
 		Cursor cursor = Resolver.query(PhotoProviderData.PhotoData.CONTENT_URI, new String[] { PhotoProviderData.PHOTO_PATH }, PhotoProviderData.PHOTO_URL + "='" + url + "'", null, null);
@@ -111,6 +108,12 @@ public class ImageDownloader
 		{
 			cursor.moveToFirst();
 			String path = cursor.getString(0);
+			File img = new File(path);
+			if (!img.exists())
+			{
+				forceDownload(url, imageView);
+				return ;
+			}
 			Log.i(LOG_TAG, "the path = " + path);
 			try
 			{
@@ -118,6 +121,7 @@ public class ImageDownloader
 			}
 			catch (OutOfMemoryError e)
 			{
+				bitmap = null;
 				e.printStackTrace();
 			}
 			cursor.close();
@@ -268,37 +272,16 @@ public class ImageDownloader
 					String status = Environment.getExternalStorageState();
 					if (status.equals(Environment.MEDIA_MOUNTED))
 					{
-						BitmapFactory.Options opts = null;
 						Bitmap bitmap = null;
-						String path = null;
 						bitmap = BitmapFactory.decodeStream(new FlushedInputStream(inputStream));
-						path = SavePhoto(url, bitmap);
+						SavePhoto(url, bitmap);
 						inputStream.close();
-						if (mBlArticle_title)
-						{
-							opts = new BitmapFactory.Options();
-							opts.inJustDecodeBounds = true;
-							BitmapFactory.decodeFile(path, opts);
-							opts.inSampleSize = computeSampleSize(opts, -1, 70*60);  
-							opts.inJustDecodeBounds = false;
-							bitmap = BitmapFactory.decodeStream(inputStream,null,opts);
-							path = SavePhoto(url, bitmap);
-							
-						}else{
-							bitmap = BitmapFactory.decodeStream(new FlushedInputStream(inputStream));
-							path = SavePhoto(url, bitmap);
-							
-						}
-
 					}
 					else
 					{
 						Bitmap bitmap = BitmapFactory.decodeStream(new FlushedInputStream(inputStream));
 						return bitmap;
 					}
-					// return BitmapFactory.decodeStream(new
-					// FlushedInputStream(inputStream));
-
 				}
 				catch (Exception e)
 				{
@@ -455,13 +438,7 @@ public class ImageDownloader
 						{
 							imageView.setImageResource(mDefaultRes_id);
 						}
-
 					}
-
-				}
-				else
-				{
-					// imageView.setImageResource(R.drawable.default_article_bg);
 				}
 			}
 		}
@@ -674,9 +651,7 @@ public class ImageDownloader
 
 		}
 
-		if ((maxNumOfPixels == -1) &&
-
-		(minSideLength == -1))
+		if ((maxNumOfPixels == -1) &&(minSideLength == -1))
 		{
 
 			return 1;
@@ -690,9 +665,7 @@ public class ImageDownloader
 		}
 		else
 		{
-
 			return upperBound;
-
 		}
 
 	}
