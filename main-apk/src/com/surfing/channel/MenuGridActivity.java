@@ -364,9 +364,8 @@ public class MenuGridActivity extends ActivityBase
                 {
                     put("工作动态", R.drawable.workstatus);
                     put("突发事件", R.drawable.urgentevent);
-                    put("值班要情", R.drawable.dutyinfo);
-                    put("应急资源", R.drawable.urgentres);
-                    put("环保新闻", R.drawable.environinfo);
+                    put("应急演练", R.drawable.urgentres);
+                    put("宣传培训", R.drawable.environinfo);
                 }
             };
 
