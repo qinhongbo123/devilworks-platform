@@ -29,7 +29,7 @@ public class ActivityBase extends Activity
     public static final int TITLE_TYPE_DEFINE_TEXT_ICON = 2;
     public static final int TITLE_TYPE_DEFINE_TEXT = 3;
     public static final int TITLE_TYPE_DEFINE_ICON = 4;
-    private int mTitleType = TITLE_TYPE_NO_TITLE;
+    private int mTitleType = TITLE_TYPE_COMPANY;
 
     protected void onCreate(Bundle savedInstanceState, int titletype, String title, int iconId, boolean bldisplayWeather)
     {
@@ -64,6 +64,7 @@ public class ActivityBase extends Activity
 
     public void updateTitle()
     {
+        Log.i("ActivityBase","updateTitle mTitleType = "+mTitleType);
         if (mTitleType == TITLE_TYPE_COMPANY)
         {
             ImageView mTitleIcon = (ImageView) findViewById(R.id.titlebar_icon_id);
