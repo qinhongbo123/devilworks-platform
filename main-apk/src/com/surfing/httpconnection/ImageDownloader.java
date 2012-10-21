@@ -124,7 +124,10 @@ public class ImageDownloader
 				bitmap = null;
 				e.printStackTrace();
 			}
-			cursor.close();
+		}
+		if(cursor != null)
+		{
+		    cursor.close();
 		}
 		if (bitmap == null)
 		{
