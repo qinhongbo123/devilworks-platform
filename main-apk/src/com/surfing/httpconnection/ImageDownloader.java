@@ -272,16 +272,37 @@ public class ImageDownloader
 					String status = Environment.getExternalStorageState();
 					if (status.equals(Environment.MEDIA_MOUNTED))
 					{
+						BitmapFactory.Options opts = null;
 						Bitmap bitmap = null;
+						String path = null;
 						bitmap = BitmapFactory.decodeStream(new FlushedInputStream(inputStream));
-						SavePhoto(url, bitmap);
+						path = SavePhoto(url, bitmap);
 						inputStream.close();
+						if (mBlArticle_title)
+						{
+							opts = new BitmapFactory.Options();
+							opts.inJustDecodeBounds = true;
+							BitmapFactory.decodeFile(path, opts);
+							opts.inSampleSize = computeSampleSize(opts, -1, 70*60);  
+							opts.inJustDecodeBounds = false;
+							bitmap = BitmapFactory.decodeStream(inputStream,null,opts);
+							path = SavePhoto(url, bitmap);
+							
+						}else{
+							bitmap = BitmapFactory.decodeStream(new FlushedInputStream(inputStream));
+							path = SavePhoto(url, bitmap);
+							
+						}
+
 					}
 					else
 					{
 						Bitmap bitmap = BitmapFactory.decodeStream(new FlushedInputStream(inputStream));
 						return bitmap;
 					}
+					// return BitmapFactory.decodeStream(new
+					// FlushedInputStream(inputStream));
+
 				}
 				catch (Exception e)
 				{
@@ -350,7 +371,7 @@ public class ImageDownloader
 	 * An InputStream that skips the exact number of bytes provided, unless it
 	 * reaches EOF.
 	 */
-	static class FlushedInputStream extends FilterInputStream
+	public static class FlushedInputStream extends FilterInputStream
 	{
 		public FlushedInputStream(InputStream inputStream)
 		{
@@ -669,5 +690,4 @@ public class ImageDownloader
 		}
 
 	}
-
 }
