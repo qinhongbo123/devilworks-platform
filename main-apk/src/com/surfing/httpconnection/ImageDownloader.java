@@ -371,7 +371,7 @@ public class ImageDownloader
 	 * An InputStream that skips the exact number of bytes provided, unless it
 	 * reaches EOF.
 	 */
-	static class FlushedInputStream extends FilterInputStream
+	public static class FlushedInputStream extends FilterInputStream
 	{
 		public FlushedInputStream(InputStream inputStream)
 		{

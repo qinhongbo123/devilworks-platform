@@ -1,6 +1,7 @@
 package com.surfing.channel;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.surfing.R;
+import com.surfing.channel.NetImitate.ImageCallback;
 import com.surfing.httpconnection.HttpConnectionCallback;
 import com.surfing.httpconnection.HttpConnectionUtil;
 import com.surfing.httpconnection.HttpConnectionUtil.HttpMethod;
@@ -23,10 +25,14 @@ import com.surfing.util.TitleBarDisplay;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -422,6 +428,56 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 		    }
 		
 	}
+	private void updateImage(HashMap<String,Object> map, ImageView imageview,final View viewparent){
+		Bitmap bitmap = null;
+		boolean blDownload = true;
+		String imageUrl = map.get("icon").toString();
+		ContentResolver Resolver = mContext.getContentResolver();
+		Cursor cursor = Resolver.query(PhotoProviderData.PhotoData.CONTENT_URI, new String[] { PhotoProviderData.PHOTO_PATH }, PhotoProviderData.PHOTO_URL + "='" + imageUrl + "'", null, null);
+		if ((cursor != null) && (cursor.getCount() > 0))
+		{
+			cursor.moveToFirst();
+			String path = cursor.getString(0);
+			File img = new File(path);
+			if (img.exists())
+			{
+				blDownload = false;
+				try
+				{
+					Log.i("chenmei","load from sdcard");
+					bitmap = BitmapFactory.decodeFile(path);
+					imageview.setImageBitmap(bitmap);
+				}
+				catch (OutOfMemoryError e)
+				{
+					bitmap = null;
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		if(cursor != null)
+		{
+			cursor.close();
+		}
+		imageview.setTag(imageUrl);
+		if(blDownload){
+			NetImitate.getInstance(mContext).downloadAndBindImage(map,imageUrl, new ImageCallback(){
+
+				@Override
+				public void imageLoaded(Bitmap bitmap, String imageUrl)
+				{
+					Log.i("chenmei","imageLoaded from url");
+					ImageView image = (ImageView)viewparent.findViewWithTag(imageUrl);
+					if(image != null){
+						image.setImageBitmap(bitmap);
+					}
+					
+				}
+				
+			});
+		}
+	}
 	class SimpleAdapterList extends SimpleAdapter{
 
 		public SimpleAdapterList(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to)
@@ -444,11 +500,8 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 			desc.setText((String)map.get("desc"));
 			
 			ImageView image = (ImageView)view.findViewById(R.id.channel_listitem_img_id);
-			
-			ImageDownloader imageDownloader = new ImageDownloader();
-			imageDownloader.download(map.get("icon").toString(),image,R.drawable.firstnews,getApplicationContext(),true);
+			updateImage(map,image,mListView);
 			return view;
-			//return super.getView(position, convertView, parent);
 		}
 		
 	}
@@ -464,8 +517,7 @@ public class ChannelActivityOne extends ActivityBase implements OnClickListener,
 			TextView text = (TextView)view.findViewById(R.id.channel_firstnews_title_id);
 			text.setText((String)map.get("title"));
 			ImageView image = (ImageView)view.findViewById(R.id.channel_firstnews_img_id);
-			ImageDownloader imageDownloader = new ImageDownloader();
-			imageDownloader.download(map.get("icon").toString(),image,R.drawable.firstnews,getApplicationContext());
+			updateImage(map,image,mBannerGallery);
 			return view;
 		}
 
