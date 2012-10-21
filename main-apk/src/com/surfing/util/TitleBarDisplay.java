@@ -15,32 +15,38 @@ import android.widget.TextView;
 
 public class TitleBarDisplay
 {
-    public static void TitleBarInit(TextView mTitleText,ImageView mTitleIcon,Activity activity,Context context){ 
+    public static void TitleBarInit(TextView mTitleText, ImageView mTitleIcon, Activity activity, Context context)
+    {
         int mTheme = ReadConfigFile.getTheme(context);
-        Context mCurrentContext = ReadConfigFile.getCurrentThemeContext(mTheme,context); 
+        Context mCurrentContext = ReadConfigFile.getCurrentThemeContext(mTheme, context);
+        SharedPreferences pref = context.getSharedPreferences("enterprise", Context.MODE_PRIVATE);
         
-        String enterprise_name = null;
-        String enterprise_iconAddress = null;
-        SharedPreferences pref = context.getSharedPreferences("enterprise",Context.MODE_PRIVATE);
-        enterprise_name = pref.getString("enterprise_name","");
-        enterprise_iconAddress = pref.getString("enterprise_icon_url",null);
-        Log.i("TitleBarDisplay","enterprise_name == "+enterprise_name);
+        String enterprise_name = pref.getString("enterprise_name", "");
+        Log.i("TitleBarDisplay", "enterprise_name == " + enterprise_name);
         mTitleText.setText(enterprise_name);
+        
+        String enterprise_iconAddress = pref.getString("enterprise_icon_url", null);
         ImageDownloader imageDownloader = new ImageDownloader();
-        imageDownloader.download(enterprise_iconAddress,mTitleIcon,R.drawable.icon,context);
-        DisplayWeather.updateWeatherDisplay(context,activity);
+        imageDownloader.download(enterprise_iconAddress, mTitleIcon, R.drawable.icon, context);
+        
+        //skip weather update request
+        //DisplayWeather.updateWeatherDisplay(context, activity);
         View view = activity.findViewById(R.id.title_layout_id);
-        ThemeUpdateUitl.updateTitlebarBg(view, mCurrentContext,R.drawable.title_bg);
+        
+        ThemeUpdateUitl.updateTitlebarBg(view, mCurrentContext, R.drawable.title_bg);
     }
-    public static String getEnterpriseName(Context context){
-        String enterprise_name = null;
-        SharedPreferences pref = context.getSharedPreferences("enterprise",Context.MODE_PRIVATE);
-        enterprise_name = pref.getString("enterprise_name","enterprise");
-        return enterprise_name;
+
+    public static String getEnterpriseName(Context context)
+    {
+        SharedPreferences pref = context.getSharedPreferences("enterprise", Context.MODE_PRIVATE);
+        return pref.getString("enterprise_name", "enterprise");
+
     }
-    public static String getUserName(Context context){
-        SharedPreferences userpref = context.getSharedPreferences("user",Context.MODE_PRIVATE);
-        String user_name = userpref.getString("user_name", "");
-        return user_name;
+
+    public static String getUserName(Context context)
+    {
+        SharedPreferences userpref = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        return userpref.getString("user_name", "");
+
     }
 }

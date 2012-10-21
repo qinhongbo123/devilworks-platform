@@ -66,197 +66,210 @@ import android.widget.Toast;
 public class LoginActivity extends ActivityBase implements OnClickListener
 {
     /** Called when the activity is first created. */
-    private static final String TAG                    = "Login";
-    public static final String  LOGIN_STATE            = "login_state";
-    public static final String  LOGIN_STATE_LOGOUT     = "logout";
-    public static final String  LOGIN_STATE_LOGINNING  = "loginning";
-    public static final String  LOGIN_STATE_LOGINED    = "logined";
-    public static final String  APPLICATION_SATE       = "application_state";
-    public static final String  APPLICATION_ACTIVE     = "active";
-    public static final String  APPLICATION_BACKGROUND = "background";
+    private static final String TAG = "Login";
+    public static final String LOGIN_STATE = "login_state";
+    public static final String LOGIN_STATE_LOGOUT = "logout";
+    public static final String LOGIN_STATE_LOGINNING = "loginning";
+    public static final String LOGIN_STATE_LOGINED = "logined";
+    public static final String APPLICATION_SATE = "application_state";
+    public static final String APPLICATION_ACTIVE = "active";
+    public static final String APPLICATION_BACKGROUND = "background";
 
-    private ImageView           mLogoImage             = null;
-    private EditText            mLoginNameText         = null;
-    private EditText            mLoginPasswadText      = null;
-    private CheckBox			mRemberPwd 			   = null;
-    private Button              mLoginInBtn            = null;
-    private Button              mLoginOutBtn           = null;
-    private ProgressDialog      mwaittingBar           = null;
-    private View                mLoginView             = null;
-    private ImageView           mLoadingImage          = null;
-    public final static int     NOTIFICATION_ID        = 53472439;
-    private Context             mContext               = null;
-    private String              user_name              = null;
-    private String              user_password           = null;
-    private String              mResponse              = null;
-    private int                 mTheme                 = 0;
-    private AnimationDrawable   mLoadingAnimate        = null;
-    private static final int    EVENT_LOADING          =1;
-    private static final int	EVENT_START			   =2;
-    private boolean 			blRemberPwd			   = false;
-    private static 	final int 	LOGIN_TYPE_PHONENUM    = 0;
-    private static final  int 	LOGIN_TYPE_MEID		   = 1;
-    private TelephonyManager    mTelephonyManager 	   = null;
-    private static String 		mMeid 				   = null;
-    private static int			mUserNmae_type 		   = LOGIN_TYPE_MEID;
-    private long				mAnimationStart 	   = 0;
-    private boolean				mBlDeday			   = true;
-    private Handler    myHandler = new Handler(){
+    private ImageView mLogoImage = null;
+    private EditText mLoginNameText = null;
+    private EditText mLoginPasswadText = null;
+    private CheckBox mRemberPwd = null;
+    private Button mLoginInBtn = null;
+    private Button mLoginOutBtn = null;
+    private ProgressDialog mwaittingBar = null;
+    private View mLoginView = null;
+    private ImageView mLoadingImage = null;
+    public final static int NOTIFICATION_ID = 53472439;
+    private Context mContext = null;
+    private String user_name = null;
+    private String user_password = null;
+    private String mResponse = null;
+    private int mTheme = 0;
+    private AnimationDrawable mLoadingAnimate = null;
+    
+    private static final int EVENT_LOADING = 1;
+    private static final int EVENT_START = 2;
+    
+    private boolean blRemberPwd = false;
+    private static final int LOGIN_TYPE_PHONENUM = 0;
+    private static final int LOGIN_TYPE_MEID = 1;
+    private TelephonyManager mTelephonyManager = null;
+    private static String mMeid = null;
+    private static int mUserNmae_type = LOGIN_TYPE_MEID;
+    private long mAnimationStart = 0;
+    private boolean mBlDeday = true;
+    private Handler myHandler = new Handler()
+    {
 
         @Override
         public void handleMessage(Message msg)
         {
-            switch(msg.what){
-                case EVENT_LOADING:{
-                    if(mLoadingAnimate != null){
-                        Log.i(TAG,"loading image start");
-                        //mAnimationStart = (int) System.currentTimeMillis();
-                        mLoadingImage.setVisibility(View.VISIBLE);
-                        mLoadingAnimate.start();
-                    }
+            switch (msg.what)
+            {
+            case EVENT_LOADING:
+            {
+                if (mLoadingAnimate != null)
+                {
+                    Log.i(TAG, "loading image start");
+                    // mAnimationStart = (int) System.currentTimeMillis();
+                    mLoadingImage.setVisibility(View.VISIBLE);
+                    mLoadingAnimate.start();
                 }
+            }
                 break;
-                case EVENT_START:{
-                	String reponse = (String)msg.obj;
-                	StartMeau(reponse);
-                }
+            case EVENT_START:
+            {
+                String reponse = (String) msg.obj;
+                startMenu(reponse);
+            }
                 break;
-                default:
-                    break;
+            default:
+                break;
             }
             super.handleMessage(msg);
         }
-        
+
     };
+
     @Override
     public void onCreate(Bundle savedInstanceState)
-    { 
+    {
         super.onCreate(savedInstanceState);
         Intent ServiceIntent = new Intent();
         mContext = this.getApplicationContext();
-        mTheme = ReadConfigFile.getTheme(mContext); 
-        ServiceIntent.setClass(getApplicationContext(),
-                ServerListenerService.class);
-        startService(ServiceIntent);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //get meid  
-        mTelephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-        Log.e(TAG,"onResume  == "+getIntent().getStringExtra("flag"));
-        if("background".equals(getIntent().getStringExtra("flag"))){
-        	mBlDeday = false;
-        }
-        mMeid = mTelephonyManager.getSubscriberId();
-        //mMeid = "46003"+mMeid.substring(mMeid.length()-10);
-        mMeid = "460030919293952"; 
-        Log.i(TAG,"Meid = "+mMeid);
-        // Log.i(TAG,"mTelephonyManager.getDeviceId() = "+mTelephonyManager.getDeviceId());
-        // Log.i(TAG,"mTelephonyManager.getSimSerialNumber() = "+mTelephonyManager.getSimSerialNumber());
-        //Log.i(TAG,"mTelephonyManager.getSubscriberId() = "+mTelephonyManager.getSubscriberId());
-        // Log.i(TAG,"mTelephonyManager.getSubscriberId() = "+mTelephonyManager.getSimOperator());
-        HashMap<String,String> map = ReadConfigFile.getUserInfo(mContext);	
-        setContentView(R.layout.relogin_layout);
-        mLoadingImage = (ImageView)findViewById(R.id.loading_animate_id);
-        mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
-        mLoadingAnimate = (AnimationDrawable)mLoadingImage.getBackground();
-        myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),0);
-        HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
-        String geturl = getLoginURL(mUserNmae_type,user_name,user_password,mMeid);
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);      
-        NetworkInfo networkinfo = manager.getActiveNetworkInfo();      
-        if (networkinfo == null || !networkinfo.isAvailable()) {      
-        	Log.i(TAG,"no NetWork available");
-        	Toast.makeText(mContext,mContext.getString(R.string.network_error),Toast.LENGTH_SHORT).show();
-           this.finish();
-           return;
-        }  
-        mAnimationStart = System.currentTimeMillis()/1000;
-        connect.asyncConnect(geturl, HttpMethod.GET,
-                new LoginHttpCallBack());
-
+        mTheme = ReadConfigFile.getTheme(mContext);
         
+        // start our background service
+        ServiceIntent.setClass(getApplicationContext(), ServerListenerService.class);
+        startService(ServiceIntent);
+        
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        
+        // get meid
+        mTelephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        Log.e(TAG, "onResume  == " + getIntent().getStringExtra("flag"));
+        if ("background".equals(getIntent().getStringExtra("flag")))
+        {
+            mBlDeday = false;
+        }
+        
+        mMeid = mTelephonyManager.getSubscriberId();
+        
+        //for debug purpose
+        //mMeid = "460036090218143";
+        
+        Log.i(TAG, "Meid = " + mMeid);
+        HashMap<String, String> map = ReadConfigFile.getUserInfo(mContext);
+        setContentView(R.layout.relogin_layout);
+        mLoadingImage = (ImageView) findViewById(R.id.loading_animate_id);
+        mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
+        mLoadingAnimate = (AnimationDrawable) mLoadingImage.getBackground();
+        
+        myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING), 0);
+
+        //check network condition
+        ConnectivityManager nm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkinfo = nm.getActiveNetworkInfo();
+        if (networkinfo == null || !networkinfo.isAvailable())
+        {
+            Log.i(TAG, "no NetWork available");
+            Toast.makeText(mContext, mContext.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+            this.finish();
+            return;
+        }
+        mAnimationStart = System.currentTimeMillis() / 1000;
+
+        //login
+        HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
+        String geturl = getLoginURL(mUserNmae_type, user_name, user_password, mMeid);
+        Log.e("LOGIN", geturl);
+        connect.asyncConnect(geturl, HttpMethod.GET, new LoginHttpCallBack());
+
         CloseReceiver.registerCloseActivity(this);
     }
 
-	@Override
+    @Override
     protected void onDestroy()
     {
         CloseReceiver.unRegisterActivity(this);
         super.onDestroy();
     }
+
     @Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-    	if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
-    		NotificationManager mNotifyMgr = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        // TODO Auto-generated method stub
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
+        {
+            NotificationManager mNotifyMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotifyMgr.cancel(LoginActivity.NOTIFICATION_ID);
-    	   	LoginActivity.changeLogState(getApplicationContext(),LoginActivity.LOGIN_STATE_LOGOUT,false);
-    	   	CloseReceiver.CloseAllActivity();
-    	   	CloseReceiver.CloseAllService();
+            LoginActivity.changeLogState(getApplicationContext(), LoginActivity.LOGIN_STATE_LOGOUT, false);
+            CloseReceiver.CloseAllActivity();
+            CloseReceiver.CloseAllService();
             return false;
         }
-    	return super.onKeyDown(keyCode, event);
-	
-	}
+        return super.onKeyDown(keyCode, event);
 
-	private String getLoginURL(int LoginUserType, String UserName, String UserPwd, String meid)
-	{
-		String url = ReadConfigFile.getServerAddress(this.getApplicationContext()) + "index.php?controller=user&action=";
-		return (LOGIN_TYPE_PHONENUM == LoginUserType) ?
-				(url += "PhoneLogin&username=" + UserName + "&password=" + UserPwd) :
-				(url += "PhoneMEIDLogin&meid=" + meid);
-	}
-	
+    }
+
+    private String getLoginURL(int LoginUserType, String UserName, String UserPwd, String meid)
+    {
+        String url = ReadConfigFile.getServerAddress(this.getApplicationContext()) + "index.php?controller=user&action=";
+        return (LOGIN_TYPE_PHONENUM == LoginUserType) ? (url += "PhoneLogin&username=" + UserName + "&password=" + UserPwd) : (url += "PhoneMEIDLogin&meid=" + meid);
+    }
+
     @Override
     public void onClick(View v)
     {
         if (v == mLoginInBtn)
         {
-            //hide the inputmethod 
-           InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE); 
-           imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-          
+            // hide the inputmethod
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
             ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 
             NetworkInfo networkinfo = manager.getActiveNetworkInfo();
             if (networkinfo == null || !networkinfo.isAvailable())
             {
-                new AlertDialog.Builder(this)
-                        .setMessage(getString(R.string.msg_nonetwork))
-                        .setPositiveButton(R.string.ok, null).show();
+                new AlertDialog.Builder(this).setMessage(getString(R.string.msg_nonetwork)).setPositiveButton(R.string.ok, null).show();
                 return;
             }
             user_name = mLoginNameText.getText().toString();
             user_password = mLoginPasswadText.getText().toString();
             mRemberPwd.setVisibility(View.INVISIBLE);
-            blRemberPwd = true;//mRemberPwd.isChecked();
-            ReadConfigFile.setSharedPreference(mContext,"user","user_rember", blRemberPwd);
+            blRemberPwd = true;// mRemberPwd.isChecked();
+            ReadConfigFile.setSharedPreference(mContext, "user", "user_rember", blRemberPwd);
             if ((user_name.length() == 0) || (user_password.length() == 0))
             {
-                new AlertDialog.Builder(this)
-                        .setMessage(getString(R.string.msg_user_password_null))
-                        .setPositiveButton(R.string.ok, null).show();
+                new AlertDialog.Builder(this).setMessage(getString(R.string.msg_user_password_null)).setPositiveButton(R.string.ok, null).show();
                 return;
             }
-            
-            String geturl = getLoginURL(mUserNmae_type,null,null, mMeid);
-            
+
+            String geturl = getLoginURL(mUserNmae_type, null, null, mMeid);
+
             Log.i(TAG, ReadConfigFile.getServerAddress(this.getApplicationContext()));
             HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
-            connect.asyncConnect(geturl, HttpMethod.GET,
-                    new LoginHttpCallBack());
-            if(mLoadingAnimate != null){
+            connect.asyncConnect(geturl, HttpMethod.GET, new LoginHttpCallBack());
+            if (mLoadingAnimate != null)
+            {
                 mLoadingImage.setVisibility(View.VISIBLE);
                 mLoadingAnimate.start();
             }
         }
         else if (v == mLoginOutBtn)
         {
-        	 NotificationManager mNotifyMgr = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-             mNotifyMgr.cancel(LoginActivity.NOTIFICATION_ID);
-        	LoginActivity.changeLogState(getApplicationContext(),LoginActivity.LOGIN_STATE_LOGOUT,false);
-        	CloseReceiver.CloseAllActivity();
-        	CloseReceiver.CloseAllService();
-            //LoginActivity.this.finish();
+            NotificationManager mNotifyMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotifyMgr.cancel(LoginActivity.NOTIFICATION_ID);
+            LoginActivity.changeLogState(getApplicationContext(), LoginActivity.LOGIN_STATE_LOGOUT, false);
+            CloseReceiver.CloseAllActivity();
+            CloseReceiver.CloseAllService();
+            // LoginActivity.this.finish();
         }
     }
 
@@ -265,52 +278,55 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         mLogoImage = (ImageView) findViewById(R.id.LoginTitle_id);
         mLoginNameText = (EditText) findViewById(R.id.LoginNameEdit_id);
         mLoginPasswadText = (EditText) findViewById(R.id.LoginPaswdEdit_id);
-        mRemberPwd = (CheckBox)findViewById(R.id.Rebm_Passwd_check_id);
+        mRemberPwd = (CheckBox) findViewById(R.id.Rebm_Passwd_check_id);
+        
         mLoginInBtn = (Button) findViewById(R.id.LoginInBtn_id);
         mLoginOutBtn = (Button) findViewById(R.id.LoginOutBtn_id);
+        
         mLoginInBtn.setOnClickListener(this);
         mLoginOutBtn.setOnClickListener(this);
-        mLoginNameText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        mLoginView = (View)findViewById(R.id.login_layout_id);
-        mLoadingImage = (ImageView)findViewById(R.id.loading_animate_id);
-        mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
-        mLoadingAnimate = (AnimationDrawable)mLoadingImage.getBackground();
         
-        mRemberPwd.setChecked(ReadConfigFile.getSharedPreferenceBool(mContext,"user","user_rember"));
-        //mRemberPwd.setChecked(checked);
+        mLoginNameText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        mLoginView = (View) findViewById(R.id.login_layout_id);
+        mLoadingImage = (ImageView) findViewById(R.id.loading_animate_id);
+        mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
+        
+        mLoadingAnimate = (AnimationDrawable) mLoadingImage.getBackground();
+
+        mRemberPwd.setChecked(ReadConfigFile.getSharedPreferenceBool(mContext, "user", "user_rember"));
+        // mRemberPwd.setChecked(checked);
         // View titleView = (View) findViewById(R.id.application_title_id);
         // titleView.setVisibility(View.VISIBLE);
     }
-    private void loadTheme(Context context){
-        Context mCurrentThemeContext = ReadConfigFile.getCurrentThemeContext(mTheme, mContext); 
-        if(mCurrentThemeContext != null){
-            Log.i(TAG,"loading theme...");
+
+    private void loadTheme(Context context)
+    {
+        Context mCurrentThemeContext = ReadConfigFile.getCurrentThemeContext(mTheme, mContext);
+        if (mCurrentThemeContext != null)
+        {
+            Log.i(TAG, "loading theme...");
             mLoginView.setBackgroundDrawable(mCurrentThemeContext.getResources().getDrawable(R.drawable.login_bg));
         }
     }
+
     private void requestAgain()
     {
         Log.i(TAG, "requestAgain");
-        SharedPreferences pref = mContext.getSharedPreferences("user",
-                MODE_PRIVATE);
+        SharedPreferences pref = mContext.getSharedPreferences("user", MODE_PRIVATE);
         user_name = pref.getString("user_name", "");
         user_password = pref.getString("user_passwad", "");
-        Log.i(TAG, "the user name is = " + user_name + " the passwad is = "
-                + user_password);
-        if (((user_name.length() != 0) && (user_password.length() != 0))
-        	|| (mMeid != null))
+        Log.i(TAG, "the user name is = " + user_name + " the passwad is = " + user_password);
+        if (((user_name.length() != 0) && (user_password.length() != 0)) || (mMeid != null))
         {
             setContentView(R.layout.relogin_layout);
-            mLoadingImage = (ImageView)findViewById(R.id.loading_animate_id);
+            mLoadingImage = (ImageView) findViewById(R.id.loading_animate_id);
             mLoadingImage.setBackgroundDrawable(getResources().getDrawable(R.anim.loading));
-            mLoadingAnimate = (AnimationDrawable)mLoadingImage.getBackground();
-            myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING),0);
+            mLoadingAnimate = (AnimationDrawable) mLoadingImage.getBackground();
+            myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_LOADING), 0);
             HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
-            String geturl = getLoginURL(mUserNmae_type,user_name,user_password,mMeid);;
-           
-            connect.asyncConnect(geturl, HttpMethod.GET,
-                    new LoginHttpCallBack());
-            
+            String geturl = getLoginURL(mUserNmae_type, user_name, user_password, mMeid);
+            connect.asyncConnect(geturl, HttpMethod.GET, new LoginHttpCallBack());
+
         }
         else
         {
@@ -318,8 +334,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
             setupView();
             mLoginNameText.setText(user_name);
             mLoginPasswadText.setText(user_password);
-            changeLogState(LoginActivity.this.getApplicationContext(),
-                    LOGIN_STATE_LOGINNING,true);
+            changeLogState(LoginActivity.this.getApplicationContext(), LOGIN_STATE_LOGINNING, true);
         }
 
     }
@@ -330,174 +345,172 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         @Override
         public void execute(String response)
         {
-            //mwaittingBar.dismiss();
+            // mwaittingBar.dismiss();
             Log.i(TAG, "return string : " + response);
-            if((response == null) 
-                    || (response.length() == 0) 
-                    || response.equals(HttpConnectionUtil.CONNECT_FAILED)
-                    || HttpConnectionUtil.RETURN_FAILED.equalsIgnoreCase(response))
+            if ((response == null) || (response.length() == 0) || response.equals(HttpConnectionUtil.CONNECT_FAILED) || HttpConnectionUtil.RETURN_FAILED.equalsIgnoreCase(response))
             {
-               
-             // clear the passward
-            	if(ReadConfigFile.mLoginType == ReadConfigFile.LOGIN_TYPE_NORMAL){
-            		ReadConfigFile.setSharedPreference(mContext,"user","user_passwad","");
-                    new AlertDialog.Builder(LoginActivity.this)
-                            .setTitle(R.string.message_error)
-                            .setMessage(R.string.message_error_text)
-                            .setNegativeButton(R.string.ok,
-                                    new DialogInterface.OnClickListener()
-                                    {
-                                        @Override
-                                        public void onClick(DialogInterface arg0,
-                                                int arg1)
-                                        {
-                                            changeLogState(mContext, LOGIN_STATE_LOGOUT,true);
-                                            if(mUserNmae_type == LOGIN_TYPE_PHONENUM){
-                                            	requestAgain();
-                                            }else{
-                                            	LoginActivity.this.finish();
-                                            }
-                                            
-                                            // LoginActivity.this.finish();
-                                        }
-                                    }).show();
-            	}else{
-            		 Toast.makeText(mContext,mContext.getString(R.string.network_error),Toast.LENGTH_SHORT).show();
-            		 LoginActivity.this.finish();
-            		 return;
-            	}
-               
-            }else
-            {
-                SharedPreferences prefsate = mContext.getSharedPreferences(
-                        LOGIN_STATE, MODE_PRIVATE);
-                String loginstate = prefsate.getString(LOGIN_STATE,
-                        LOGIN_STATE_LOGOUT);
-              //  if (!LOGIN_STATE_LOGINED.equals(loginstate))
+                // clear the passward
+                if (ReadConfigFile.mLoginType == ReadConfigFile.LOGIN_TYPE_NORMAL)
                 {
-                    SharedPreferences pref = LoginActivity.this
-                            .getApplicationContext().getSharedPreferences(
-                                    "user", MODE_PRIVATE);
+                    ReadConfigFile.setSharedPreference(mContext, "user", "user_passwad", "");
+                    new AlertDialog.Builder(LoginActivity.this).setTitle(R.string.message_error).setMessage(R.string.message_error_text)
+                            .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1)
+                                {
+                                    changeLogState(mContext, LOGIN_STATE_LOGOUT, true);
+                                    if (mUserNmae_type == LOGIN_TYPE_PHONENUM)
+                                    {
+                                        requestAgain();
+                                    }
+                                    else
+                                    {
+                                        LoginActivity.this.finish();
+                                    }
+                                }
+                            }).show();
+                }
+                else
+                {
+                    Toast.makeText(mContext, mContext.getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                    LoginActivity.this.finish();
+                    return;
+                }
+
+            }
+            else
+            {
+                SharedPreferences prefsate = mContext.getSharedPreferences(LOGIN_STATE, MODE_PRIVATE);
+                String loginstate = prefsate.getString(LOGIN_STATE, LOGIN_STATE_LOGOUT);
+                // if (!LOGIN_STATE_LOGINED.equals(loginstate))
+                {
+                    SharedPreferences pref = LoginActivity.this.getApplicationContext().getSharedPreferences("user", MODE_PRIVATE);
                     Editor editor = pref.edit();
-                    if(mUserNmae_type == LOGIN_TYPE_MEID){
-                    	editor.putString("user_name",mMeid);
-                    	editor.putString("user_passwad", "");
-                    }else{ 
-                    	 editor.putString("user_name", user_name);
-                         if(blRemberPwd){
-                         	editor.putString("user_passwad", user_password);
-                         }else{
-                         	editor.putString("user_passwad", "");
-                         }
+                    if (mUserNmae_type == LOGIN_TYPE_MEID)
+                    {
+                        editor.putString("user_name", mMeid);
+                        editor.putString("user_passwad", "");
                     }
-                   
-                    
+                    else
+                    {
+                        editor.putString("user_name", user_name);
+                        if (blRemberPwd)
+                        {
+                            editor.putString("user_passwad", user_password);
+                        }
+                        else
+                        {
+                            editor.putString("user_passwad", "");
+                        }
+                    }
+
                     editor.commit();
                 }
- 
-                changeLogState(LoginActivity.this.getApplicationContext(),
-                        LOGIN_STATE_LOGINED,true); 
+
+                changeLogState(LoginActivity.this.getApplicationContext(), LOGIN_STATE_LOGINED, true);
                 mResponse = response;
-                long duration = Math.abs(System.currentTimeMillis()/1000 - mAnimationStart);
-                
-                if((duration < 2) && mBlDeday){
-                	 myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),(2-duration)*1000);
-                }else{
-                	 //myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),0);
-                	myHandler.sendMessage(myHandler.obtainMessage(EVENT_START,mResponse));
+                long duration = Math.abs(System.currentTimeMillis() / 1000 - mAnimationStart);
+
+                if ((duration < 2) && mBlDeday)
+                {
+                    myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START, mResponse), (2 - duration) * 1000);
                 }
-               
-                
+                else
+                {
+                    // myHandler.sendMessageDelayed(myHandler.obtainMessage(EVENT_START,mResponse),0);
+                    myHandler.sendMessage(myHandler.obtainMessage(EVENT_START, mResponse));
+                }
+
             }
         }
     }
-    private void StartMeau(String response){
-    	 Intent myIntent = new Intent();
-         SharedPreferences pref =
-         mContext.getSharedPreferences("mode",MODE_PRIVATE);
-         //make the display style as grid
-		 Editor editor = pref.edit();
-		 editor.putInt("mode",1);
-		 editor.commit();
-         int mode = pref.getInt("mode",0);
-         if(mode == 0){
-         myIntent.setClass(getApplicationContext(),MenuTabActivity.class);
-         }else{
-         myIntent.setClass(getApplicationContext(),MenuGridActivity.class);
-         }
-         myIntent.putExtra(ChannelTabActivity.COLUMN_INFO_TAG,response);
-         SaveRssFile savefile = new SaveRssFile(LoginActivity.this.getApplicationContext());
-         
-         try {
-         savefile.SaveFile(response,"channel.xml");
-         } catch (Exception e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-         }
-         
-        //getWeatherFromWeb();
+
+    private void startMenu(String response)
+    {
+        Intent myIntent = new Intent();
+        SharedPreferences pref = mContext.getSharedPreferences("mode", MODE_PRIVATE);
+        // make the display style as grid
+        Editor editor = pref.edit();
+        editor.putInt("mode", 1);
+        editor.commit();
+        int mode = pref.getInt("mode", 0);
+        
+        Class<?> menuClass = (mode == 0) ? (MenuTabActivity.class) : (MenuGridActivity.class);
+        
+        myIntent.setClass(getApplicationContext(), menuClass);
+        myIntent.putExtra(ChannelTabActivity.COLUMN_INFO_TAG, response);
+        
+        SaveRssFile savefile = new SaveRssFile(LoginActivity.this.getApplicationContext());
+
+        try
+        {
+            savefile.SaveFile(response, "channel.xml");
+        }
+        catch (Exception e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // getWeatherFromWeb();
         startActivity(myIntent);
-        if(mLoadingAnimate != null){
+        if (mLoadingAnimate != null)
+        {
             mLoadingAnimate.stop();
             mLoadingAnimate = null;
         }
         LoginActivity.this.finish();
     }
+
     private void getWeatherFromWeb()
     {
-       Intent myIntent = new Intent();
-       myIntent.setClass(mContext,WeatherInfoLoadService.class);
-       startService(myIntent);
+        Intent myIntent = new Intent();
+        myIntent.setClass(mContext, WeatherInfoLoadService.class);
+        startService(myIntent);
     }
 
-    public static void changeLogState(Context context, String state,boolean blShow)
+    public static void changeLogState(Context context, String state, boolean blShow)
     {
         Log.i(TAG, "[changeLogState] the login state is : " + state);
-        SharedPreferences pref = context.getApplicationContext()
-                .getSharedPreferences(LOGIN_STATE, MODE_PRIVATE);
+        SharedPreferences pref = context.getApplicationContext().getSharedPreferences(LOGIN_STATE, MODE_PRIVATE);
         Editor editor = pref.edit();
         editor.putString(LOGIN_STATE, state);
         editor.commit();
-        //RuntimeException r = new RuntimeException();
-        //r.printStackTrace();
-        if(!blShow){
+        // RuntimeException r = new RuntimeException();
+        // r.printStackTrace();
+        if (!blShow)
+        {
             return;
         }
         Notification mNotification;
         NotificationManager mNotificationManager;
         if (LoginActivity.LOGIN_STATE_LOGINED.equals(state))
         {
-            mNotification = new Notification(R.drawable.notify_online, null,
-                    System.currentTimeMillis());
+            mNotification = new Notification(R.drawable.notify_online, null, System.currentTimeMillis());
         }
         else if (LoginActivity.LOGIN_STATE_LOGOUT.equals(state))
         {
-            mNotification = new Notification(R.drawable.notify_offline, null,
-                    System.currentTimeMillis());
+            mNotification = new Notification(R.drawable.notify_offline, null, System.currentTimeMillis());
         }
         else
         {
-            mNotification = new Notification(R.drawable.notify_offline, null,
-                    System.currentTimeMillis());
+            mNotification = new Notification(R.drawable.notify_offline, null, System.currentTimeMillis());
         }
         Intent mIntent = new Intent(context, LoginActivity.class);
-        mIntent.putExtra("flag","background");
+        mIntent.putExtra("flag", "background");
         mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent mContentIntent = PendingIntent.getActivity(context, 0,
-                mIntent, 0);
-        //modify the app_name to app_title
-        mNotification.setLatestEventInfo(context,
-                context.getString(R.string.app_title), null, mContentIntent);
-        mNotificationManager = (NotificationManager) context
-                .getSystemService(NOTIFICATION_SERVICE);
+        PendingIntent mContentIntent = PendingIntent.getActivity(context, 0, mIntent, 0);
+        // modify the app_name to app_title
+        mNotification.setLatestEventInfo(context, context.getString(R.string.app_title), null, mContentIntent);
+        mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.notify(NOTIFICATION_ID, mNotification);
 
     }
 
     public static String getLogState(Context context)
     {
-        SharedPreferences pref = context.getApplicationContext()
-                .getSharedPreferences(LOGIN_STATE, MODE_PRIVATE);
+        SharedPreferences pref = context.getApplicationContext().getSharedPreferences(LOGIN_STATE, MODE_PRIVATE);
         return pref.getString(LOGIN_STATE, LoginActivity.LOGIN_STATE_LOGOUT);
     }
 
@@ -506,29 +519,25 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         AlertDialog.Builder builder = new Builder(LoginActivity.this);
         builder.setMessage(R.string.message_confirm_quit);
         builder.setTitle(R.string.message_title_indicate);
-        builder.setPositiveButton(R.string.ok,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int arg1)
-                    {
-                        changeLogState(
-                                LoginActivity.this.getApplicationContext(),
-                                LOGIN_STATE_LOGOUT,true);
-                        dialog.dismiss();
-                        LoginActivity.this.finish();
+        builder.setPositiveButton(R.string.ok, new android.content.DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int arg1)
+            {
+                changeLogState(LoginActivity.this.getApplicationContext(), LOGIN_STATE_LOGOUT, true);
+                dialog.dismiss();
+                LoginActivity.this.finish();
 
-                    }
-                });
-        builder.setNegativeButton(R.string.btn_cancel,
-                new android.content.DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dialog.dismiss();
-                    }
-                });
+            }
+        });
+        builder.setNegativeButton(R.string.btn_cancel, new android.content.DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+            }
+        });
         builder.create().show();
     }
 }

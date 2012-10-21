@@ -10,20 +10,24 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
-public class SaveRssFile {
-	private static final String TAG = "SaveRssFile";
-	private Context mContext;
-	public SaveRssFile(Context context){
-		mContext = context;
-	}
-	public void SaveFile(String filestring,String filename) throws Exception {
-		String path = mContext.getFilesDir().getPath()+"/";
-		Log.i(TAG,"the file Path is "+path);
-		
-        byte[] data = filestring.getBytes();
-        File file = new File(path + filename);  
-        FileOutputStream fos = new FileOutputStream(file);  
-        fos.write(data);
+public class SaveRssFile
+{
+    private static final String TAG = "SaveRssFile";
+    private Context mContext;
+
+    public SaveRssFile(Context context)
+    {
+        mContext = context;
+    }
+
+    public void SaveFile(String filestring, String filename) throws Exception
+    {
+        String path = mContext.getFilesDir().getPath() + "/";
+        Log.i(TAG, "the file Path is " + path);
+
+        File file = new File(path + filename);
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(filestring.getBytes());
         fos.close();
     }
 }
