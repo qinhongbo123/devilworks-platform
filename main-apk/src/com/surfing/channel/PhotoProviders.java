@@ -20,10 +20,9 @@ public class PhotoProviders extends ContentProvider
         uriMatcher.addURI(PhotoProviderData.AUTHORIY, "photo", PHOTO_INFO); 
     } 
     @Override
-    public int delete(Uri arg0, String arg1, String[] arg2)
+    public int delete(Uri arg0, String where, String[] whereArgs)
     {
-        // TODO Auto-generated method stub
-        return 0;
+       return mDb.delete(PhotoProviderData.PHOTO_TABLE, where, whereArgs);
     }
 
     @Override

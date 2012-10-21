@@ -138,8 +138,8 @@ public class ChannelActivityOne extends ActivityBase implements
         mBannerDataList = new ArrayList<HashMap<String, Object>>();
         mListItemArray = new ArrayList<View>();
 
-        setupData(mChannel_id);
         setupBannerData(mChannel_id);
+        setupData(mChannel_id);
         mListAdapter = new SimpleAdapterList(mContext, mListArrayList,
                 R.layout.channel_listitem_layout, new String[] { "icon",
                         "title", "desc" }, new int[] {
@@ -557,6 +557,12 @@ public class ChannelActivityOne extends ActivityBase implements
                 {
                     bitmap = null;
                 }
+            }else
+            {
+                cursor.close();
+                cursor = null;
+                int ret = Resolver.delete(PhotoProviderData.PhotoData.CONTENT_URI, PhotoProviderData.PHOTO_URL + "='"+imageUrl+"'",null);
+                Log.i(TAG,"Delete url from photo table when the file is not exists  ret = "+ret);
             }
 
         }
