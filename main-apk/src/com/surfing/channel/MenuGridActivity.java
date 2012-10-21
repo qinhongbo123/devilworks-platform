@@ -283,6 +283,9 @@ public class MenuGridActivity extends ActivityBase
                     });
             builder.create();
             builder.show();
+        }
+        if(cursor != null)
+        {
             cursor.close();
         }
     }
