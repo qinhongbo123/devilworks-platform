@@ -567,8 +567,7 @@ public class ChannelActivityOne extends ActivityBase implements
         imageview.setTag(imageUrl);
         if (blDownload)
         {
-            NetImitate.getInstance(mContext).downloadAndBindImage(map,
-                    imageUrl, new ImageCallback()
+            NetImitate.getInstance(mContext).downloadAndBindImage(imageUrl, new ImageCallback()
                     {
                         @Override
                         public void imageLoaded(Bitmap bitmap, String imageUrl)
