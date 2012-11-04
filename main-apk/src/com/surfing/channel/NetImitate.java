@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,6 +21,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -31,7 +35,9 @@ import com.surfing.httpconnection.ImageDownloader.FlushedInputStream;
 public class NetImitate
 {
     private static NetImitate netImitate;
-
+    private static final int THREAD_POOL_SIZE = 2;
+    private ExecutorService mTheadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+    private HashMap<String,Object> mImageUrlCache = new HashMap<String, Object>();
     Context context;
 
     private NetImitate(Context context)
@@ -48,17 +54,6 @@ public class NetImitate
         return netImitate;
     }
 
-    /**
-     * 本方法模拟网络下载数据,sleep是用来模拟数据正在下载所需要的时间,一定要注意lock的用法，必需调用lock.notify
-     * 否则Ui那边会一直等待
-     * 
-     * 
-     * 
-     * @param user
-     * @param lock
-     *            {@link SuperListView#imageLock}
-     * 
-     */
     public void downloadAndBindImage(final HashMap<String,Object> user, final String url,final ImageCallback callback)
     {
     	
@@ -67,17 +62,49 @@ public class NetImitate
             	callback.imageLoaded((Bitmap) message.obj, url);  
             }  
         };  
-        new Thread(new Runnable()
+        if(mImageUrlCache.containsKey(url)){
+            ContentResolver Resolver = context.getContentResolver();
+            Cursor cursor = Resolver
+                    .query(PhotoProviderData.PhotoData.CONTENT_URI,
+                            new String[] { PhotoProviderData.PHOTO_PATH },
+                            PhotoProviderData.PHOTO_URL + "='" + url + "'",
+                            null, null);
+            if (cursor != null)
+            {
+                if(cursor.getCount() > 0){
+                    cursor.moveToFirst();
+                    String path = cursor.getString(0);
+                    File img = new File(path);
+                    if (img.exists())
+                    {
+                        return;
+                    } 
+                }
+                cursor.close();
+                cursor = null;
+            }
+        }
+         mImageUrlCache.put(url,"");
+         mTheadPool.execute(new Runnable()
         {
             @Override
             public void run()
             {
+                try
+                {
+                    Thread.sleep(500);
+                } catch (InterruptedException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 Bitmap bitmap = downloadBitmap(url);
                // callback.imageLoaded(bitmap,url);
                 Message message = handler.obtainMessage(0, bitmap);  
                 handler.sendMessage(message); 
+               
             }
-        }).start();
+        });
 
     }
 

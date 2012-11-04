@@ -76,7 +76,7 @@ public class ChannelActivityOne extends ActivityBase implements
     private SimpleAdapter mListAdapter = null;
     private BaseAdapter mBannerAdapter = null;
     private ArrayList<HashMap<String, Object>> mListArrayList;
-    private ArrayList<HashMap<String, Object>> mBannerDataList;;
+    private ArrayList<HashMap<String, Object>> mBannerDataList;
     private ProgressBar mwaittingBar = null;
     private Context mContext = null;
     private String mConnectUrl = null;
@@ -579,7 +579,6 @@ public class ChannelActivityOne extends ActivityBase implements
                         @Override
                         public void imageLoaded(Bitmap bitmap, String imageUrl)
                         {
-                            Log.i("chenmei", "imageLoaded from url");
                             ImageView image = (ImageView) viewparent
                                     .findViewWithTag(imageUrl);
                             if (image != null)
@@ -590,6 +589,7 @@ public class ChannelActivityOne extends ActivityBase implements
                         }
 
                     });
+            
         }
     }
 
