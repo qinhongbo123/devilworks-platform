@@ -76,7 +76,7 @@ public class ChannelActivityOne extends ActivityBase implements
     private SimpleAdapter mListAdapter = null;
     private BaseAdapter mBannerAdapter = null;
     private ArrayList<HashMap<String, Object>> mListArrayList;
-    private ArrayList<HashMap<String, Object>> mBannerDataList;
+    private ArrayList<HashMap<String, Object>> mBannerDataList;;
     private ProgressBar mwaittingBar = null;
     private Context mContext = null;
     private String mConnectUrl = null;
@@ -138,8 +138,8 @@ public class ChannelActivityOne extends ActivityBase implements
         mBannerDataList = new ArrayList<HashMap<String, Object>>();
         mListItemArray = new ArrayList<View>();
 
-        setupBannerData(mChannel_id);
         setupData(mChannel_id);
+        setupBannerData(mChannel_id);
         mListAdapter = new SimpleAdapterList(mContext, mListArrayList,
                 R.layout.channel_listitem_layout, new String[] { "icon",
                         "title", "desc" }, new int[] {
@@ -557,12 +557,6 @@ public class ChannelActivityOne extends ActivityBase implements
                 {
                     bitmap = null;
                 }
-            }else
-            {
-                cursor.close();
-                cursor = null;
-                int ret = Resolver.delete(PhotoProviderData.PhotoData.CONTENT_URI, PhotoProviderData.PHOTO_URL + "='"+imageUrl+"'",null);
-                Log.i(TAG,"Delete url from photo table when the file is not exists  ret = "+ret);
             }
 
         }
@@ -573,12 +567,12 @@ public class ChannelActivityOne extends ActivityBase implements
         imageview.setTag(imageUrl);
         if (blDownload)
         {
-            NetImitate.getInstance(mContext).downloadAndBindImage(map,
-                    imageUrl, new ImageCallback()
+            NetImitate.getInstance(mContext).downloadAndBindImage(imageUrl, new ImageCallback()
                     {
                         @Override
                         public void imageLoaded(Bitmap bitmap, String imageUrl)
                         {
+                            Log.i("chenmei", "imageLoaded from url");
                             ImageView image = (ImageView) viewparent
                                     .findViewWithTag(imageUrl);
                             if (image != null)
@@ -589,7 +583,6 @@ public class ChannelActivityOne extends ActivityBase implements
                         }
 
                     });
-            
         }
     }
 

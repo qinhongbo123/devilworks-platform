@@ -70,19 +70,7 @@ public class MenuGridActivity extends ActivityBase
     private int mTheme = 0;
     ArrayList<ChannelItem> mChannlelist = null;
     public String[] names = null;
-    // {null,null,
-    // getString(R.string.channel_public),null,null,null,
-    // /*getString(R.string.discuss_title),*/getString(R.string.contact_title),
-    // /*getString(R.string.vote_title),*/getString(R.string.setting_title),
-    // getString(R.string.send_to_friend),getString(R.string.inner_message)};
-    // ,getString(R.string.title_bianming),
-    // getString(R.string.title_about)
     private int[] icons = null;
-    // {R.drawable.channel,R.drawable.channel,
-    // R.drawable.grid_public,R.drawable.grid_more,
-    // /*R.drawable.disscus,*/R.drawable.contacts,
-    // /*R.drawable.vote,*/R.drawable.settings,
-    // R.drawable.bianming,R.drawable.notification};
     private Handler myHandler = new Handler()
     {
         @Override
@@ -170,6 +158,7 @@ public class MenuGridActivity extends ActivityBase
         // CommonUpdate.EVENT_UPDATE_WEATHER, null);
 
     }
+    
     private String getEntLogoUrl(Context context)
     {
         String username = context.getSharedPreferences("user", MODE_PRIVATE).getString("user_name", "");
@@ -228,7 +217,7 @@ public class MenuGridActivity extends ActivityBase
             {
                 if ((response != null) && !HttpConnectionUtil.RETURN_FAILED.equalsIgnoreCase(response) && !HttpConnectionUtil.CONNECT_FAILED.equalsIgnoreCase(response))
                 {
-                    Log.i(TAG, "the string = " + response);
+                    Log.i(TAG, "enterprise info = " + response);
                     int nIndex = response.indexOf("\\r\\n");
                     String enterprise_name = response.substring(0, nIndex);
                     String subString = response.substring(nIndex + "\\r\\n".length());
@@ -365,10 +354,10 @@ public class MenuGridActivity extends ActivityBase
             HashMap<String, Integer> customColumn = new HashMap<String, Integer>()
             {
                 {
-                    put("工作动态", R.drawable.workstatus);
-                    put("突发事件", R.drawable.urgentevent);
-                    put("应急演练", R.drawable.urgentres);
-                    put("宣传培训", R.drawable.environinfo);
+                    put("工作动态", R.drawable.channel);
+                    put("突发事件", R.drawable.channel);
+                    put("应急演练", R.drawable.channel);
+                    put("宣传培训", R.drawable.channel);
                 }
             };
 
@@ -390,7 +379,7 @@ public class MenuGridActivity extends ActivityBase
             HashMap<String, Integer> commonColumn = new HashMap<String, Integer>()
             {
                 {
-                    put(getString(R.string.channel_public), R.drawable.commoninfo);
+                    put(getString(R.string.channel_public), R.drawable.channel);
                     put(getString(R.string.contact_title), R.drawable.contacts);
                     put(getString(R.string.setting_title), R.drawable.settings);
                     put(getString(R.string.inner_message), R.drawable.notification);

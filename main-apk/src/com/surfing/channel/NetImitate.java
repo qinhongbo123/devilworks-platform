@@ -53,8 +53,7 @@ public class NetImitate
         }
         return netImitate;
     }
-
-    public void downloadAndBindImage(final HashMap<String,Object> user, final String url,final ImageCallback callback)
+    public void downloadAndBindImage(final String url,final ImageCallback callback)
     {
     	
     	final Handler handler = new Handler() {  
