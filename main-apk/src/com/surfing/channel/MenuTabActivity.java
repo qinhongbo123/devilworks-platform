@@ -2,8 +2,6 @@ package com.surfing.channel;
 
 import com.surfing.R;
 import com.surfing.Notification.NotificationListActivity;
-import com.surfing.Notification.NotificationProviderMetaData;
-import com.surfing.Notification.NotificationProviderMetaData.UserTableMetaData;
 import com.surfing.contacts.EnterpriseContactsActivity;
 import com.surfing.disscusgroup.DisscusActivity;
 import com.surfing.disscusgroup.VoteListActivity;
@@ -14,24 +12,14 @@ import com.surfing.httpconnection.HttpConnectionUtil.HttpMethod;
 import com.surfing.setting.SettingActivity;
 import com.surfing.util.DisplayWeather;
 import com.surfing.util.ReadConfigFile;
-import com.surfing.util.SaveRssFile;
 import com.surfing.util.ThemeUpdateUitl;
 import com.surfing.util.TitleBarDisplay;
 
-import android.app.Activity;
 import android.app.ActivityGroup;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.TabActivity;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences.Editor;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -40,13 +28,9 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebSettings.TextSize;
-import android.webkit.WebSettings.ZoomDensity;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
@@ -353,7 +337,7 @@ public class MenuTabActivity extends ActivityGroup
         mTitleIcon = (ImageView) findViewById(R.id.titlebar_icon_id);
         mTitleText = (TextView) findViewById(R.id.titlebar_text_id);
     }
-
+/*
     private void getUnreadNotifiction()
     {
         ContentResolver resolver = getContentResolver();
@@ -386,7 +370,7 @@ public class MenuTabActivity extends ActivityGroup
             cursor.close();
         }
     }
-
+*/
     private View getTabItemView(int index)
     {
         LayoutInflater mLayoutInflater = (LayoutInflater) MenuTabActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
