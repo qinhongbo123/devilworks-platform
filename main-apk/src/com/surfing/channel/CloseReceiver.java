@@ -2,19 +2,12 @@ package com.surfing.channel;
 
 import java.util.ArrayList;
 
-import com.surfing.R;
 import com.surfing.login.LoginActivity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.Service;
-import android.app.AlertDialog.Builder;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.util.Log;
 
 public class CloseReceiver
