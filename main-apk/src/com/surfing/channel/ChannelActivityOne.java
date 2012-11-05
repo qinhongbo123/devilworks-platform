@@ -386,7 +386,7 @@ public class ChannelActivityOne extends ActivityBase implements
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // TODO Auto-generated method stub
-        menu.add(0, menu.FIRST, Menu.NONE, R.string.refrash);
+        menu.add(0, Menu.FIRST, Menu.NONE, R.string.refrash);
         return super.onCreateOptionsMenu(menu);
     }
 
