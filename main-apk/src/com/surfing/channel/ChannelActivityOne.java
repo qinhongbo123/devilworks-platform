@@ -13,21 +13,13 @@ import com.surfing.channel.NetImitate.ImageCallback;
 import com.surfing.httpconnection.HttpConnectionCallback;
 import com.surfing.httpconnection.HttpConnectionUtil;
 import com.surfing.httpconnection.HttpConnectionUtil.HttpMethod;
-import com.surfing.httpconnection.ImageDownloader;
 import com.surfing.rssparse.ChannelInformation;
 import com.surfing.rssparse.ChannelItem;
 import com.surfing.rssparse.DomXMLReader;
 import com.surfing.util.ReadConfigFile;
-import com.surfing.util.SaveRssFile;
-import com.surfing.util.ThemeUpdateUitl;
-import com.surfing.util.TitleBarDisplay;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -35,38 +27,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.ScrollView;
-import android.widget.Scroller;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 public class ChannelActivityOne extends ActivityBase implements
         OnClickListener, OnItemClickListener
@@ -83,27 +61,13 @@ public class ChannelActivityOne extends ActivityBase implements
     private Button mButton = null;
     private int mpageIndex = 1;
     private String mChannel_id = null;
-    private GestureDetector detector;
-    private ViewFlipper mBannerFlipper = null;
-    private View mBannerView = null;
-    private View mListViewItem = null;
     private ListView mListView = null;
-    private ArrayList<View> mBannerItemArray = null;
     private ArrayList<View> mListItemArray = null;
-    private int mBannerIndex = 0;
-    private int mSumBanner = 0;
-    private LayoutInflater mLayoutInflater = null;
-    private MyScrollView mScrollView = null;
-    private float mOldX = 0;
-    private boolean mblaction = false;
-    private static final int PAGE_SIZE = 5;
     private int mMode = 0;
     private static final int REQUEST_TYPE_REFRASH = 0;
     private static final int REQUEST_TYPE_NEXT = 1;
     private int mRequestType = REQUEST_TYPE_REFRASH;
-    private static final int PAGE_MAX_COUNT = 10;
     private Gallery mBannerGallery = null;
-    private static final String BTN_NEXT_FLG_TEXT = "surfing_btn_next";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -126,12 +90,6 @@ public class ChannelActivityOne extends ActivityBase implements
         setContentView(R.layout.channel_layout);
         setupView();
 
-        mLayoutInflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // detector = new GestureDetector(this);
-        // mBannerFlipper.setOnTouchListener(this);
-        // mScrollView.setGestureDetector(detector);
         mChannel_id = this.getIntent().getStringExtra(
                 ChannelTabActivity.CHANNLE_LINK);
         mListArrayList = new ArrayList<HashMap<String, Object>>();
@@ -154,7 +112,6 @@ public class ChannelActivityOne extends ActivityBase implements
         mBannerGallery.setAdapter(mBannerAdapter);
         mBannerGallery.setOnItemClickListener(new OnItemClickListener()
         {
-
             @Override
             public void onItemClick(AdapterView<?> adapter, View view,
                     int position, long id)
@@ -181,7 +138,6 @@ public class ChannelActivityOne extends ActivityBase implements
         mButton.setVisibility(View.INVISIBLE);
         mListView.setAdapter(mListAdapter);
         mListView.setOnItemClickListener(this);
-        // mButton.setOnClickListener(this);
         mpageIndex = 1;
         CloseReceiver.registerCloseActivity(this);
     }
@@ -218,19 +174,12 @@ public class ChannelActivityOne extends ActivityBase implements
 
     private void setupView()
     {
-        // mButton = (Button)findViewById(R.id.channel_display_btn_id);
         mwaittingBar = (ProgressBar) findViewById(R.id.loading_progressBar);
-        // mBannerFlipper =
-        // (ViewFlipper)findViewById(R.id.channel_viewfilpper_id);
-        // mBannerView = (View)findViewById(R.id.channel_viewfilpper_id);
         mListView = (ListView) findViewById(R.id.channel_list_id);
-        // mScrollView = (MyScrollView)findViewById(R.id.channel_scroll_id);
     }
 
     private void setupData(String id)
     {
-        // setup list data
-
         if (id.equals("public"))
         {
             mConnectUrl = ReadConfigFile.getServerAddress(mContext)
@@ -286,12 +235,9 @@ public class ChannelActivityOne extends ActivityBase implements
         connect.asyncConnect(geturl, HttpMethod.POST,
                 new HttpConnectionCallback()
                 {
-
                     @Override
                     public void execute(String response)
                     {
-
-                        // setupBannerData(mChannel_id);
                         mButton.setText(getString(R.string.btn_display_next_text));
                         mButton.setVisibility(View.VISIBLE);
                         if ((response == null)
@@ -370,7 +316,6 @@ public class ChannelActivityOne extends ActivityBase implements
         connect.asyncConnect(geturl, HttpMethod.POST,
                 new HttpConnectionCallback()
                 {
-
                     @Override
                     public void execute(String response)
                     {
@@ -388,9 +333,6 @@ public class ChannelActivityOne extends ActivityBase implements
                         }
                         try
                         {
-
-                            // InputStream stream = new
-                            // StringBufferInputStream(response.substring(nindex));
                             InputStream stream = new ByteArrayInputStream(
                                     response.getBytes());
                             Log.i(TAG, "string=" + response);
@@ -427,7 +369,6 @@ public class ChannelActivityOne extends ActivityBase implements
                                             .getmIcon());
                                     mBannerDataList.add(map);
                                 }
-                                mSumBanner = mBannerDataList.size();
                                 mBannerAdapter.notifyDataSetChanged();
 
                             }
@@ -463,9 +404,6 @@ public class ChannelActivityOne extends ActivityBase implements
                 mBannerAdapter.notifyDataSetChanged();
                 mListAdapter.notifyDataSetChanged();
                 mpageIndex = 1;
-                // HttpConnectionUtil connect = new
-                // HttpConnectionUtil(getApplicationContext());
-                // ConnectWeb(connect,mConnectUrl);
                 setupData(mChannel_id);
                 setupBannerData(mChannel_id);
                 mButton.setVisibility(View.INVISIBLE);
@@ -492,28 +430,10 @@ public class ChannelActivityOne extends ActivityBase implements
             mRequestType = REQUEST_TYPE_NEXT;
         }
     }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev)
-    {
-        // if(detector.onTouchEvent(ev)){
-        // return false;
-        // }
-        return super.dispatchTouchEvent(ev);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-
-        return super.onTouchEvent(event);
-    }
-
     @Override
     public void onItemClick(AdapterView<?> adapter, View v, int position,
             long id)
     {
-
         HashMap<String, Object> map = mListArrayList.get(position - 1);
         String link = (String) map.get("link");
 
@@ -588,7 +508,6 @@ public class ChannelActivityOne extends ActivityBase implements
 
     class SimpleAdapterList extends SimpleAdapter
     {
-
         public SimpleAdapterList(Context context,
                 List<? extends Map<String, ?>> data, int resource,
                 String[] from, int[] to)
@@ -624,7 +543,6 @@ public class ChannelActivityOne extends ActivityBase implements
 
     class SimpleAdapterBanner extends BaseAdapter
     {
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
@@ -643,7 +561,6 @@ public class ChannelActivityOne extends ActivityBase implements
         @Override
         public int getCount()
         {
-            Log.i(TAG, "--- mBannerDataList.size() = " + mBannerDataList.size());
             return mBannerDataList.size();
         }
 
