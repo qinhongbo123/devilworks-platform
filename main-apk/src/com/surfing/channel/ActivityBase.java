@@ -1,7 +1,5 @@
 package com.surfing.channel;
 
-import java.util.ArrayList;
-
 import com.surfing.R;
 import com.surfing.login.LoginActivity;
 import com.surfing.util.ReadConfigFile;
@@ -13,7 +11,6 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
