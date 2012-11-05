@@ -6,20 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 import com.surfing.R;
-import com.surfing.contacts.EnterpriseContactsActivity;
-import com.surfing.httpconnection.HttpConnectionUtil;
-import com.surfing.httpconnection.ImageDownloader;
 import com.surfing.rssparse.ChannelInformation;
 import com.surfing.rssparse.ChannelItem;
 import com.surfing.rssparse.DomXMLReader;
 import com.surfing.util.DisplayWeather;
 import com.surfing.util.ReadConfigFile;
-import com.surfing.util.SaveRssFile;
-import com.surfing.util.ThemeUpdateUitl;
 import com.surfing.util.TitleBarDisplay;
 
 import android.app.TabActivity;
@@ -28,14 +22,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.ImageView;
@@ -55,6 +46,7 @@ public class ChannelTabActivity extends TabActivity
     private TextView mTitleText = null;
     private int mTheme = 0;
     private Context mCurrentContext;
+    /*
     private Handler myHandler = new Handler()
     {
 
@@ -78,7 +70,7 @@ public class ChannelTabActivity extends TabActivity
         }
 
     };
-
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
