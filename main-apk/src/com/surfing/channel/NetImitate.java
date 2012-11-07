@@ -122,7 +122,10 @@ public class NetImitate
 
         // AndroidHttpClient is not allowed to be used from the main thread
         final HttpClient client = new DefaultHttpClient();
-        
+        if(url == null)
+        {
+            return null;
+        }
         final HttpGet getRequest = new HttpGet(url);
 
         try

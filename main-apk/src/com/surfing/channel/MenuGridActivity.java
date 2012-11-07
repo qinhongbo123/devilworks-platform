@@ -343,10 +343,11 @@ public class MenuGridActivity extends ActivityBase
             HashMap<String, Integer> customColumn = new HashMap<String, Integer>()
             {
                 {
-                    put("工作动态", R.drawable.channel);
-                    put("突发事件", R.drawable.channel);
-                    put("应急演练", R.drawable.channel);
-                    put("宣传培训", R.drawable.channel);
+                    put("工作动态", R.drawable.workstatus);
+                    put("突发事件", R.drawable.urgentevent);
+                    put("值班要情", R.drawable.dutyinfo);
+                    put("应急资源", R.drawable.urgentres);
+                    put("环保新闻", R.drawable.environinfo);
                 }
             };
 
@@ -368,7 +369,7 @@ public class MenuGridActivity extends ActivityBase
             HashMap<String, Integer> commonColumn = new HashMap<String, Integer>()
             {
                 {
-                    put(getString(R.string.channel_public), R.drawable.channel);
+                    put(getString(R.string.channel_public), R.drawable.commoninfo);
                     put(getString(R.string.contact_title), R.drawable.contacts);
                     put(getString(R.string.setting_title), R.drawable.settings);
                     put(getString(R.string.inner_message), R.drawable.notification);
