@@ -453,39 +453,14 @@ public class ChannelActivityOne extends ActivityBase implements
             final View viewparent)
     {
         Bitmap bitmap = null;
-        boolean blDownload = true;
         String imageUrl = map.get("icon").toString();
-        ContentResolver Resolver = mContext.getContentResolver();
-        Cursor cursor = Resolver
-                .query(PhotoProviderData.PhotoData.CONTENT_URI,
-                        new String[] { PhotoProviderData.PHOTO_PATH },
-                        PhotoProviderData.PHOTO_URL + "='" + imageUrl + "'",
-                        null, null);
-        if ((cursor != null) && (cursor.getCount() > 0))
-        {
-            cursor.moveToFirst();
-            String path = cursor.getString(0);
-            File img = new File(path);
-            if (img.exists())
-            {
-                try
-                {
-                    blDownload = false;  
-                    bitmap = BitmapFactory.decodeFile(path);
-                    imageview.setImageBitmap(bitmap);
-                } catch (OutOfMemoryError e)
-                {
-                    bitmap = null;
-                }
-            }
-
-        }
-        if (cursor != null)
-        {
-            cursor.close();
-        }
+        bitmap = NetImitate.getImagefromDatabases(mContext,imageUrl);
         imageview.setTag(imageUrl);
-        if (blDownload)
+        if(bitmap != null)
+        {
+            imageview.setImageBitmap(bitmap);
+        }
+        else
         {
             NetImitate.getInstance(mContext).downloadAndBindImage(imageUrl, new ImageCallback()
                     {
