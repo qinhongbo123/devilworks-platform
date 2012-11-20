@@ -39,7 +39,13 @@ public class TitleBarDisplay
     private static void updateTitleIcon(String url, Context context, final ImageView mTitleIcon)
     {
         Log.i("TitleBarDisplay","enterprise_icon_url = "+url);
-        if(url != null)
+        Bitmap bitmap = null;
+        bitmap = NetImitate.getImagefromDatabases(context,url);
+        if(bitmap != null)
+        {
+            mTitleIcon.setImageBitmap(bitmap);
+        }
+        else
         {
             NetImitate.getInstance(context).downloadAndBindImage(url, new ImageCallback()
             {

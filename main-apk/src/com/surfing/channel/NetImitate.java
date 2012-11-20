@@ -122,7 +122,10 @@ public class NetImitate
 
         // AndroidHttpClient is not allowed to be used from the main thread
         final HttpClient client = new DefaultHttpClient();
-        
+        if(url == null)
+        {
+            return null;
+        }
         final HttpGet getRequest = new HttpGet(url);
 
         try
@@ -224,7 +227,37 @@ public class NetImitate
         resolver.insert(PhotoProviderData.PhotoData.CONTENT_URI, values);
         return savePath;
     }
-    
+    public static Bitmap getImagefromDatabases(Context context,String url){
+        ContentResolver Resolver = context.getContentResolver();
+        Bitmap bitmap = null;
+        Cursor cursor = Resolver
+                .query(PhotoProviderData.PhotoData.CONTENT_URI,
+                        new String[] { PhotoProviderData.PHOTO_PATH },
+                        PhotoProviderData.PHOTO_URL + "='" + url + "'",
+                        null, null);
+        if ((cursor != null) && (cursor.getCount() > 0))
+        {
+            cursor.moveToFirst();
+            String path = cursor.getString(0);
+            File img = new File(path);
+            if (img.exists())
+            {
+                try
+                {
+                    bitmap = BitmapFactory.decodeFile(path);
+                } catch (OutOfMemoryError e)
+                {
+                    bitmap = null;
+                }
+            }
+
+        }
+        if (cursor != null)
+        {
+            cursor.close();
+        }
+        return bitmap;
+    }
     public interface ImageCallback {  
         public void imageLoaded(Bitmap bitmap, String imageUrl);  
     }  
