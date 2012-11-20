@@ -170,9 +170,9 @@ public class SettingActivity extends ActivityBase implements OnItemClickListener
 //		}
 		
 		//mode
-//		map = new HashMap<String,Object>();
-//		map.put("title", getString(R.string.view_mode_text));
-//		listData.add(map);
+		map = new HashMap<String,Object>();
+		map.put("title", getString(R.string.view_mode_text));
+		listData.add(map);
 		
 		//version
 		map = new HashMap<String,Object>();

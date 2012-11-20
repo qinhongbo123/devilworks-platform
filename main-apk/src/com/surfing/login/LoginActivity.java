@@ -161,7 +161,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         mMeid = mTelephonyManager.getSubscriberId();
         
         //for debug purpose
-        //mMeid = "460036911429690";
+        mMeid = "460010123456789";
         
         Log.i(TAG, "Meid = " + mMeid);
         HashMap<String, String> map = ReadConfigFile.getUserInfo(mContext);
@@ -428,13 +428,17 @@ public class LoginActivity extends ActivityBase implements OnClickListener
 
     private void startMenu(String response)
     {
+        int mode = 0;
         Intent myIntent = new Intent();
         SharedPreferences pref = mContext.getSharedPreferences("mode", MODE_PRIVATE);
         // make the display style as grid
-        Editor editor = pref.edit();
-        editor.putInt("mode", 1);
-        editor.commit();
-        int mode = pref.getInt("mode", 0);
+        mode = pref.getInt("mode",-1);
+        if(mode == -1){
+            Editor editor = pref.edit();
+            editor.putInt("mode", 1);
+            editor.commit();
+        }
+        mode = pref.getInt("mode", 0);
         
         Class<?> menuClass = (mode == 0) ? (MenuTabActivity.class) : (MenuGridActivity.class);
         

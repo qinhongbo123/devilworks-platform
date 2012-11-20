@@ -343,10 +343,10 @@ public class MenuGridActivity extends ActivityBase
             HashMap<String, Integer> customColumn = new HashMap<String, Integer>()
             {
                 {
-                    put("工作动态", R.drawable.channel);
-                    put("突发事件", R.drawable.channel);
-                    put("应急演练", R.drawable.channel);
-                    put("宣传培训", R.drawable.channel);
+                    put("财政新闻", R.drawable.caizheng_xinwen);
+                    put("财政文化", R.drawable.caizheng_wenhua);
+                    put("食堂之窗", R.drawable.shitang);
+                    //put("财政厅介绍", R.drawable.channel);
                 }
             };
 
@@ -361,14 +361,14 @@ public class MenuGridActivity extends ActivityBase
                 } catch (Exception e)
                 {
                     // TODO: handle exception
-                    Log.e("MENUGRID", e.getMessage());
+                    //Log.e("MENUGRID", e.getMessage());
                 }
             }
             
             HashMap<String, Integer> commonColumn = new HashMap<String, Integer>()
             {
                 {
-                    put(getString(R.string.channel_public), R.drawable.channel);
+                    put(getString(R.string.channel_public), R.drawable.channel_public);
                     put(getString(R.string.contact_title), R.drawable.contacts);
                     put(getString(R.string.setting_title), R.drawable.settings);
                     put(getString(R.string.inner_message), R.drawable.notification);
