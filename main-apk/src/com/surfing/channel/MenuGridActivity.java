@@ -16,18 +16,25 @@ import com.surfing.Notification.NotificationListActivity;
 import com.surfing.Notification.NotificationProviderMetaData;
 import com.surfing.Notification.NotificationProviderMetaData.UserTableMetaData;
 import com.surfing.contacts.EnterpriseContactsActivity;
+import com.surfing.disscusgroup.DisscusActivity;
+import com.surfing.disscusgroup.VoteListActivity;
 import com.surfing.httpconnection.HttpConnectionCallback;
 import com.surfing.httpconnection.HttpConnectionUtil;
+import com.surfing.httpconnection.ImageDownloader;
 import com.surfing.httpconnection.HttpConnectionUtil.HttpMethod;
 import com.surfing.rssparse.ChannelInformation;
 import com.surfing.rssparse.ChannelItem;
 import com.surfing.rssparse.DomXMLReader;
 import com.surfing.setting.SettingActivity;
+import com.surfing.update.UpdateVersionActivity;
 import com.surfing.util.CommonOperate;
 import com.surfing.util.DisplayWeather;
 import com.surfing.util.ReadConfigFile;
 import com.surfing.util.ThemeUpdateUitl;
+import com.surfing.util.TitleBarDisplay;
+import com.surfing.weather.WeatherActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -37,6 +44,7 @@ import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,6 +53,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -280,6 +290,7 @@ public class MenuGridActivity extends ActivityBase
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
             Intent myIntent = new Intent();
+            Boolean blStart = true;
             String Itemtext = names[position];
             for (int i = 0; i < mChannlelist.size(); i++)
             {
@@ -343,10 +354,10 @@ public class MenuGridActivity extends ActivityBase
             HashMap<String, Integer> customColumn = new HashMap<String, Integer>()
             {
                 {
-                    put("财政新闻", R.drawable.caizheng_xinwen);
-                    put("财政文化", R.drawable.caizheng_wenhua);
-                    put("食堂之窗", R.drawable.shitang);
-                    put("财政厅介绍", R.drawable.channel);
+                    put("工作动态", R.drawable.channel);
+                    put("突发事件", R.drawable.channel);
+                    put("应急演练", R.drawable.channel);
+                    put("宣传培训", R.drawable.channel);
                 }
             };
 
@@ -361,14 +372,14 @@ public class MenuGridActivity extends ActivityBase
                 } catch (Exception e)
                 {
                     // TODO: handle exception
-                    //Log.e("MENUGRID", e.getMessage());
+                    Log.e("MENUGRID", e.getMessage());
                 }
             }
             
             HashMap<String, Integer> commonColumn = new HashMap<String, Integer>()
             {
                 {
-                    put(getString(R.string.channel_public), R.drawable.channel_public);
+                    put(getString(R.string.channel_public), R.drawable.channel);
                     put(getString(R.string.contact_title), R.drawable.contacts);
                     put(getString(R.string.setting_title), R.drawable.settings);
                     put(getString(R.string.inner_message), R.drawable.notification);

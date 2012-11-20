@@ -4,16 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.surfing.R;
+import com.surfing.TrainTicketSearch.TrainTicketSearch;
+import com.surfing.contacts.ContactsMutiSelectActivity;
+import com.surfing.util.TitleBarDisplay;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 public class MoreModuleActivity extends ActivityBase implements OnItemClickListener
 {
