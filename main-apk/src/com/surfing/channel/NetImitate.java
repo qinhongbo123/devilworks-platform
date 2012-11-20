@@ -119,7 +119,9 @@ public class NetImitate
    
     Bitmap downloadBitmap(String url)
     {
-
+        if(url == null){
+            return null;
+        }
         // AndroidHttpClient is not allowed to be used from the main thread
         final HttpClient client = new DefaultHttpClient();
         
