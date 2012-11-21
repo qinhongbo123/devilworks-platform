@@ -336,53 +336,40 @@ public class MenuGridActivity extends ActivityBase
         public MainGridViewAdapter(Context context)
         {
             infalter = LayoutInflater.from(context);
-            names = new String[mChannlelist.size() + 5];
-            icons = new int[mChannlelist.size() + 5];
+            names = new String[mChannlelist.size() + 4];
+            icons = new int[mChannlelist.size() +4];
+            int index = 0;
+            int columIndex = 0;
             
+            names[index] = mChannlelist.get(columIndex).getmTitle();
+            icons[index] = R.drawable.caizheng_xinwen;
             
-            HashMap<String, Integer> customColumn = new HashMap<String, Integer>()
-            {
-                {
-                    put("财政新闻", R.drawable.caizheng_xinwen);
-                    put("财政文化", R.drawable.caizheng_wenhua);
-                    put("食堂之窗", R.drawable.shitang);
-                    //put("财政厅介绍", R.drawable.channel);
-                }
-            };
+            index++;
+            columIndex++;
+            names[index] = mChannlelist.get(columIndex).getmTitle();
+            icons[index] = R.drawable.caizheng_wenhua;
+            
+            index++;
+            names[index] = getString(R.string.channel_public);
+            icons[index] = R.drawable.channel_public;
 
-            int i = 0;
-            for (ChannelItem channelItem : mChannlelist)
-            {
-                try
-                {
-                    names[i] = channelItem.getmTitle();
-                    icons[i] = customColumn.get(channelItem.getmTitle());
-                    ++i;
-                } catch (Exception e)
-                {
-                    // TODO: handle exception
-                    //Log.e("MENUGRID", e.getMessage());
-                }
-            }
+            index++;
+            names[index] = getString(R.string.inner_message);
+            icons[index] = R.drawable.notification;
             
-            HashMap<String, Integer> commonColumn = new HashMap<String, Integer>()
-            {
-                {
-                    put(getString(R.string.channel_public), R.drawable.channel_public);
-                    put(getString(R.string.contact_title), R.drawable.contacts);
-                    put(getString(R.string.setting_title), R.drawable.settings);
-                    put(getString(R.string.inner_message), R.drawable.notification);
-                    put(getString(R.string.send_to_friend), R.drawable.share_friend);
-                }
-            };
-            Iterator iter = commonColumn.entrySet().iterator();
-            while (iter.hasNext())
-            {
-                Map.Entry entry = (Map.Entry)iter.next();
-                names[i] = (String) entry.getKey();
-                icons[i] = (Integer) entry.getValue();
-                ++i;
-            }
+            index++;
+            names[index] = getString(R.string.contact_title);
+            icons[index] = R.drawable.contacts;
+            
+            index++;
+            columIndex++;
+            names[index] = mChannlelist.get(columIndex).getmTitle();
+            icons[index] = R.drawable.shitang;
+            
+            index++;
+            names[index] = getString(R.string.setting_title);
+            icons[index] = R.drawable.settings;
+        
         }
 
         public int getCount()

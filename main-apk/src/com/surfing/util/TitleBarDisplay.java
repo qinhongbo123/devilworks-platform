@@ -43,6 +43,7 @@ public class TitleBarDisplay
         bitmap = NetImitate.getImagefromDatabases(context,url);
         if(bitmap != null)
         {
+            Log.i("TitleBarDisplay","get title icon from database");
             mTitleIcon.setImageBitmap(bitmap);
         }
         else
