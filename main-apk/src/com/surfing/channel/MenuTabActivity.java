@@ -132,7 +132,7 @@ public class MenuTabActivity extends ActivityGroup{
 		HttpConnectionUtil connect = new HttpConnectionUtil(getApplicationContext());
 		ConnectWeb(connect,mConnectUrl);
 		CloseReceiver.registerCloseActivity(this);
-		CommonUpdate.getInstance().registerForUpdateWeather(myHandler,CommonUpdate.EVENT_UPDATE_WEATHER,null);
+        //CommonUpdate.getInstance().registerForUpdateWeather(myHandler, CommonUpdate.EVENT_UPDATE_WEATHER, null);
 		String status = Environment.getExternalStorageState();
 		  if (status.equals(Environment.MEDIA_MOUNTED)) {
 		   //do something

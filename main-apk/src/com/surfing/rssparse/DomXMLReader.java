@@ -34,7 +34,8 @@ public class DomXMLReader
             // Document dom =
             // builder.parse(context.getResources().getAssets().open("test.xml"));
             Element root = dom.getDocumentElement();
-            if(root == null){
+            if (root == null)
+            {
                 return null;
             }
             //
@@ -155,7 +156,7 @@ public class DomXMLReader
 
     public static WeatherInfo readXMLWeather(Context context, InputStream instream)
     {
-        Log.i(TAG,"readXMLWeather");
+        Log.i(TAG, "readXMLWeather");
         WeatherInfo weatherInfo = null;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try
@@ -217,14 +218,14 @@ public class DomXMLReader
                 dayInfo = new WeatherDayInfo();
                 descNode = (Element) dayList.item(j);
                 Items = descNode.getChildNodes();
-                
+
                 for (int i = 0; i < Items.getLength(); i++)
                 {
                     Element ItemDesc = (Element) Items.item(i);
                     if (Items.item(i).getNodeName().equalsIgnoreCase("day_of_week"))
                     {
                         dayInfo.setmWeek(new String(ItemDesc.getAttribute("data")));
-                        
+
                     }
                     else if (Items.item(i).getNodeName().equalsIgnoreCase("low"))
                     {
@@ -253,7 +254,9 @@ public class DomXMLReader
         }
         return weatherInfo;
     }
-    public static ArrayList<ContactsInfo> readXMLContact(Context context, InputStream instream){
+
+    public static ArrayList<ContactsInfo> readXMLContact(Context context, InputStream instream)
+    {
         ArrayList<ContactsInfo> ContactsList = new ArrayList<ContactsInfo>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         ContactsInfo contactinfo = null;
@@ -271,7 +274,7 @@ public class DomXMLReader
 
             //
             NodeList contactslist = root.getElementsByTagName("item");
-            
+
             for (int i = 0; i < contactslist.getLength(); i++)
             {
                 contactinfo = new ContactsInfo();
@@ -321,7 +324,9 @@ public class DomXMLReader
                         {
                             contactinfo.setmPosition(Items.item(j).getFirstChild().getNodeValue());
                         }
-                    }else if (Items.item(j).getNodeName().equalsIgnoreCase("user_work_position")){
+                    }
+                    else if (Items.item(j).getNodeName().equalsIgnoreCase("user_work_position"))
+                    {
                         if (Items.item(j).getFirstChild() != null)
                         {
                             contactinfo.setmTitle(Items.item(j).getFirstChild().getNodeValue());

@@ -16,10 +16,8 @@ import com.surfing.rssparse.ChannelItem;
 import com.surfing.rssparse.DomXMLReader;
 import com.surfing.util.ReadConfigFile;
 import com.surfing.util.ThemeUpdateUitl;
-import com.surfing.weather.CityListActivity;
 import com.surfing.weather.WeatherActivity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

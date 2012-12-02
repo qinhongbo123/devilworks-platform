@@ -147,7 +147,7 @@ public class LoginActivity extends ActivityBase implements OnClickListener
         }
         mMeid = mTelephonyManager.getSubscriberId();
         //mMeid = "46003"+mMeid.substring(mMeid.length()-10);
-        //mMeid = "460030919293952"; 
+        //mMeid = "4600311111111"; 
         Log.i(TAG,"Meid = "+mMeid);
        // Log.i(TAG,"mTelephonyManager.getDeviceId() = "+mTelephonyManager.getDeviceId());
        // Log.i(TAG,"mTelephonyManager.getSimSerialNumber() = "+mTelephonyManager.getSimSerialNumber());

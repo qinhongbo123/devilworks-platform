@@ -58,8 +58,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * This helper class download images from the Internet and binds those with the
+ /*** This helper class download images from the Internet and binds those with the
  * provided ImageView.
  * 
  * <p>
@@ -78,6 +77,7 @@ public class ImageDownloader
 	private int mHeight = 0;
 	private Context mConext = null;
 	private boolean mBlArticle_title = false;
+
 
 	/**
 	 * Download the specified image from the Internet and binds it to the
@@ -100,10 +100,7 @@ public class ImageDownloader
 			imageView.setImageResource(default_res_id);
 			return;
 		}
-//	     Display display=manage.getDefaultDisplay();
-//	     screenHeight=display.getHeight();
-//	     screenWidth=display.getWidth();
-		// Bitmap bitmap = getBitmapFromCache(url);
+
 		Bitmap bitmap = null;
 		ContentResolver Resolver = mConext.getContentResolver();
 		Cursor cursor = Resolver.query(PhotoProviderData.PhotoData.CONTENT_URI, new String[] { PhotoProviderData.PHOTO_PATH }, PhotoProviderData.PHOTO_URL + "='" + url + "'", null, null);
@@ -111,6 +108,12 @@ public class ImageDownloader
 		{
 			cursor.moveToFirst();
 			String path = cursor.getString(0);
+			File img = new File(path);
+			if (!img.exists())
+			{
+				forceDownload(url, imageView);
+				return ;
+			}
 			Log.i(LOG_TAG, "the path = " + path);
 			try
 			{
@@ -118,9 +121,13 @@ public class ImageDownloader
 			}
 			catch (OutOfMemoryError e)
 			{
+				bitmap = null;
 				e.printStackTrace();
 			}
-			cursor.close();
+		}
+		if(cursor != null)
+		{
+		    cursor.close();
 		}
 		if (bitmap == null)
 		{
@@ -367,7 +374,7 @@ public class ImageDownloader
 	 * An InputStream that skips the exact number of bytes provided, unless it
 	 * reaches EOF.
 	 */
-	static class FlushedInputStream extends FilterInputStream
+	public static class FlushedInputStream extends FilterInputStream
 	{
 		public FlushedInputStream(InputStream inputStream)
 		{
@@ -455,13 +462,7 @@ public class ImageDownloader
 						{
 							imageView.setImageResource(mDefaultRes_id);
 						}
-
 					}
-
-				}
-				else
-				{
-					// imageView.setImageResource(R.drawable.default_article_bg);
 				}
 			}
 		}
@@ -674,9 +675,7 @@ public class ImageDownloader
 
 		}
 
-		if ((maxNumOfPixels == -1) &&
-
-		(minSideLength == -1))
+		if ((maxNumOfPixels == -1) &&(minSideLength == -1))
 		{
 
 			return 1;
@@ -690,11 +689,8 @@ public class ImageDownloader
 		}
 		else
 		{
-
 			return upperBound;
-
 		}
 
 	}
-
 }
