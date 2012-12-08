@@ -1,39 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:text="钟楼" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:text="文景路" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:text="太华路" />
-
-    </LinearLayout>
-
+    android:background="#000000">
+    <include layout="@layout/platform_title_layout" />
+	<ListView 
+	    android:id="@+id/video_list"
+	    android:layout_width="200dp"
+	    android:layout_height="fill_parent"
+	    android:layout_alignParentLeft="true"
+	    android:background="#000000"
+	 ></ListView>
+	<TextView 
+	    android:id="@+id/divide_line"
+	    android:layout_width="0.5dp"
+	    android:layout_height="fill_parent"
+	    android:background="#ffffff"
+	    android:layout_toRightOf="@id/video_list"/>
+	/>
     <VideoView
         android:id="@+id/videoView1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="fill_parent" 
+        android:layout_gravity="center"
+        android:layout_toRightOf="@id/divide_line"/>
 
-</LinearLayout>
+</RelativeLayout>

@@ -227,7 +227,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-        </activity>TrainTicketSearch
+        </activity>
         <activity
             android:name=".weather.CityListActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -266,11 +266,11 @@
             </intent-filter>
         </activity>
          <activity
-            android:name=".rts.Videotest1Activity"
+            android:name=".rtsp.Videotest1Activity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleInstance"
             android:theme="@style/activityTitlebar" 
-            android:screenOrientation="portrait" >
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

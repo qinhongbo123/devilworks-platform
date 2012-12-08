@@ -22,6 +22,7 @@ import com.surfing.httpconnection.HttpConnectionUtil.HttpMethod;
 import com.surfing.rssparse.ChannelInformation;
 import com.surfing.rssparse.ChannelItem;
 import com.surfing.rssparse.DomXMLReader;
+import com.surfing.rtsp.Videotest1Activity;
 import com.surfing.setting.SettingActivity;
 import com.surfing.util.CommonOperate;
 import com.surfing.util.DisplayWeather;
@@ -327,7 +328,7 @@ public class MenuGridActivity extends ActivityBase
             }
             if (Itemtext.equals(getString(R.string.title_video_title)))
             {
-                myIntent.setClass(getApplicationContext(), NotificationListActivity.class);
+                myIntent.setClass(getApplicationContext(), Videotest1Activity.class);
                 startActivity(myIntent);
                 return;
             }
