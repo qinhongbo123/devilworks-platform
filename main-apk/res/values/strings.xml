@@ -165,4 +165,5 @@
 	<string name="btn_load">Load...</string>
 	<string name="btn_vote_text">Please choose</string>
 	<string name="msg_search_text">Search</string>
+	<string name="title_video_title">Vido Capture</string>
 </resources>

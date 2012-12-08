@@ -265,6 +265,16 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+         <activity
+            android:name=".rts.Videotest1Activity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance"
+            android:theme="@style/activityTitlebar" 
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
         <provider
             android:name=".Notification.NotificationProvider"
             android:authorities="com.surfing.Notification.NotificationProvider" >

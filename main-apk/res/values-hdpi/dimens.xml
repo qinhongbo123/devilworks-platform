@@ -31,6 +31,6 @@
    <dimen name="grid_item_with">90dp</dimen>
    <dimen name="grid_item_height">100dp</dimen>
    <dimen name="grid_img_with">54dp</dimen>
-   <dimen name="grid_img_height">60dp</dimen>
-   <dimen name="grid_text_size">25px</dimen>
+   <dimen name="grid_img_height">100dp</dimen>
+   <dimen name="grid_text_size">20px</dimen>
 </resources>
