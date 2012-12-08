@@ -29,7 +29,7 @@ public class Videotest1Activity extends ActivityBase {
     VideoView videoView1;
     ListView mVideoList = null;
     SimpleAdapter mVideoAdapter = null;
-    ArrayList<HashMap<String,Object>> mVideoArray = new ArrayList<HashMap<StrObjectin,Objectg>>();
+    ArrayList<HashMap<String,Object>> mVideoArray = new ArrayList<HashMap<String,Object>>();
     Context mContext = null;
     ProgressDialog  mWaitDialog = null;
     String rtspUrlZhonglu   = "rtsp://117.35.58.70:2554/service?PuId-ChannelNo=27000000000000000011200027400000-1&PlayMethod=0&StreamingType=2";
@@ -59,8 +59,8 @@ public class Videotest1Activity extends ActivityBase {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long id)
             {
-                HashMap<Object, String> map = mVideoArray.get(position);
-                String url = map.get("link");
+                HashMap<String,Object> map = mVideoArray.get(position);
+                String url = (String)map.get("link");
                 try{
                     videoView1.setVideoURI(Uri.parse(url));
                     boolean blFocus = videoView1.requestFocus();
@@ -90,23 +90,23 @@ public class Videotest1Activity extends ActivityBase {
     }
     
     private void getVideoList(){
-        HashMap<Object, String> map = null;
+        HashMap<String,Object> map = null;
         
         //wenjing road
-        map = new HashMap<Object, String>();
+        map = new HashMap<String,Object>();
         map.put("road","文景路");
         map.put("link", rtspUrlWenjinglu);
         mVideoArray.add(map);
         
         //zhonglou tower
-        map = new HashMap<Object, String>();
+        map = new HashMap<String,Object>();
         map.put("road","钟楼");
         map.put("link", rtspUrlZhonglu);
         mVideoArray.add(map);
         
         //taihua road
       //zhonglou tower
-        map = new HashMap<Object, String>();
+        map = new HashMap<String,Object>();
         map.put("road","太华路");
         map.put("link", rtspUrlTaihualu);
         mVideoArray.add(map);
