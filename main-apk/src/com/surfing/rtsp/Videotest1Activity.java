@@ -29,7 +29,7 @@ public class Videotest1Activity extends ActivityBase {
     VideoView videoView1;
     ListView mVideoList = null;
     SimpleAdapter mVideoAdapter = null;
-    ArrayList<HashMap<Object, String>> mVideoArray = null;
+    ArrayList<HashMap<String,Object>> mVideoArray = new ArrayList<HashMap<StrObjectin,Objectg>>();
     Context mContext = null;
     ProgressDialog  mWaitDialog = null;
     String rtspUrlZhonglu   = "rtsp://117.35.58.70:2554/service?PuId-ChannelNo=27000000000000000011200027400000-1&PlayMethod=0&StreamingType=2";
@@ -45,10 +45,9 @@ public class Videotest1Activity extends ActivityBase {
         mVideoList = (ListView)findViewById(R.id.video_list);
         videoView1 = (VideoView)findViewById(R.id.videoView1);
         
-        mVideoArray = new ArrayList<HashMap<Object,String>>();
         //init data
         getVideoList();
-        mVideoAdapter = new SimpleAdapter(mContext,(List<? extends Map<String, ?>>) mVideoArray,
+        mVideoAdapter = new SimpleAdapter(mContext,mVideoArray,
                 R.layout.videolist_item_layout,
                 new String[]{"road"},
                 new int[]{R.id.video_item_text});
