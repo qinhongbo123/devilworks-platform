@@ -67,6 +67,7 @@ public class MoreChannleInfoActivity extends ActivityBase implements OnItemClick
 		HashMap<String,Object> map = null;
 		mChannelItemList = new ArrayList<HashMap<String, Object>>();
 		mChannelData = getChannel();
+		
 		for(int i = 0;i<mChannelData.size();i++){
 			map = new HashMap<String,Object>();
 			map.put("ChannelName",mChannelData.get(i).get("title").toString());
@@ -84,7 +85,15 @@ public class MoreChannleInfoActivity extends ActivityBase implements OnItemClick
 		mChannelList.setLayoutParams(params);
 		CloseReceiver.registerCloseActivity(this);
 	}
-	
+	private void updateChannelTitle(ArrayList<ChannelItem> channlelist ){
+    	for(int i = 0;i<channlelist.size();i++){
+    		if ("宣传培训".equals(channlelist.get(i).getmTitle())){
+    			channlelist.get(i).setmTitle("值班要请");
+    		}else if ("应急演练".equals(channlelist.get(i).getmTitle())){
+    			channlelist.get(i).setmTitle("值班安排");
+    		}
+    	}
+    }
 	@Override
     protected void onStart()
     {
@@ -161,6 +170,7 @@ public class MoreChannleInfoActivity extends ActivityBase implements OnItemClick
 			//Log.i(TAG,ColumnInfor.substring(nindex));
 			if(channelInfo != null){
 				ArrayList<ChannelItem> channlelist = (ArrayList<ChannelItem>) channelInfo.getmChannelItemList();
+				updateChannelTitle(channlelist);
 				for(int i = ChannelTabActivity.mDisplayCont;i<channlelist.size();i++){
 					Log.i(TAG,"the title is : "+channlelist.get(i).getmTitle());
 					map = new HashMap<String,Object>();

@@ -127,7 +127,7 @@ public class MenuGridActivity extends ActivityBase
         InputStream stream = new ByteArrayInputStream(response.getBytes());
         ChannelInformation channelInfo = DomXMLReader.readXML(MenuGridActivity.this, stream);
         mChannlelist = (ArrayList<ChannelItem>) channelInfo.getmChannelItemList();
-        
+        updateChannelTitle();
         maingv.setAdapter(new MainGridViewAdapter(this));
         maingv.setOnItemClickListener(new MainItemClickListener());
         
@@ -151,7 +151,15 @@ public class MenuGridActivity extends ActivityBase
         // CommonUpdate.EVENT_UPDATE_WEATHER, null);
 
     }
-    
+    private void updateChannelTitle(){
+    	for(int i = 0;i<mChannlelist.size();i++){
+    		if ("宣传培训".equals(mChannlelist.get(i).getmTitle())){
+    			mChannlelist.get(i).setmTitle("值班要请");
+    		}else if ("应急演练".equals(mChannlelist.get(i).getmTitle())){
+    			mChannlelist.get(i).setmTitle("值班安排");
+    		}
+    	}
+    }
     private String getEntLogoUrl(Context context)
     {
         String username = context.getSharedPreferences("user", MODE_PRIVATE).getString("user_name", "");
@@ -295,33 +303,7 @@ public class MenuGridActivity extends ActivityBase
                     return;
                 }
             }
-            if(Itemtext.equals("值班要请")){
-                
-                for (int i = 0; i < mChannlelist.size(); i++)
-                {
-                    if ("宣传培训".equals(mChannlelist.get(i).getmTitle()))
-                    {
-                        myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
-                        myIntent.putExtra(ChannelTabActivity.CHANNLE_LINK, mChannlelist.get(i).getmLink());
-                        myIntent.putExtra(ChannelTabActivity.CHANNEL_TITLE, mChannlelist.get(i).getmTitle());
-                        startActivity(myIntent);
-                        return;
-                    }
-                }
-            }
-            if(Itemtext.equals("值班安排")){
-                for (int i = 0; i < mChannlelist.size(); i++)
-                {
-                    if ("应急演练".equals(mChannlelist.get(i).getmTitle()))
-                    {
-                        myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
-                        myIntent.putExtra(ChannelTabActivity.CHANNLE_LINK, mChannlelist.get(i).getmLink());
-                        myIntent.putExtra(ChannelTabActivity.CHANNEL_TITLE, mChannlelist.get(i).getmTitle());
-                        startActivity(myIntent);
-                        return;
-                    }
-                }
-            }
+            
             if (Itemtext.equals(getString(R.string.channel_public)))
             {
                 myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
@@ -372,12 +354,24 @@ public class MenuGridActivity extends ActivityBase
         public MainGridViewAdapter(Context context)
         {
             infalter = LayoutInflater.from(context);
-            names = new String[]{"工作动态","突发事件",getString(R.string.channel_public),"值班要情","值班安排",
+            names = new String[]{null,null,getString(R.string.channel_public),null,null,
             		getString(R.string.title_video_title),getString(R.string.contact_title),
             		getString(R.string.setting_title),getString(R.string.inner_message)};
             icons = new int[]{R.drawable.gongzuo_dongtai,R.drawable.tufa_shijian,R.drawable.gonggong_xinxi,R.drawable.zhiban_yaoqing,
             		R.drawable.richeng_anpai,R.drawable.shipin_jiankong,R.drawable.contacts,R.drawable.settings,R.drawable.notification};
             
+            int channleid = 0;
+            for(int i = 0;i<names.length;i++){
+                if((names[i] == null) && (channleid < mChannlelist.size())){
+                    names[i] = mChannlelist.get(channleid).getmTitle();
+                    if ("宣传培训".equals(names[i])){
+                    	names[i]="值班要请";
+                    }else  if ("应急演练".equals(names[i])){
+                    	names[i]="值班安排";
+                    }
+                    channleid++;
+                }
+            }
             /*
             HashMap<String, Integer> customColumn = new HashMap<String, Integer>()
             {
@@ -385,7 +379,7 @@ public class MenuGridActivity extends ActivityBase
                     put("工作动态", R.drawable.gongzuo_dongtai);
                     put("突发事件", R.drawable.tufa_shijian);
                     put(getString(R.string.channel_public), R.drawable.gonggong_xinxi);
-                    put("值班要情", R.drawable.zhiban_yaoqing);
+                    put("值班要情", R.drawable.zhiban_yaoqing);mChannlelist
                     put("值班安排", R.drawable.richeng_anpai);
                     put(getString(R.string.title_video_title), R.drawable.shipin_jiankong);
                     put(getString(R.string.contact_title), R.drawable.contacts);
