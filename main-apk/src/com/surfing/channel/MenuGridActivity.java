@@ -295,6 +295,33 @@ public class MenuGridActivity extends ActivityBase
                     return;
                 }
             }
+            if(Itemtext.equals("值班要请")){
+                
+                for (int i = 0; i < mChannlelist.size(); i++)
+                {
+                    if ("宣传培训".equals(mChannlelist.get(i).getmTitle()))
+                    {
+                        myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
+                        myIntent.putExtra(ChannelTabActivity.CHANNLE_LINK, mChannlelist.get(i).getmLink());
+                        myIntent.putExtra(ChannelTabActivity.CHANNEL_TITLE, mChannlelist.get(i).getmTitle());
+                        startActivity(myIntent);
+                        return;
+                    }
+                }
+            }
+            if(Itemtext.equals("值班安排")){
+                for (int i = 0; i < mChannlelist.size(); i++)
+                {
+                    if ("应急演练".equals(mChannlelist.get(i).getmTitle()))
+                    {
+                        myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
+                        myIntent.putExtra(ChannelTabActivity.CHANNLE_LINK, mChannlelist.get(i).getmLink());
+                        myIntent.putExtra(ChannelTabActivity.CHANNEL_TITLE, mChannlelist.get(i).getmTitle());
+                        startActivity(myIntent);
+                        return;
+                    }
+                }
+            }
             if (Itemtext.equals(getString(R.string.channel_public)))
             {
                 myIntent.setClass(getApplicationContext(), ChannelActivityOne.class);
